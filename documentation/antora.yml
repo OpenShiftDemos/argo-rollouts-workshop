@@ -1,0 +1,7 @@
+name: argo-rollouts-workshop
+title: Argo Rollouts Workshop
+version: main
+nav:
+  - modules/ROOT/nav.adoc
+
+start_page: ROOT:index.adoc
