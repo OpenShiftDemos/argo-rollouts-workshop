@@ -1,0 +1,10 @@
+apiVersion: v2
+name: argo-rollout-workshop
+version: 0.1.0
+description: Chart generates everything need for a specified user to run the Rollouts workshop
+type: application
+kubeVersion: '>=1.14.6'
+sources:
+ - https://github.com/OpenShiftDemos/argo-rollouts-workshop
+maintainers:
+- name: Gerald Nunn

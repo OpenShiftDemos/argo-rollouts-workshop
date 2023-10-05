@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: argoproj/rollouts-demo:blue
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen:
+      activeService: active
+      previewService: preview
+      autoPromotionEnabled: true
