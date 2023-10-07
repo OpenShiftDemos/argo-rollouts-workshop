@@ -1,2 +1,3 @@
 resources:
 - subscription.yaml
+- devworkspace-template.yaml
