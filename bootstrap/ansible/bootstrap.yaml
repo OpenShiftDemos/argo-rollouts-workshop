@@ -99,11 +99,10 @@
         - files/applications/pipelines-operator.yaml
         - files/applications/web-terminal-operator.yaml
 
-    # - name: Load bootstrap application
-    #   set_fact:
-    #     bootstrap: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/main/bootstrap/argo/base/bootstrap.yaml', split_lines=False) }}"
+    # Todo: Check health of apps
+    - name: Wait 30 seconds for deployment
 
-    # - name: Create bootstrap application
-    #   k8s:
-    #     state: present
-    #     definition: "{{ bootstrap }}"
+    - name: Update users applicationset
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('template', 'user-appset.yaml.j2') }}"
