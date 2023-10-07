@@ -24,6 +24,18 @@
       set_fact:
         sub_domain: "{{ ingress | json_query('resources[0].spec.domain')}}"
 
+    - name: Create cluster-admins group
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: user.openshift.io/v1
+          kind: Group
+          metadata:
+            name: cluster-admins
+          users:
+            - admin
+            - opentlc-mgr
+
     - name: Create openshift-gitops-operator namespace
       kubernetes.core.k8s:
         name: openshift-gitops-operator
