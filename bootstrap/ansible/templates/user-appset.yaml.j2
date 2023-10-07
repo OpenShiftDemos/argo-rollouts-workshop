@@ -9,15 +9,15 @@ spec:
   - list:
       elements:
 {% for n in range(1, users | int + 1 ) %}
-      - user: {{ n }}
+      - user: "{{ n }}"
 {% endfor %}
   template:
     metadata:
-      name: "user{{ user }}"
+      name: "user{% raw %}{{ user }}{% endraw %}"
       namespace: openshift-gitops
     spec:
       destination:
-        namespace: "user{{user}}-tools"
+        namespace: "user{% raw %}{{ user }}{% endraw %}-tools"
         server: 'https://kubernetes.default.svc'
       project: default
       syncPolicy:
@@ -32,4 +32,4 @@ spec:
         path: bootstrap/user
         helm:
           values: |
-            user: {{ user }}
+            user: "{% raw %}{{ user }}{% endraw %}"
