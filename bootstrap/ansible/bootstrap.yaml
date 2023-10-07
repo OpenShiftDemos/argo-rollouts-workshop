@@ -97,6 +97,7 @@
         src: "{{ item }}"
       with_items:
         - files/applications/pipelines-operator.yaml
+        - files/applications/web-terminal-operator.yaml
 
     # - name: Load bootstrap application
     #   set_fact:
