@@ -1,0 +1,6 @@
+namespace: openshift-gitops
+
+resources:
+- setenv-cmp-plugin-cm.yaml
+- application-controller-rolebinding.yaml
+- argocd-cr.yaml
