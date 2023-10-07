@@ -1,0 +1,89 @@
+- hosts: localhost
+  connection: local
+
+  vars:
+    users: 10
+    gitops_deployments:
+      - cluster
+      - kam
+      - openshift-gitops-applicationset-controller
+      - openshift-gitops-redis
+      - openshift-gitops-repo-server
+      - openshift-gitops-server
+
+  tasks:
+    - name: Get Ingress from Cluster
+      k8s_info:
+        api_version: config.openshift.io/v1
+        kind: Ingress
+        name: cluster
+        namespace: openshift-ingress
+      register: ingress
+
+    - name: Get sub_domain from ingress
+      set_fact:
+        sub_domain: "{{ ingress | json_query('resources[0].spec.domain')}}"
+
+    - name: Create openshift-gitops-operator namespace
+      kubernetes.core.k8s:
+        name: openshift-gitops-operator
+        api_version: v1
+        kind: Namespace
+        state: present
+
+    - name: Create Operator Group
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          api_version: operators.coreos.com/v1
+          kind: OperatorGroup
+          metadata:
+            name: gitops
+            namespace: openshift-gitops-operator
+          spec:
+            upgradeStrategy: Default
+
+    - name: deploy-gitops-operator
+      k8s:
+        src: files/gitops-operator-subscription.yaml
+        state: present
+
+    - name: Sleep for 30 seconds
+      wait_for:
+        timeout: 30
+
+    - name: Check that all deployments are up and running
+      command: "oc rollout status deployment {{ item }} -n openshift-gitops"
+      with_items: "{{ gitops_deployments }}"
+
+    - name: Give application-controller cluster-admin permissions
+      kubernetes.core.k8s:
+        state: present
+        src: ./files/application-controller-rolebinding.yaml
+
+    - name: Deploy CMP Configuration
+      kubernetes.core.k8s:
+        state: present
+        src: ./files/setenv-cmp-plugin-cm.yaml
+
+    - name: Update openshift-gitops-instance
+      kubernetes.core.k8s:
+        state: present
+        definition: "{{ lookup('template', 'argocd-cr.yaml.j2') }}"
+
+    - name: Sleep for 10 seconds
+      wait_for:
+        timeout: 10
+
+    - name: Check that all deployments are up and running
+      command: "oc rollout status deployment {{ item }} -n openshift-gitops"
+      with_items: "{{ gitops_deployments }}"
+
+    # - name: Load bootstrap application
+    #   set_fact:
+    #     bootstrap: "{{ lookup('url', 'https://raw.githubusercontent.com/coolstore-demo/coolstore/main/bootstrap/argo/base/bootstrap.yaml', split_lines=False) }}"
+
+    # - name: Create bootstrap application
+    #   k8s:
+    #     state: present
+    #     definition: "{{ bootstrap }}"
