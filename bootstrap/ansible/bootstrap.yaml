@@ -45,7 +45,7 @@
 
     - name: deploy-gitops-operator
       k8s:
-        src: files/gitops-operator-subscription.yaml
+        src: files/gitops-operator/subscription.yaml
         state: present
 
     - name: Sleep for 30 seconds
@@ -59,12 +59,12 @@
     - name: Give application-controller cluster-admin permissions
       kubernetes.core.k8s:
         state: present
-        src: ./files/application-controller-rolebinding.yaml
+        src: files/gitops-operator/application-controller-rolebinding.yaml
 
     - name: Deploy CMP Configuration
       kubernetes.core.k8s:
         state: present
-        src: ./files/setenv-cmp-plugin-cm.yaml
+        src: files/gitops-operator/setenv-cmp-plugin-cm.yaml
 
     - name: Update openshift-gitops-instance
       kubernetes.core.k8s:
@@ -78,6 +78,13 @@
     - name: Check that all deployments are up and running
       command: "oc rollout status deployment {{ item }} -n openshift-gitops"
       with_items: "{{ gitops_deployments }}"
+
+    - name: Deploy infra applications
+      kubernetes.core.k8s:
+        state: present
+        src: "{{ item }}"
+      with_items:
+        - files/applications/pipelines-operator.yaml
 
     # - name: Load bootstrap application
     #   set_fact:

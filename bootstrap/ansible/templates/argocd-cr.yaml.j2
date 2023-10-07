@@ -47,13 +47,6 @@ spec:
       hs.status = "Progressing"
       hs.message = "Waiting for PVC"
       return hs
-    accounts.admin: apiKey, login
-    oidc.config: |
-      name: Keycloak
-      issuer: https://sso.ocplab.com/realms/ocplab
-      clientID: argocd
-      clientSecret: $oidc.keycloak.clientSecret
-      requestedScopes: ["openid", "profile", "email", "groups"]
   kustomizeBuildOptions: "--enable-helm --enable-alpha-plugins"
   controller:
     resources:
@@ -111,6 +104,10 @@ spec:
       tls:
         termination: edge
         insecureEdgeTerminationPolicy: Redirect
+  sso:
+    dex:
+      openShiftOAuth: true
+    provider: dex
   notifications:
     enabled: true
   resourceHealthChecks:
