@@ -15,7 +15,7 @@ spec:
         app: rollouts-demo
     spec:
       containers:
-      - image: argoproj/rollouts-demo:blue
+      - image: docker.io/argoproj/rollouts-demo:blue
         imagePullPolicy: Always
         name: rollouts-demo
         ports:
@@ -24,6 +24,6 @@ spec:
         terminationMessagePath: /dev/termination-log
         terminationMessagePolicy: File
       dnsPolicy: ClusterFirst
-      restartPolicy: Always
+      restartPolicy: IfNotPresent
       schedulerName: default-scheduler
       terminationGracePeriodSeconds: 30
