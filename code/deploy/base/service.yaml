@@ -4,7 +4,6 @@ metadata:
   labels:
     app: rollouts-demo
   name: rollouts-demo
-  namespace: user{{ .Values.user }}-dev
 spec:
   ports:
   - port: 8080

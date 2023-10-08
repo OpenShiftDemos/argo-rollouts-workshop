@@ -2,7 +2,6 @@ apiVersion: route.openshift.io/v1
 kind: Route
 metadata:
   name: rollouts-demo
-  namespace: user{{ .Values.user }}-dev
 spec:
   port:
     targetPort: http
