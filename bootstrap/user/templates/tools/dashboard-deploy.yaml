@@ -37,6 +37,8 @@ spec:
         - argo
         - rollouts
         - dashboard
+        - -n
+        - user{{ .Values.user }}-prod
         command:
         - kubectl
         image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.10
