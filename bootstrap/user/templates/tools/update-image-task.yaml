@@ -31,5 +31,5 @@ spec:
           }}}}'
 
           if [ $(inputs.params.kind) = "deployment" ]; then
-            oc rollout status -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.kind) $(inputs.params.name) --timeout=20s
+            oc rollout status -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.name) --timeout=20s
           fi
