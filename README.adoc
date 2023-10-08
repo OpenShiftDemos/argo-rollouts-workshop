@@ -1,1 +1,6 @@
 WIP
+
+To deploy in RHDP:
+- Provision OpenShift Workshop 4.13 instance in RHDP
+- Modify `bootstrap/bootstrap/ansible/bootstrap.yaml` to set the number of users you need, must match users provisioned in RHDP
+- Run command `./bootstrap/bootstrap.sh`

@@ -12,7 +12,7 @@ spec:
     - name: deploy-dev
       taskRef:
         kind: Task
-        name: update-image-task
+        name: update-deployment
       params:
       - name: name
         value: rollouts-demo
@@ -27,7 +27,7 @@ spec:
         - deploy-dev
       taskRef:
         kind: Task
-        name: update-image-task
+        name: update-deployment
       params:
       - name: name
         value: rollouts-demo
