@@ -5,7 +5,6 @@ metadata:
   namespace: user{{ .Values.user }}-prod
 subjects:
   - kind: ServiceAccount
-    apiGroup: rbac.authorization.k8s.io
     name: dashboard
     namespace: user{{ .Values.user }}-tools
 roleRef:
