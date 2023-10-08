@@ -1,0 +1,37 @@
+apiVersion: tekton.dev/v1
+kind: Pipeline
+metadata:
+  name: rollouts-pipeline
+  namespace: user{{ .Values.user }}-tools
+spec:
+  params:
+    - default: blue
+      name: COLOR
+      type: string
+  tasks:
+    - name: deploy-dev
+      taskRef:
+        kind: Task
+        name: update-image-task
+      params:
+      - name: name
+        value: rollouts-demo
+      - name: kind
+        value: deployment
+      - name: namespace
+        value: user{{ .Values.user }}-dev
+      - name: color
+        value: ${params.color}
+    - name: deploy-prod
+      taskRef:
+        kind: Task
+        name: update-image-task
+      params:
+      - name: name
+        value: rollouts-demo
+      - name: kind
+        value: rollout
+      - name: namespace
+        value: user{{ .Values.user }}-prod
+      - name: color
+        value: ${params.color}
