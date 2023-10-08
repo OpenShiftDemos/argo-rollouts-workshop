@@ -23,6 +23,8 @@ spec:
       - name: color
         value: ${params.color}
     - name: deploy-prod
+      runAfter:
+        - deploy-dev
       taskRef:
         kind: Task
         name: update-image-task
