@@ -26,7 +26,7 @@ spec:
           oc patch -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.name) --patch='{"spec":{"template":{"spec":{
             "containers":[{
               "name": "$(inputs.params.name)",
-              "image":"docker.io/argoproj/rollouts-demo:$(inputs.params.IMAGE)"
+              "image":"docker.io/argoproj/rollouts-demo:$(inputs.params.color)"
             }]
           }}}}'
 
