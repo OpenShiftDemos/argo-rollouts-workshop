@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: dashboard
+    app.kubernetes.io/component: dashboard
+    app.kubernetes.io/instance: dashboard
+    app.kubernetes.io/name: dashboard
+    app.kubernetes.io/part-of: rollouts-dashboard
+    app.openshift.io/runtime-version: "1.10"
+  name: dashboard
+  namespace: user{{ .Values.user }}-tools
+spec:
+  ports:
+  - name: 3100-tcp
+    port: 3100
+  selector:
+    app: dashboard
+    deployment: dashboard
