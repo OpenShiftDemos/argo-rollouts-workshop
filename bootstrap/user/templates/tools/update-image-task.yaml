@@ -31,7 +31,7 @@ spec:
           }}}}'
 
           if [ $(inputs.params.kind) = "deployment" ]; then
-            oc rollout status -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.kind) $(inputs.params.name)
+            oc rollout status -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.kind) $(inputs.params.name) --timeout=20s
           fi
 
           # issue: https://issues.redhat.com/browse/SRVKP-2387
