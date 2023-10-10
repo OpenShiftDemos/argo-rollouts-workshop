@@ -218,6 +218,68 @@ spec: {}
 ---</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>As shown here this is a simple declaration which in turn results in the Operator creating
+a simple deployment with the Argo Rollout controller monitoring the <code>user%USERNUM%-prod</code> for
+<code>Rollout</code> resources.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deploy-application"><a class="anchor" href="#deploy-application"></a>Deploy Application</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to proceed with this workshop we will need to deploy the application into the development
+and production namespaces. The application that we will be deploying is the <a href="https://github.com/argoproj/rollouts-demo">Argo Rollouts Demo</a>
+application that displays colored squares.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app.png" alt="rollouts demo app">
+</div>
+</div>
+<div class="paragraph">
+<p>Each time we need to deploy the application we will select a version of the application with a different color,
+this will enable use to visually see how the application is progressing.</p>
+</div>
+<div class="sect2">
+<h3 id="_clone_the_repository"><a class="anchor" href="#_clone_the_repository"></a>Clone the Repository</h3>
+<div class="paragraph">
+<p>You need to clone the repository into your web terminal because you will need to
+make very small changes to some of the files for the examples:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">git clone <a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop" class="bare">https://github.com/OpenShiftDemos/argo-rollouts-workshop</a> ~/argo-rollouts-workshop</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>All of the code used in this workshop will be located in:</p>
+</div>
+<div class="paragraph">
+<p><code>~/argo-rollouts-workshop/code</code></p>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+<div class="paragraph">
+<p>The web terminal only supports ephemeral storage. If you shut it down, or if it
+times out, any local filesystem changes made will be lost. This means you would
+need to clone the repository again. The web terminal is intended for
+troubleshooting and simple interaction, and not as a long-lived remote execution
+environment. For that, something like
+<a href="https://developers.redhat.com/products/openshift-dev-spaces/overview">OpenShift
+DevSpaces</a> is a better choice.</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
