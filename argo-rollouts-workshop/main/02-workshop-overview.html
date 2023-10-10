@@ -283,6 +283,58 @@ DevSpaces</a> is a better choice.</p>
 </table>
 </div>
 </div>
+<div class="sect2">
+<h3 id="_deploy_development"><a class="anchor" href="#_deploy_development"></a>Deploy Development</h3>
+<div class="paragraph">
+<p>In the development environment we will be deploying the application as a basic
+Kubernetes Deployment so that we can compare and contrast the behavior with Argo Rollouts.</p>
+</div>
+<div class="paragraph">
+<p>To view the code that we will be using, examine the code in <code>code/deploy/base</code>:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls code/deploy/base</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see that there are four files in this directory. The <code>deploy.yaml</code>, <code>service.yaml</code>
+and <code>route.yaml</code> represent the Deployment, Service and OpenShift route for the application.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
+while OpenShift supports both Routes retain some additional capabilities and features not yet available
+in Ingress hence their continued usage.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>There is a fourth file called <code>kustomization.yaml</code>, this file is used by the <a href="https://kustomize.io">Kustomize</a> tool and enables
+the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
+in GitOps and we use kustomize here to simplify our deployments.</p>
+</div>
+<div class="paragraph">
+<p>To deploy the application in Development, run the following command in the terminal:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k code/deploy/base -n user%USERNUM%-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you run the command check the OpenShift console to confirm the deployment occurred successfully.</p>
+</div>
+<div class="paragraph">
+<p>TODO - More verbiage here how to check this and testing the application</p>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
