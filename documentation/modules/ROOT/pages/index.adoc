@@ -8,7 +8,7 @@ strategies. Whereas Kubernetes deployments support simple rollout and recreate s
 Blue-Green and Canary strategies.
 
 To support these advanced deployment strategies, Argo Rollouts provides additional features.
-Rollouts allows users to provide analysis to drive the progressive delivery. These analysises,
+Rollouts allows users to provide analysis to drive the progressive delivery. These analyses,
 specified in an AnalysisRun, enables the testing of the Rollout by defining the nature of the
 testing, the frequency and occurence and what constitutes a pass/fail.
 
