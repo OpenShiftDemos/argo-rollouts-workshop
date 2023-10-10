@@ -5,3 +5,4 @@
 * xref:02-workshop-overview.adoc[2. Workshop Overview]
 ** xref:02-workshop-overview.adoc#workshop-layout[Workshop Layout]
 ** xref:02-workshop-overview.adoc#review-rollout-manager[Review RolloutManager]
+** xref:02-workshop-overview.adoc#deploy-application[Deploy Application]
