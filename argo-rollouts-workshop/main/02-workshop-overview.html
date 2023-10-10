@@ -206,15 +206,17 @@ additional fields, labels and annotations added automatically by Kubernetes.
 <div class="paragraph">
 <p>This will return a simple object as follows:</p>
 </div>
-<hr>
-<div class="paragraph">
-<p>apiVersion: argoproj.io/v1alpha1
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">---
+apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
   name: argo-rollout
-  namespace: user1-prod
+  namespace: user%USERNUM%-prod
 spec: {}
----</p>
+---</code></pre>
+</div>
 </div>
 </div>
 </div>
