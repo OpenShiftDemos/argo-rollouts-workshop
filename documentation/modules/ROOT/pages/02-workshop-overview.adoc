@@ -41,11 +41,12 @@ additional fields, labels and annotations added automatically by Kubernetes.
 
 This will return a simple object as follows:
 
+[source,yaml]
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
   name: argo-rollout
-  namespace: user1-prod
+  namespace: user%USERNUM%-prod
 spec: {}
 ---
