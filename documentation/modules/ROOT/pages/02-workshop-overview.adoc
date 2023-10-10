@@ -92,3 +92,40 @@ environment. For that, something like
 https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift
 DevSpaces] is a better choice.
 ====
+
+=== Deploy Development
+
+In the development environment we will be deploying the application as a basic
+Kubernetes Deployment so that we can compare and contrast the behavior with Argo Rollouts.
+
+To view the code that we will be using, examine the code in `code/deploy/base`:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ls code/deploy/base
+----
+
+You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
+and `route.yaml` represent the Deployment, Service and OpenShift route for the application.
+
+[NOTE]
+Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
+while OpenShift supports both Routes retain some additional capabilities and features not yet available
+in Ingress hence their continued usage.
+
+There is a fourth file called `kustomization.yaml`, this file is used by the https://kustomize.io[Kustomize] tool and enables
+the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
+in GitOps and we use kustomize here to simplify our deployments.
+
+To deploy the application in Development, run the following command in the terminal:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k code/deploy/base -n user%USERNUM%-dev
+----
+
+Once you run the command check the OpenShift console to confirm the deployment occurred successfully.
+
+TODO - More verbiage here how to check this and testing the application
