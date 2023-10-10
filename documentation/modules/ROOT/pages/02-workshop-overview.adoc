@@ -20,4 +20,32 @@ way to manage image changes.
 The OpenShift GitOps Operator simplifies the deployment of Argo Rollouts easy as all tha
 
 To deploy Argo Rollouts using the OpenShift GitOps Operator we need to define and create a RolloutManager
-custom resource.
+custom resource in the namespace where we want to run the Rollout. In the case of our workshop a
+RolloutManager has already been provisioned for you.
+
+[NOTE]
+Argo Rollouts can be deployed as ether a namespace or cluster scope, the OpenShift GitOps operator
+currently only supports namespace scope.
+
+To review the rollout manager, execute the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get rolloutmanager argo-rollout -n user%USERNUM%-prod | oc neat
+----
+
+[NOTE]
+We are using a kubectl plugin called kubectl-neat in order to tidy the yaml by removing
+additional fields, labels and annotations added automatically by Kubernetes.
+
+This will return a simple object as follows:
+
+---
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollout
+  namespace: user1-prod
+spec: {}
+---
