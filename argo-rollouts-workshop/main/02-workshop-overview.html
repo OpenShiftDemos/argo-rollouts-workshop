@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Argo Rollouts Workshop :: Argo Rollouts Workshop</title>
-    <link rel="canonical" href="https://openshiftdemos.github.io/argo-rollouts-workshop/argo-rollouts-workshop/main/index.html">
-    <link rel="next" href="01-getting-started.html">
+    <title>Workshop Overview :: Argo Rollouts Workshop</title>
+    <link rel="canonical" href="https://openshiftdemos.github.io/argo-rollouts-workshop/argo-rollouts-workshop/main/02-workshop-overview.html">
+    <link rel="prev" href="01-getting-started.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -82,15 +82,15 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="02-workshop-overview.html">1. Workshop Overview</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-workshop-overview.html#workshop-layout">Workshop Layout</a>
+    <a class="nav-link" href="#workshop-layout">Workshop Layout</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-workshop-overview.html#review-rollout-manager">Review RolloutManager</a>
+    <a class="nav-link" href="#review-rollout-manager">Review RolloutManager</a>
   </li>
 </ul>
   </li>
@@ -121,36 +121,57 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">Argo Rollouts Workshop</a></li>
-    <li><a href="index.html">Welcome to the Argo Rollouts Workshop</a></li>
+    <li><a href="02-workshop-overview.html">1. Workshop Overview</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/edit/main/documentation/modules/ROOT/pages/02-workshop-overview.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Argo Rollouts Workshop</h1>
+<h1 class="page">Workshop Overview</h1>
+<div class="sect1">
+<h2 id="workshop-layout"><a class="anchor" href="#workshop-layout"></a>Workshop Layout</h2>
+<div class="sectionbody">
 <div class="paragraph">
-<p><a href="https://argoproj.github.io/rollouts/" target="_blank" rel="noopener">Argo Rollouts</a> provides a
-drop-in replacement for Kubernetes deployments with support for advanced deployment
-strategies. Whereas Kubernetes deployments support simple rollout and recreate strategies, Argo Rollouts supports
-Blue-Green and Canary strategies.</p>
+<p>In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>user%USERNUM%-dev. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
+we can compare and contrast it to Rollouts.</p>
+</li>
+<li>
+<p>user%USERNUM%-prod. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
+you will deploy rollouts using different strategies and analysis.</p>
+</li>
+<li>
+<p>user%USERNUM%-tools. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
+environments. For this workshop we will be using the integrated OpenShift Pipelines feature, this is not core to the workshop but simply provides an easy
+way to manage image changes.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="review-rollout-manager"><a class="anchor" href="#review-rollout-manager"></a>Review RolloutManager Deployment</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The OpenShift GitOps Operator simplifies the deployment of Argo Rollouts easy as all tha</p>
 </div>
 <div class="paragraph">
-<p>To support these advanced deployment strategies, Argo Rollouts provides additional features.
-Rollouts allows users to provide analysis to drive the progressive delivery. These analyses,
-specified in an AnalysisRun, enables the testing of the Rollout by defining the nature of the
-testing, the frequency and occurence and what constitutes a pass/fail.</p>
+<p>To deploy Argo Rollouts using the OpenShift GitOps Operator we need to define and create a RolloutManager
+custom resource.</p>
 </div>
-<div class="paragraph">
-<p>Support for Argo Rollouts is provided by the OpenShift GitOps operator as a Tech
-Preview feature as of OpenShift GitOps 1.10.</p>
+</div>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="01-getting-started.html" class="query-params-link">1. Getting Started</a></span>
+  <span class="prev"><a href="01-getting-started.html" class="query-params-link">1. Getting Started</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
