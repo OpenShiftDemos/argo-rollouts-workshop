@@ -166,7 +166,55 @@ way to manage image changes.</p>
 </div>
 <div class="paragraph">
 <p>To deploy Argo Rollouts using the OpenShift GitOps Operator we need to define and create a RolloutManager
-custom resource.</p>
+custom resource in the namespace where we want to run the Rollout. In the case of our workshop a
+RolloutManager has already been provisioned for you.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Argo Rollouts can be deployed as ether a namespace or cluster scope, the OpenShift GitOps operator
+currently only supports namespace scope.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To review the rollout manager, execute the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get rolloutmanager argo-rollout -n user%USERNUM%-prod | oc neat</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We are using a kubectl plugin called kubectl-neat in order to tidy the yaml by removing
+additional fields, labels and annotations added automatically by Kubernetes.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This will return a simple object as follows:</p>
+</div>
+<hr>
+<div class="paragraph">
+<p>apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: argo-rollout
+  namespace: user1-prod
+spec: {}
+---</p>
 </div>
 </div>
 </div>
