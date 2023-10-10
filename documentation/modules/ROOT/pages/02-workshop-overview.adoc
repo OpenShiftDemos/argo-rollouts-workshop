@@ -17,9 +17,9 @@ way to manage image changes.
 [#review-rollout-manager]
 == Review RolloutManager Deployment
 
-The OpenShift GitOps Operator simplifies the deployment of Argo Rollouts easy as all tha
+The OpenShift GitOps Operator simplifies the deployment and management of Argo Rollouts in an OpenShift cluster.
 
-To deploy Argo Rollouts using the OpenShift GitOps Operator we need to define and create a RolloutManager
+To deploy Argo Rollouts using the operator we need to define and create a RolloutManager
 custom resource in the namespace where we want to run the Rollout. In the case of our workshop a
 RolloutManager has already been provisioned for you.
 
