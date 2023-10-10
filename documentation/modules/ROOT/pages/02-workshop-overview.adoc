@@ -6,11 +6,11 @@ include::_attributes.adoc[]
 
 In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:
 
-* user%USERNUM%-dev. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
+* _user%USERNUM%-dev_. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
 we can compare and contrast it to Rollouts.
-* user%USERNUM%-prod. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
+* _user%USERNUM%-prod_. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
 you will deploy rollouts using different strategies and analysis.
-* user%USERNUM%-tools. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
+* _user%USERNUM%-tools_. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
 environments. For this workshop we will be using the integrated OpenShift Pipelines feature, this is not core to the workshop but simply provides an easy
 way to manage image changes.
 
