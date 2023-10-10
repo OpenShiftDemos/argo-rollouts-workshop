@@ -50,3 +50,45 @@ metadata:
   namespace: user%USERNUM%-prod
 spec: {}
 ---
+
+As shown here this is a simple declaration which in turn results in the Operator creating
+a simple deployment with the Argo Rollout controller monitoring the `user%USERNUM%-prod` for
+`Rollout` resources.
+
+[#deploy-application]
+== Deploy Application
+
+In order to proceed with this workshop we will need to deploy the application into the development
+and production namespaces. The application that we will be deploying is the https://github.com/argoproj/rollouts-demo[Argo Rollouts Demo]
+application that displays colored squares.
+
+image::rollouts-demo-app.png[]
+
+Each time we need to deploy the application we will select a version of the application with a different color,
+this will enable use to visually see how the application is progressing.
+
+=== Clone the Repository
+
+You need to clone the repository into your web terminal because you will need to
+make very small changes to some of the files for the examples:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+git clone https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
+----
+
+All of the code used in this workshop will be located in:
+
+`~/argo-rollouts-workshop/code`
+
+[IMPORTANT]
+====
+The web terminal only supports ephemeral storage. If you shut it down, or if it
+times out, any local filesystem changes made will be lost. This means you would
+need to clone the repository again. The web terminal is intended for
+troubleshooting and simple interaction, and not as a long-lived remote execution
+environment. For that, something like
+https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift
+DevSpaces] is a better choice.
+====
