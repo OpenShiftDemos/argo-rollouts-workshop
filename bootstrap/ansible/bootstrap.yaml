@@ -60,9 +60,9 @@
         src: files/gitops-operator/subscription.yaml
         state: present
 
-    - name: Sleep for 30 seconds
+    - name: Sleep for 60 seconds
       wait_for:
-        timeout: 30
+        timeout: 60
 
     - name: Check that all deployments are up and running
       command: "oc rollout status deployment {{ item }} -n openshift-gitops"

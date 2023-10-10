@@ -4,6 +4,7 @@ metadata:
   annotations:
     controller.devfile.io/allow-import-from: '*'
     web-terminal.redhat.com/unmanaged-state: 'true'
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   labels:
     console.openshift.io/terminal: "true"
   name: web-terminal-tooling
