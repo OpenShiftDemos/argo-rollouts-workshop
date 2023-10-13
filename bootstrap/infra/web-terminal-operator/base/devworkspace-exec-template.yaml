@@ -1,0 +1,41 @@
+apiVersion: workspace.devfile.io/v1alpha2
+kind: DevWorkspaceTemplate
+metadata:
+  annotations:
+    web-terminal.redhat.com/unmanaged-state: "true"
+  name: web-terminal-exec
+  namespace: openshift-operators
+  labels:
+    console.openshift.io/terminal: 'true'
+spec:
+  components:
+    - container:
+        cpuRequest: 100m
+        command:
+          - /go/bin/che-machine-exec
+          - '--authenticated-user-id'
+          - $(DEVWORKSPACE_CREATOR)
+          - '--idle-timeout'
+          - $(WEB_TERMINAL_IDLE_TIMEOUT)
+          - '--pod-selector'
+          - controller.devfile.io/devworkspace_id=$(DEVWORKSPACE_ID)
+          - '--use-tls'
+          - '--use-bearer-token'
+        env:
+          - name: WEB_TERMINAL_IDLE_TIMEOUT
+            value: 6h
+        memoryRequest: 128Mi
+        sourceMapping: /projects
+        cpuLimit: 400m
+        memoryLimit: 128Mi
+        image: >-
+          registry.redhat.io/web-terminal/web-terminal-exec-rhel8@sha256:7e2f96c3646cdf72d4e9b379a1a8ad23590e0b1d96d472655856898b105883c9
+        endpoints:
+          - attributes:
+              type: main
+            exposure: public
+            name: exec
+            protocol: http
+            targetPort: 4444
+        mountSources: false
+      name: web-terminal-exec

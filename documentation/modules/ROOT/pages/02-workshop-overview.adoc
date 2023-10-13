@@ -82,6 +82,14 @@ All of the code used in this workshop will be located in:
 
 `~/argo-rollouts-workshop/code`
 
+Once you have cloned the repo, enter the `argo-rollouts-workshop` directory:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cd argo-rollouts-workshop
+----
+
 [IMPORTANT]
 ====
 The web terminal only supports ephemeral storage. If you shut it down, or if it

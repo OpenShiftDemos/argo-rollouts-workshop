@@ -1,3 +1,4 @@
 resources:
 - subscription.yaml
-- devworkspace-template.yaml
+- devworkspace-tooling-template.yaml
+- devworkspace-exec-template.yaml
