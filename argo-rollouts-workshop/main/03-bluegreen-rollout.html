@@ -154,20 +154,133 @@
 <div class="paragraph">
 <p>In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
 the two versions running in parallel for a period of time. This enables testing on the new version while users continue
-to access the current version of the application until a cut-over of traffic happens. The diagram below shows this process
-over time.</p>
+to access the current version of the application until a cut-over of traffic happens.</p>
+</div>
+<div class="paragraph">
+<p>The diagram below shows this process over time.</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/overview-blue-green.png" alt="overview blue green">
 </div>
 </div>
+<div class="paragraph">
+<p>In traditional infrastructure this approach can very challenging and while Kuberentes is simpler due to it&#8217;s declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+testing and traffic management between versions.</p>
+</div>
+<div class="paragraph">
+<p>This is where Argo Rollouts comes in, it greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module
+we will deploy a simple blue-green Rollout and explore it&#8217;s basic capabilities.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="deploy-blue-green-rollout"><a class="anchor" href="#deploy-blue-green-rollout"></a>Deploy Blue-Green Rollout</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Here we will deploy the blue-green rollout in a similar manner that we did for the Deployment in the previous module. Prior to starting,
+confirm you are still at the correct path.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, let&#8217;s explore the manifests that we will be deploying in the <code>./bluegreen/base</code> folder:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls ./bluegreen/base</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that this time we have files for <code>rollout.yaml</code>, <code>services.yaml</code> and <code>routes.yaml</code> which represent our Rollout, Services and Routes. We also have
+<code>kustomization.yaml</code> as per the last module.</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/rollout.yaml" target="_blank" rel="noopener">./bluegreen/base/rollout.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: quay.io/openshiftdemos/rollouts-demo:blue
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+  strategy:
+    blueGreen:
+      activeService: active
+      previewService: preview
+      autoPromotionEnabled: true</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
+Kubernetes .<a href="https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates" target="_blank" rel="noopener">PodTemplate</a> but some additional options are available.</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml" target="_blank" rel="noopener">./bluegreen/base/services.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rollouts-demo
+  name: active
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: http
+  selector:
+    app: rollouts-demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rollouts-demo
+  name: preview
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: http
+  selector:
+    app: rollouts-demo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
+interacting with, the preview service would be used to access the new version of the application for testing purposes. Argo Rollouts manages the traffic between
+the services by managing the <code>.spec.selector</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml" target="_blank" rel="noopener">./bluegreen/base/routes.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/03-bluegreen-rollout.adoc - include::ROOT:example$deploy/bluegreen/routes.yaml[]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Finally note that we have two route objects for active and preview with each tied to their respective service.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
