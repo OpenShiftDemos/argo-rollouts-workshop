@@ -90,7 +90,7 @@ Once you have cloned the repo, enter this directory in the terminal:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-cd argo-rollouts-workshop/docmentation/modules/ROOT/examples
+cd argo-rollouts-workshop/documentation/modules/ROOT/examples/
 ----
 
 [IMPORTANT]
@@ -140,10 +140,10 @@ include::ROOT:example$deploy/base/route.yaml[]
 
 [NOTE]
 Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
-while OpenShift supports both Routes retain some additional capabilities and features not yet available
+while OpenShift supports both of them, Routes retain some additional capabilities and features not yet available
 in Ingress hence their continued usage.
 
-There is a fourth file called `kustomization.yaml`, this file is used by the https://kustomize.io[Kustomize] tool and enables
+There is a fourth file called `kustomization.yaml`, this file is used by the https://kustomize.io[Kustomize,window='_blank'] tool and enables
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
 in GitOps and we use kustomize here to simplify our deployments.
 
@@ -159,9 +159,40 @@ to process a kustomization. Run the following command in the terminal to deploy 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -k code/deploy/base -n user%USERNUM%-dev
+oc apply -k ./deploy/base -n user%USERNUM%-dev
 ----
 
-Once you run the command check the OpenShift console to confirm the deployment occurred successfully.
+Once you have run the command we can confirm that the deployment has run successfully. Use the following command to ensure
+that the pod is up and running:
 
-TODO - More verbiage here how to check this and testing the application
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get pods -n user%USERNUM%-dev
+----
+
+The console should return something along the lines of
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+NAME                             READY   STATUS    RESTARTS   AGE
+rollouts-demo-785c8b55cb-m5mzg   1/1     Running   0          6m51s
+rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s
+----
+
+There are two pods since the Deployment specified two replicas.
+
+Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Project.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"http://"}{.spec.host}{"\n"}'
+----
+
+Copy the URL into a browser and confirm that the application is running, you should see a grid of
+blue squares appearing and disappearing periodically as the application makes requests to it's back-end
+from the browser.
+
+image::rollouts-demo-app.png[]
