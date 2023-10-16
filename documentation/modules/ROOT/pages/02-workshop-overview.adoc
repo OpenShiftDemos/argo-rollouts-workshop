@@ -55,6 +55,10 @@ As shown here this is a simple declaration which in turn results in the Operator
 a simple deployment with the Argo Rollout controller monitoring the `user%USERNUM%-prod` for
 `Rollout` resources.
 
+[NOTE]
+You can use the command `oc explain RolloutManager.spec` to see the supported configuration
+options.
+
 [#deploy-application]
 == Deploy Application
 
@@ -116,6 +120,24 @@ ls code/deploy/base
 
 You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
 and `route.yaml` represent the Deployment, Service and OpenShift route for the application.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/deploy.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT/../../code/deploy/base/deploy.yaml[]
+----
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/service.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT/../../code/deploy/base/service.yaml[]
+----
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/route.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT/../../code/deploy/base/route.yaml[]
+----
 
 [NOTE]
 Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
