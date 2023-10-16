@@ -323,7 +323,7 @@ Kubernetes Deployment so that we can compare and contrast the behavior with Argo
 and <code>route.yaml</code> represent the Deployment, Service and OpenShift route for the application.</p>
 </div>
 <div class="listingblock">
-<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/deploy.yaml,window='_blank']</div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml" target="_blank" rel="noopener">deploy.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: apps/v1
 kind: Deployment
@@ -355,7 +355,7 @@ spec:
 </div>
 </div>
 <div class="listingblock">
-<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/service.yaml,window='_blank']</div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml" target="_blank" rel="noopener">service.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Service
@@ -374,7 +374,7 @@ spec:
 </div>
 </div>
 <div class="listingblock">
-<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/route.yaml,window='_blank']</div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml" target="_blank" rel="noopener">route.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: route.openshift.io/v1
 kind: Route
@@ -408,9 +408,12 @@ the management of Kubernetes manifests. Kustomize and Helm are the two most popu
 in GitOps and we use kustomize here to simplify our deployments.</p>
 </div>
 <div class="listingblock">
-<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/kustomization.yaml,window='_blank']</div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/kustomization.yaml" target="_blank" rel="noopener">kustomization.yaml</a></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">resources:
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
 - deploy.yaml
 - route.yaml
 - service.yaml</code></pre>
