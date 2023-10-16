@@ -154,8 +154,7 @@ you will deploy rollouts using different strategies and analysis.</p>
 </li>
 <li>
 <p><em>user%USERNUM%-tools</em>. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
-environments. For this workshop we will be using the integrated OpenShift Pipelines feature, this is not core to the workshop but simply provides an easy
-way to manage image changes.</p>
+environments. Additionally the upstream Rollouts Dashboard user interface is deployed in this namespace.</p>
 </li>
 </ul>
 </div>
@@ -190,7 +189,7 @@ currently only supports namespace scope.
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get rolloutmanager argo-rollout -n user%USERNUM%-prod | oc neat</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get rolloutmanager argo-rollout -o yaml -n user%USERNUM%-prod | oc neat</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
