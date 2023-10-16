@@ -5,4 +5,3 @@ resources:
 - rollout.yaml
 - services.yaml
 - routes.yaml
-- routes.yaml
