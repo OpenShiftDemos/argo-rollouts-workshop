@@ -3,6 +3,7 @@ kind: DevWorkspaceTemplate
 metadata:
   annotations:
     web-terminal.redhat.com/unmanaged-state: "true"
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
   name: web-terminal-exec
   namespace: openshift-operators
   labels:
