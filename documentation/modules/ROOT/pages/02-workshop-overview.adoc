@@ -90,7 +90,7 @@ Once you have cloned the repo, enter this directory in the terminal:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-cd argo-rollouts-workshop/documentation/modules/ROOT/examples/
+cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
 ----
 
 [IMPORTANT]
@@ -109,7 +109,7 @@ DevSpaces] is a better choice.
 In the development environment we will be deploying the application as a basic
 Kubernetes Deployment so that we can compare and contrast the behavior with Argo Rollouts.
 
-To view the code that we will be using, examine the code in `code/deploy/base`:
+To view the code that we will be using, examine the code in `./deploy/base`:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -163,7 +163,7 @@ oc apply -k ./deploy/base -n user%USERNUM%-dev
 ----
 
 Once you have run the command we can confirm that the deployment has run successfully. Use the following command to ensure
-that the pod is up and running:
+that the pods are up and running:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

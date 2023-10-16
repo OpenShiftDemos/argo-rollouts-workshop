@@ -69,3 +69,40 @@ include::ROOT:example$bluegreen/base/routes.yaml[]
 ----
 
 Finally we have two Route objects for active and preview with each tied to their respective service.
+
+To deploy the blue-green rollout, use the following command to process the kustomization:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k ./bluegreen/base -n user%USERNUM%-prod
+----
+
+Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
+that the pods are up and running:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get pods -n user%USERNUM%-prod
+----
+
+The console should return something along the lines of
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+NAME                             READY   STATUS    RESTARTS   AGE
+rollouts-demo-785c8b55cb-m5mzg   1/1     Running   0          6m51s
+rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s
+----
+
+There are two pods since the Rollout specified two replicas.
+
+Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Project.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"http://"}{.spec.host}{"\n"}'
+----
