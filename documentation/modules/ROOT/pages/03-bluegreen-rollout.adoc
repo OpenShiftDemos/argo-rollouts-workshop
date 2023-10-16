@@ -6,13 +6,64 @@ include::_attributes.adoc[]
 
 In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
 the two versions running in parallel for a period of time. This enables testing on the new version while users continue
-to access the current version of the application until a cut-over of traffic happens. The diagram below shows this process
-over time.
+to access the current version of the application until a cut-over of traffic happens.
+
+The diagram below shows this process over time.
 
 image::overview-blue-green.png[]
 
+In traditional infrastructure this approach can very challenging and while Kuberentes is simpler due to it's declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+testing and traffic management between versions.
 
-
+This is where Argo Rollouts comes in, it greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module
+we will deploy a simple blue-green Rollout and explore it's basic capabilities.
 
 [#deploy-blue-green-rollout]
 == Deploy Blue-Green Rollout
+
+Here we will deploy the blue-green rollout in a similar manner that we did for the Deployment in the previous module. Prior to starting,
+confirm you are still at the correct path.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
+----
+
+Next, let's explore the manifests that we will be deploying in the `./bluegreen/base` folder:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ls ./bluegreen/base
+----
+
+Notice that this time we have files for `rollout.yaml`, `services.yaml` and `routes.yaml` which represent our Rollout, Services and Routes. We also have
+`kustomization.yaml` as per the last module.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/rollout.yaml[./bluegreen/base/rollout.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$bluegreen/base/rollout.yaml[]
+----
+
+Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
+Kubernetes .link:https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates[PodTemplate,window='_blank'] but some additional options are available.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml[./bluegreen/base/services.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$bluegreen/base/services.yaml[]
+----
+
+In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
+interacting with, the preview service would be used to access the new version of the application for testing purposes. Argo Rollouts manages the traffic between
+the services by managing the `.spec.selector`.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$deploy/bluegreen/routes.yaml[]
+----
+
+Finally note that we have two route objects for active and preview with each tied to their respective service.
