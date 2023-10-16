@@ -102,6 +102,9 @@
     <a class="nav-link" href="03-bluegreen-rollout.html">3. Blue-Green Rollout</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploy-blue-green-overview">Blue-Green Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#deploy-blue-green-rollout">Deploy Blue-Green Rollout</a>
   </li>
 </ul>
@@ -145,6 +148,22 @@
   <div class="content">
 <article class="doc">
 <h1 class="page">Blue-Green Rollout</h1>
+<div class="sect1">
+<h2 id="blue-green-overview"><a class="anchor" href="#blue-green-overview"></a>Blue-Green Overview</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
+the two versions running in parallel for a period of time. This enables testing on the new version while users continue
+to access the current version of the application until a cut-over of traffic happens. The diagram below shows this process
+over time.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview-blue-green.png" alt="overview blue green">
+</div>
+</div>
+</div>
+</div>
 <div class="sect1">
 <h2 id="deploy-blue-green-rollout"><a class="anchor" href="#deploy-blue-green-rollout"></a>Deploy Blue-Green Rollout</h2>
 <div class="sectionbody">
