@@ -323,7 +323,7 @@ Kubernetes Deployment so that we can compare and contrast the behavior with Argo
 and <code>route.yaml</code> represent the Deployment, Service and OpenShift route for the application.</p>
 </div>
 <div class="listingblock">
-<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml" target="_blank" rel="noopener">deploy.yaml</a></div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml" target="_blank" rel="noopener">./deploy/base/deploy.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: apps/v1
 kind: Deployment
@@ -355,7 +355,7 @@ spec:
 </div>
 </div>
 <div class="listingblock">
-<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml" target="_blank" rel="noopener">service.yaml</a></div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml" target="_blank" rel="noopener">./deploy/base/route.yaml/service.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
 kind: Service
@@ -374,7 +374,7 @@ spec:
 </div>
 </div>
 <div class="listingblock">
-<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml" target="_blank" rel="noopener">route.yaml</a></div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml" target="_blank" rel="noopener">./deploy/base/route.yaml/route.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: route.openshift.io/v1
 kind: Route
@@ -408,7 +408,7 @@ the management of Kubernetes manifests. Kustomize and Helm are the two most popu
 in GitOps and we use kustomize here to simplify our deployments.</p>
 </div>
 <div class="listingblock">
-<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/kustomization.yaml" target="_blank" rel="noopener">kustomization.yaml</a></div>
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/kustomization.yaml" target="_blank" rel="noopener">./deploy/base/kustomization.yaml</a></div>
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
@@ -420,7 +420,8 @@ resources:
 </div>
 </div>
 <div class="paragraph">
-<p>To deploy the application in Development, run the following command in the terminal:</p>
+<p>To deploy the application in Development, we will use the <code>apply</code> command with <code>-k</code> switch that is available in <code>kubectl</code> and <code>oc</code>
+to process a kustomization. Run the following command in the terminal to deploy the application:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
