@@ -11,8 +11,7 @@ we can compare and contrast it to Rollouts.
 * _user%USERNUM%-prod_. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
 you will deploy rollouts using different strategies and analysis.
 * _user%USERNUM%-tools_. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
-environments. For this workshop we will be using the integrated OpenShift Pipelines feature, this is not core to the workshop but simply provides an easy
-way to manage image changes.
+environments. Additionally the upstream Rollouts Dashboard user interface is deployed in this namespace.
 
 [#review-rollout-manager]
 == Review RolloutManager Deployment
@@ -32,7 +31,7 @@ To review the rollout manager, execute the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get rolloutmanager argo-rollout -n user%USERNUM%-prod | oc neat
+oc get rolloutmanager argo-rollout -o yaml -n user%USERNUM%-prod | oc neat
 ----
 
 [NOTE]
