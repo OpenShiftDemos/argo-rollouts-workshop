@@ -1,5 +1,18 @@
 = Blue-Green Rollout
 include::_attributes.adoc[]
 
+[#blue-green-overview]
+== Blue-Green Overview
+
+In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
+the two versions running in parallel for a period of time. This enables testing on the new version while users continue
+to access the current version of the application until a cut-over of traffic happens. The diagram below shows this process
+over time.
+
+image::overview-blue-green.png[]
+
+
+
+
 [#deploy-blue-green-rollout]
 == Deploy Blue-Green Rollout
