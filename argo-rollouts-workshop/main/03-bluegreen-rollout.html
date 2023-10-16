@@ -165,7 +165,7 @@ to access the current version of the application until a cut-over of traffic hap
 </div>
 </div>
 <div class="paragraph">
-<p>In traditional infrastructure this approach can very challenging and while Kuberentes is simpler due to it&#8217;s declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+<p>In traditional infrastructure this approach can very challenging and while Kubernetes is simpler due to it&#8217;s declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
 testing and traffic management between versions.</p>
 </div>
 <div class="paragraph">
@@ -178,7 +178,7 @@ we will deploy a simple blue-green Rollout and explore it&#8217;s basic capabili
 <h2 id="deploy-blue-green-rollout"><a class="anchor" href="#deploy-blue-green-rollout"></a>Deploy Blue-Green Rollout</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Here we will deploy the blue-green rollout in a similar manner that we did for the Deployment in the previous module. Prior to starting,
+<p>Here we will deploy the blue-green rollout in the <code>user%USERNUM%-prod</code> namespace following the same process that we did for the Deployment in the previous module. Prior to starting,
 confirm you are still at the correct path.</p>
 </div>
 <div class="listingblock console-input">
@@ -275,7 +275,27 @@ the services by managing the <code>.spec.selector</code>.</p>
 <div class="listingblock">
 <div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml" target="_blank" rel="noopener">./bluegreen/base/routes.yaml</a></div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/03-bluegreen-rollout.adoc - include::ROOT:example$deploy/bluegreen/routes.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: active
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: active
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: preview
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: preview</code></pre>
 </div>
 </div>
 <div class="paragraph">
