@@ -122,9 +122,51 @@ oc get routes -n user%USERNUM%-prod'
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
 ----
-NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION   WILDCARD
-active    active-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http                 None
-preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http                 None
+NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION     WILDCARD
+active    active-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
+preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None
 ----
 
-Copy the host of each route into an individual browser tab to see that both work.
+Copy the value of the `HOST/PORT` of each route into an individual browser tab to confirm that both display the application with blue squares.
+
+Next let's examine the active and preview services that were deployed, run the following command to see the active service.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get svc active -o yaml -n user%USERNUM%-prod | oc neat
+----
+
+The console should display the service definition similar to the following:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    argo-rollouts.argoproj.io/managed-by-rollouts: rollouts-demo
+  labels:
+    app: rollouts-demo
+  name: active
+  namespace: user1-prod
+spec:
+  clusterIP: 172.30.104.238
+  clusterIPs:
+  - 172.30.104.238
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: rollouts-demo
+    rollouts-pod-template-hash: 66d84bcd76
+----
+
+Notice that the selector has an additional key, `rollouts-pod-template-hash`, with a hash value. This is how the rollout manages traffic
+between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will notice the same
+selector there as well.
