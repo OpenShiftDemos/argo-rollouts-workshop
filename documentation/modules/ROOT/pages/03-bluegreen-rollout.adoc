@@ -48,7 +48,17 @@ include::ROOT:example$bluegreen/base/rollout.yaml[]
 ----
 
 Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
-Kubernetes .link:https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates[PodTemplate,window='_blank'] but some additional options are available.
+Kubernetes .link:https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates[PodTemplate,window='_blank'] but note that
+under `.spec.strategy` we have specified the `blueGreen` strategy. The Kubernetes Deployment object supports `rollout`
+and `replace` strategies whereas Argo Rollouts supports `blueGreen` and `canary` strategies.
+
+Under the `blueGreen` strategy we have identified the active and preview Kubernetes services for the rollout which will be covered
+in more detail when services are discussed next.
+
+As well as services the field `autoPromotionEnabled` is set to `true` which means the rollout will automatically promote the new
+version of the application without any human intervention. The Argo Rollouts documentation provides a complete list
+of all of the .link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features[configurable features, window='_blank'] for the blueGreen strategy
+and additional features will be explored as we progress through the workshop.
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml[./bluegreen/base/services.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -59,8 +69,6 @@ include::ROOT:example$bluegreen/base/services.yaml[]
 In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
 interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the .link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview[documentation,window='_blank'],
 Argo Rollouts automatically manages the traffic between the services by managing the `.spec.selector`.
-
-A detailed breakdown of the process is also provided in the Argo Rollout documentation .link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#sequence-of-events[here, window='_blank'].
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -84,8 +92,12 @@ that the pods are up and running:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get pods -n user%USERNUM%-prod
+oc get pods -l app=rollouts-demo -n user%USERNUM%-prod
 ----
+
+[NOTE]
+We are getting pods using the label `app=rollouts-demo` to specifically select pods from the rollout, remember
+the RolloutManager pod is also deployed in the `user%USERNUM%-prod` namespace.
 
 The console should return something along the lines of
 
@@ -93,11 +105,11 @@ The console should return something along the lines of
 [source,bash,subs="attributes+,+macros"]
 ----
 NAME                             READY   STATUS    RESTARTS   AGE
-rollouts-demo-785c8b55cb-m5mzg   1/1     Running   0          6m51s
-rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s
+rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
+rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s
 ----
 
-There are two pods since the Rollout specified two replicas.
+There are two pods since the Rollout again specified two replicas.
 
 Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Project.
 
