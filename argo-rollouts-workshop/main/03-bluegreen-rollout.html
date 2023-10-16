@@ -372,13 +372,56 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
 </div>
 <div class="listingblock console-output">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION   WILDCARD
-active    active-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http                 None
-preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http                 None</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION     WILDCARD
+active    active-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
+preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Copy the host of each route into an individual browser tab to see that both work.</p>
+<p>Copy the value of the <code>HOST/PORT</code> of each route into an individual browser tab to confirm that both display the application with blue squares.</p>
+</div>
+<div class="paragraph">
+<p>Next let&#8217;s examine the active and preview services that were deployed, run the following command to see the active service.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get svc active -o yaml -n user%USERNUM%-prod | oc neat</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The console should display the service definition similar to the following:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    argo-rollouts.argoproj.io/managed-by-rollouts: rollouts-demo
+  labels:
+    app: rollouts-demo
+  name: active
+  namespace: user1-prod
+spec:
+  clusterIP: 172.30.104.238
+  clusterIPs:
+  - 172.30.104.238
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+  - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+  - name: http
+    port: 8080
+  selector:
+    app: rollouts-demo
+    rollouts-pod-template-hash: 66d84bcd76</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the selector has an additional key, <code>rollouts-pod-template-hash</code>, with a hash value. This is how the rollout manages traffic
+between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will notice the same
+selector there as well.</p>
 </div>
 </div>
 </div>
