@@ -231,7 +231,19 @@ spec:
 </div>
 <div class="paragraph">
 <p>Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
-Kubernetes .<a href="https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates" target="_blank" rel="noopener">PodTemplate</a> but some additional options are available.</p>
+Kubernetes .<a href="https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates" target="_blank" rel="noopener">PodTemplate</a> but note that
+under <code>.spec.strategy</code> we have specified the <code>blueGreen</code> strategy. The Kubernetes Deployment object supports <code>rollout</code>
+and <code>replace</code> strategies whereas Argo Rollouts supports <code>blueGreen</code> and <code>canary</code> strategies.</p>
+</div>
+<div class="paragraph">
+<p>Under the <code>blueGreen</code> strategy we have identified the active and preview Kubernetes services for the rollout which will be covered
+in more detail when services are discussed next.</p>
+</div>
+<div class="paragraph">
+<p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>true</code> which means the rollout will automatically promote the new
+version of the application without any human intervention. The Argo Rollouts documentation provides a complete list
+of all of the .<a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features" target="_blank" rel="noopener">configurable features</a> for the blueGreen strategy
+and additional features will be explored as we progress through the workshop.</p>
 </div>
 <div class="listingblock">
 <div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml" target="_blank" rel="noopener">./bluegreen/base/services.yaml</a></div>
@@ -271,9 +283,6 @@ spec:
 <p>In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
 interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the .<a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview" target="_blank" rel="noopener">documentation</a>,
 Argo Rollouts automatically manages the traffic between the services by managing the <code>.spec.selector</code>.</p>
-</div>
-<div class="paragraph">
-<p>A detailed breakdown of the process is also provided in the Argo Rollout documentation .<a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#sequence-of-events" target="_blank" rel="noopener">here</a>.</p>
 </div>
 <div class="listingblock">
 <div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml" target="_blank" rel="noopener">./bluegreen/base/routes.yaml</a></div>
@@ -318,8 +327,21 @@ that the pods are up and running:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n user%USERNUM%-prod</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -l app=rollouts-demo -n user%USERNUM%-prod</code></pre>
 </div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We are getting pods using the label <code>app=rollouts-demo</code> to specifically select pods from the rollout, remember
+the RolloutManager pod is also deployed in the <code>user%USERNUM%-prod</code> namespace.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>The console should return something along the lines of</p>
@@ -327,12 +349,12 @@ that the pods are up and running:</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                             READY   STATUS    RESTARTS   AGE
-rollouts-demo-785c8b55cb-m5mzg   1/1     Running   0          6m51s
-rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s</code></pre>
+rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
+rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>There are two pods since the Rollout specified two replicas.</p>
+<p>There are two pods since the Rollout again specified two replicas.</p>
 </div>
 <div class="paragraph">
 <p>Next Open the Route for this application. It&#8217;s in the <code>user%USERNUM%-dev1</code> Project.</p>
