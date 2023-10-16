@@ -304,6 +304,44 @@ spec:
 <div class="paragraph">
 <p>Finally we have two Route objects for active and preview with each tied to their respective service.</p>
 </div>
+<div class="paragraph">
+<p>To deploy the blue-green rollout, use the following command to process the kustomization:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ./bluegreen/base -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
+that the pods are up and running:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The console should return something along the lines of</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                             READY   STATUS    RESTARTS   AGE
+rollouts-demo-785c8b55cb-m5mzg   1/1     Running   0          6m51s
+rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>There are two pods since the Rollout specified two replicas.</p>
+</div>
+<div class="paragraph">
+<p>Next Open the Route for this application. It&#8217;s in the <code>user%USERNUM%-dev1</code> Project.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"http://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
