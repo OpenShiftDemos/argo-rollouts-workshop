@@ -195,4 +195,7 @@ Copy the URL into a browser and confirm that the application is running, you sho
 blue squares appearing and disappearing periodically as the application makes requests to it's back-end
 from the browser.
 
-image::rollouts-demo-app.png[]
+image::rollouts-demo-app-blue.png[]
+
+In the next module we will deploy a Blue-Green Rollouts version of this application and compare and contrast it to
+the traditional Kubernetes Deployment version of the application we just deployed.

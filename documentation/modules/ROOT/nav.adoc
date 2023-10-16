@@ -6,3 +6,6 @@
 ** xref:02-workshop-overview.adoc#workshop-layout[Workshop Layout]
 ** xref:02-workshop-overview.adoc#review-rollout-manager[Review RolloutManager]
 ** xref:02-workshop-overview.adoc#deploy-application[Deploy Application]
+
+* xref:03-bluegreen-rollout.adoc[3. Blue-Green Rollout]
+** xref:03-bluegreen-rollout.adoc#deploy-blue-green-rollout[Deploy Blue-Green Rollout]

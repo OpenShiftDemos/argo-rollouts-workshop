@@ -1,0 +1,5 @@
+= Blue-Green Rollout
+include::_attributes.adoc[]
+
+[#deploy-blue-green-rollout]
+== Deploy Blue-Green Rollout
