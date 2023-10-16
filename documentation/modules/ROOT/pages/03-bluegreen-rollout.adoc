@@ -57,8 +57,10 @@ include::ROOT:example$bluegreen/base/services.yaml[]
 ----
 
 In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
-interacting with, the preview service would be used to access the new version of the application for testing purposes. Argo Rollouts manages the traffic between
-the services by managing the `.spec.selector`.
+interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the .link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview[documentation,window='_blank'],
+Argo Rollouts automatically manages the traffic between the services by managing the `.spec.selector`.
+
+A detailed breakdown of the process is also provided in the Argo Rollout documentation .link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#sequence-of-events[here, window='_blank'].
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -66,4 +68,4 @@ the services by managing the `.spec.selector`.
 include::ROOT:example$bluegreen/base/routes.yaml[]
 ----
 
-Finally note that we have two route objects for active and preview with each tied to their respective service.
+Finally we have two Route objects for active and preview with each tied to their respective service.
