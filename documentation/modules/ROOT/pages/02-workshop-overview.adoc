@@ -84,14 +84,14 @@ git clone https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollou
 
 All of the code used in this workshop will be located in:
 
-`~/argo-rollouts-workshop/code`
+`~/argo-rollouts-workshop/docmentation/modules/ROOT/examples`
 
-Once you have cloned the repo, enter the `argo-rollouts-workshop` directory:
+Once you have cloned the repo, enter this directory in the terminal:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-cd argo-rollouts-workshop
+cd argo-rollouts-workshop/docmentation/modules/ROOT/examples
 ----
 
 [IMPORTANT]
@@ -115,7 +115,7 @@ To view the code that we will be using, examine the code in `code/deploy/base`:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-ls code/deploy/base
+ls ./deploy/base
 ----
 
 You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
@@ -124,19 +124,19 @@ and `route.yaml` represent the Deployment, Service and OpenShift route for the a
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/deploy.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
-include::ROOT/../../code/deploy/base/deploy.yaml[]
+include::ROOT:example$deploy/base/deploy.yaml[]
 ----
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/service.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
-include::ROOT/../../code/deploy/base/service.yaml[]
+include::ROOT:example$deploy/base/service.yaml[]
 ----
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/route.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
-include::ROOT/../../code/deploy/base/route.yaml[]
+include::ROOT:example$deploy/base/route.yaml[]
 ----
 
 [NOTE]
@@ -147,6 +147,12 @@ in Ingress hence their continued usage.
 There is a fourth file called `kustomization.yaml`, this file is used by the https://kustomize.io[Kustomize] tool and enables
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
 in GitOps and we use kustomize here to simplify our deployments.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/kustomization.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$deploy/base/kustomization.yaml[]
+----
 
 To deploy the application in Development, run the following command in the terminal:
 
