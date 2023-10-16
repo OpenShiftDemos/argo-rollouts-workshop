@@ -121,19 +121,19 @@ ls ./deploy/base
 You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
 and `route.yaml` represent the Deployment, Service and OpenShift route for the application.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml[deploy.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml[./deploy/base/deploy.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/deploy.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml[service.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml[./deploy/base/route.yaml/service.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/service.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml[route.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml[./deploy/base/route.yaml/route.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/route.yaml[]
@@ -148,13 +148,14 @@ There is a fourth file called `kustomization.yaml`, this file is used by the htt
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
 in GitOps and we use kustomize here to simplify our deployments.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/kustomization.yaml[kustomization.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/kustomization.yaml[./deploy/base/kustomization.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/kustomization.yaml[]
 ----
 
-To deploy the application in Development, run the following command in the terminal:
+To deploy the application in Development, we will use the `apply` command with `-k` switch that is available in `kubectl` and `oc`
+to process a kustomization. Run the following command in the terminal to deploy the application:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
