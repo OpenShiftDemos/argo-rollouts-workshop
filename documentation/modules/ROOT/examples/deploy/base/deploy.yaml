@@ -14,7 +14,7 @@ spec:
         app: rollouts-demo
     spec:
       containers:
-      - image: docker.io/argoproj/rollouts-demo:blue
+      - image: quay.io/openshiftdemos/rollouts-demo:blue
         imagePullPolicy: IfNotPresent
         name: rollouts-demo
         ports:
