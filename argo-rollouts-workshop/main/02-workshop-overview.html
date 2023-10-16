@@ -226,6 +226,19 @@ spec: {}
 a simple deployment with the Argo Rollout controller monitoring the <code>user%USERNUM%-prod</code> for
 <code>Rollout</code> resources.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You can use the command <code>oc explain RolloutManager.spec</code> to see the supported configuration
+options.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -308,6 +321,24 @@ Kubernetes Deployment so that we can compare and contrast the behavior with Argo
 <div class="paragraph">
 <p>You should see that there are four files in this directory. The <code>deploy.yaml</code>, <code>service.yaml</code>
 and <code>route.yaml</code> represent the Deployment, Service and OpenShift route for the application.</p>
+</div>
+<div class="listingblock">
+<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/deploy.yaml,window='_blank']</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/02-workshop-overview.adoc - include::ROOT/../../code/deploy/base/deploy.yaml[]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/service.yaml,window='_blank']</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/02-workshop-overview.adoc - include::ROOT/../../code/deploy/base/service.yaml[]</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/route.yaml,window='_blank']</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/02-workshop-overview.adoc - include::ROOT/../../code/deploy/base/route.yaml[]</code></pre>
+</div>
 </div>
 <div class="admonitionblock note">
 <table>
