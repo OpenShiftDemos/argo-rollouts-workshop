@@ -12,7 +12,7 @@ The diagram below shows this process over time.
 
 image::overview-blue-green.png[]
 
-In traditional infrastructure this approach can very challenging and while Kuberentes is simpler due to it's declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+In traditional infrastructure this approach can very challenging and while Kubernetes is simpler due to it's declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
 testing and traffic management between versions.
 
 This is where Argo Rollouts comes in, it greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module
@@ -21,7 +21,7 @@ we will deploy a simple blue-green Rollout and explore it's basic capabilities.
 [#deploy-blue-green-rollout]
 == Deploy Blue-Green Rollout
 
-Here we will deploy the blue-green rollout in a similar manner that we did for the Deployment in the previous module. Prior to starting,
+Here we will deploy the blue-green rollout in the `user%USERNUM%-prod` namespace following the same process that we did for the Deployment in the previous module. Prior to starting,
 confirm you are still at the correct path.
 
 [.console-input]
@@ -63,7 +63,7 @@ the services by managing the `.spec.selector`.
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
-include::ROOT:example$deploy/bluegreen/routes.yaml[]
+include::ROOT:example$bluegreen/base/routes.yaml[]
 ----
 
 Finally note that we have two route objects for active and preview with each tied to their respective service.
