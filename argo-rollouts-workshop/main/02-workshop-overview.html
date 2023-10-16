@@ -273,14 +273,14 @@ make very small changes to some of the files for the examples:</p>
 <p>All of the code used in this workshop will be located in:</p>
 </div>
 <div class="paragraph">
-<p><code>~/argo-rollouts-workshop/code</code></p>
+<p><code>~/argo-rollouts-workshop/docmentation/modules/ROOT/examples</code></p>
 </div>
 <div class="paragraph">
-<p>Once you have cloned the repo, enter the <code>argo-rollouts-workshop</code> directory:</p>
+<p>Once you have cloned the repo, enter this directory in the terminal:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd argo-rollouts-workshop</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd argo-rollouts-workshop/docmentation/modules/ROOT/examples</code></pre>
 </div>
 </div>
 <div class="admonitionblock important">
@@ -315,7 +315,7 @@ Kubernetes Deployment so that we can compare and contrast the behavior with Argo
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls code/deploy/base</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls ./deploy/base</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -325,19 +325,67 @@ and <code>route.yaml</code> represent the Deployment, Service and OpenShift rout
 <div class="listingblock">
 <div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/deploy.yaml,window='_blank']</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/02-workshop-overview.adoc - include::ROOT/../../code/deploy/base/deploy.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - image: docker.io/argoproj/rollouts-demo:blue
+        imagePullPolicy: IfNotPresent
+        name: rollouts-demo
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      schedulerName: default-scheduler
+      terminationGracePeriodSeconds: 30</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/service.yaml,window='_blank']</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/02-workshop-overview.adoc - include::ROOT/../../code/deploy/base/service.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: rollouts-demo
+  name: rollouts-demo
+spec:
+  ports:
+  - port: 8080
+    protocol: TCP
+    targetPort: 8080
+    name: http
+  selector:
+    app: rollouts-demo</code></pre>
 </div>
 </div>
 <div class="listingblock">
 <div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/route.yaml,window='_blank']</div>
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">Unresolved include directive in modules/ROOT/pages/02-workshop-overview.adoc - include::ROOT/../../code/deploy/base/route.yaml[]</code></pre>
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: rollouts-demo
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: rollouts-demo</code></pre>
 </div>
 </div>
 <div class="admonitionblock note">
@@ -358,6 +406,15 @@ in Ingress hence their continued usage.
 <p>There is a fourth file called <code>kustomization.yaml</code>, this file is used by the <a href="https://kustomize.io">Kustomize</a> tool and enables
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
 in GitOps and we use kustomize here to simplify our deployments.</p>
+</div>
+<div class="listingblock">
+<div class="title">link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/code/deploy/base/kustomization.yaml,window='_blank']</div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">resources:
+- deploy.yaml
+- route.yaml
+- service.yaml</code></pre>
+</div>
 </div>
 <div class="paragraph">
 <p>To deploy the application in Development, run the following command in the terminal:</p>
