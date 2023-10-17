@@ -19,7 +19,8 @@ spec:
       type: string
   steps:
     - name: patch
-      image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+      #image: image-registry.openshift-image-registry.svc:5000/openshift/cli:latest
+      image: quay.io/gnunn/tools:latest
       command: ["/bin/bash", "-c"]
       args:
         - |-
