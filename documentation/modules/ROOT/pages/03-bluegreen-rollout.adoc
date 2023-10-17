@@ -239,7 +239,7 @@ Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` w
 [NOTE]
 This pipeline is not meant to be a comprehensive example of how to do manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines which comes with OpenShift however any CI tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines however any CI tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 
 To start the pipeline, click the `Actions` dropdown and select the `Start` option:
@@ -255,3 +255,39 @@ Once `Start` is pressed, the pipeline will begin to execute. Wait until the pipe
 green checkmarks which signifies successfull completion.
 
 image::console-pipeline-completed.png[]
+
+Let's validate that the change occurred in our development environment. As per the last module, the URL for the
+application in Development can be retrieved with the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+Paste this url into a browser tab and confirm that the application is showing Green squares reflective of the green image that
+we deployed.
+
+Now let's see what the application looks like in production where we are using Rollouts. First, let's check the preview service by
+retrieving it's URL and viewing it in the browser:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+Again the application will display green squares, now let's check the active service:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+Notice that the application is displaying blue squares. Since the rollout is using manual promotion,
+live users are still seeing the old version of the applications leaving the preview version available
+for testing.
+
+Navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
+now has two revisions available:
