@@ -183,7 +183,7 @@ To view this, output the manifest for the currently deployed replicaset:
 oc get rs -l app=rollouts-demo -n user%USERNUM%-prod -o yaml | oc neat
 ----
 
-[#argo-rollout-dashboard]
+[#argo-rollouts-dashboard]
 == Argo Rollouts Dashboard
 
 The Argo Rollouts dashboard has been deployed in the `user%USERNUM%-tools` namespace on the cluster for this workshop. To access the dashboard,

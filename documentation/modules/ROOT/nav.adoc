@@ -10,3 +10,4 @@
 * xref:03-bluegreen-rollout.adoc[3. Blue-Green Rollout]
 ** xref:03-bluegreen-rollout.adoc#deploy-blue-green-overview[Blue-Green Overview]
 ** xref:03-bluegreen-rollout.adoc#deploy-blue-green-rollout[Deploy Blue-Green Rollout]
+** xref:03-bluegreen-rollout.adoc#argo-rollouts-dashboard[Argo Rollouts Dashboard]
