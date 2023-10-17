@@ -470,7 +470,7 @@ rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"http://"}{.spec.host}{"\n"}'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
 </div>
 </div>
 <div class="paragraph">

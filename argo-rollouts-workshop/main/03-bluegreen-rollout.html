@@ -423,6 +423,19 @@ spec:
 between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will notice the same
 selector there as well.</p>
 </div>
+<div class="paragraph">
+<p>Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a ReplicaSet. This ReplicaSet will have a
+<code>rollouts-pod-template-hash</code> label in it&#8217;s PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
+the selector in the service is pointing to the appropriate revision.</p>
+</div>
+<div class="paragraph">
+<p>To view this, output the manifest for the currently deployed replicaset:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get rs -l app=rollouts-demo -n user%USERNUM%-prod -o yaml | oc neat</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -434,7 +447,7 @@ run the following command to get the URL for the dashboard for your specific use
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"http://"}{.spec.host}{"\n"}'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -458,6 +471,15 @@ but this is not recommended as a general practice.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>In the dashboard each rollout will show in it&#8217;s own tile on the overview screen. The tile will provide some
+basic information about the tile as shown here:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollout-dashboard.png" alt="argo rollout dashboard">
+</div>
 </div>
 </div>
 </div>
