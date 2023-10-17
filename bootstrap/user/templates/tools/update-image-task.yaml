@@ -25,6 +25,7 @@ spec:
         - |-
           if [ $(inputs.params.kind) = "deployment" ]; then
             oc set image deploy $(inputs.params.name) rollouts-demo=quay.io/openshiftdemos/rollouts-demo:$(inputs.params.color) -n $(inputs.params.namespace)
+            sleep 2
             oc rollout status -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.name) --timeout=20s
           else
             oc argo rollouts set image $(inputs.params.name) rollouts-demo=quay.io/openshiftdemos/rollouts-demo:$(inputs.params.color) -n $(inputs.params.namespace)

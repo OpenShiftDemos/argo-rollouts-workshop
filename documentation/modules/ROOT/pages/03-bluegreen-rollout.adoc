@@ -291,3 +291,8 @@ for testing.
 
 Navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
 now has two revisions available:
+
+image::argo-rollout-dashboard-promote.png[]
+
+The dashboard shows that the newest revision is using the `green` image and is tied to the Preview
+service whereas the Active service is associated with the previous revision using the `Blue` image.
