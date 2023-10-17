@@ -232,8 +232,8 @@ Clicking on the pipeline name, `rollouts-pipeline`, will bring you to the follow
 
 image::console-pipelines-promote.png[]
 
-As shown in the image, the pipeline consists of two tasks, the first which will update the image for the
-Kubernetes Deployment in the `user%USERNUM%-dev` namespace and the second which will update the Rollout in the
+As shown in the image, the pipeline consists of two tasks, `deploy-dev` will update and deploy the selected image in the
+Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` will do the same for the Rollout in the
 ``user%USERNUM%-prod` namespace.
 
 [NOTE]
@@ -241,3 +241,17 @@ This pipeline is not meant to be a comprehensive example of how to do manage ima
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
 Pipelines which comes with OpenShift however any CI tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
+
+To start the pipeline, click the `Actions` dropdown and select the `Start` option:
+
+image::console-start-promote.png[]
+
+This will show a dialog prompting for an image color, by default this will be blue however since blue is already
+deployed let's select a different image color and go with `green`:
+
+image::console-promote-params.png[]
+
+Once `Start` is pressed, the pipeline will begin to execute. Wait until the pipeline has completed and is showing
+green checkmarks which signifies successfull completion.
+
+image::console-pipeline-completed.png[]
