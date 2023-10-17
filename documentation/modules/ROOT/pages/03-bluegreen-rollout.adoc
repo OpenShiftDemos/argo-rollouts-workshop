@@ -207,6 +207,37 @@ authentication or multi-tenancy. For convenience and simplicity it has been depl
 but this is not recommended as a general practice.
 
 In the dashboard each rollout will show in it's own tile on the overview screen. The tile will provide some
-basic information about the tile as shown here:
+basic information about the rollout as shown here:
 
 image::argo-rollout-dashboard-details.png[]
+
+Clicking on the tile will display a detailed view of the rollout as well as additional actions that
+are available for interacting with the rollout.
+
+image::argo-rollouts-dashboard-tile-details.png[]
+
+[#promote-image]
+== Promote Image
+
+In this module we will promote a new image and observe the behavior of the application during the promotion
+process. To promote the image we will use a simple pipeline to update the image reference to use a different
+color.
+
+To access this pipeline, in the OpenShift Console navigate to the `user%USERNUM%-tools` namespace and select
+the `Pipelines` view in the Developer perspective as per this screenshot.
+
+image::console-pipelines-overview.png[]
+
+Clicking on the pipeline name, `rollouts-pipeline`, will bring you to the following view:
+
+image::console-pipelines-promote.png[]
+
+As shown in the image, the pipeline consists of two tasks, the first which will update the image for the
+Kubernetes Deployment in the `user%USERNUM%-dev` namespace and the second which will update the Rollout in the
+``user%USERNUM%-prod` namespace.
+
+[NOTE]
+This pipeline is not meant to be a comprehensive example of how to do manage image promotion, rather we
+are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
+Pipelines which comes with OpenShift however any CI tool can be used with Argo Rollouts including Argo Workflows,
+GitHub Actions, GitLab, etc.
