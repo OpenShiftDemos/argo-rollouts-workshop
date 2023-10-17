@@ -540,7 +540,7 @@ Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace while <cod
 <td class="content">
 This pipeline is not meant to be a comprehensive example of how to do manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines which comes with OpenShift however any CI tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines however any CI tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 </td>
 </tr>
@@ -571,6 +571,45 @@ green checkmarks which signifies successfull completion.</p>
 <div class="content">
 <img src="_images/console-pipeline-completed.png" alt="console pipeline completed">
 </div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s validate that the change occurred in our development environment. As per the last module, the URL for the
+application in Development can be retrieved with the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Paste this url into a browser tab and confirm that the application is showing Green squares reflective of the green image that
+we deployed.</p>
+</div>
+<div class="paragraph">
+<p>Now let&#8217;s see what the application looks like in production where we are using Rollouts. First, let&#8217;s check the preview service by
+retrieving it&#8217;s URL and viewing it in the browser:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Again the application will display green squares, now let&#8217;s check the active service:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the application is displaying blue squares. Since the rollout is using manual promotion,
+live users are still seeing the old version of the applications leaving the preview version available
+for testing.</p>
+</div>
+<div class="paragraph">
+<p>Navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
+now has two revisions available:</p>
 </div>
 </div>
 </div>
