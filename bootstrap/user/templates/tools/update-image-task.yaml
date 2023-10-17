@@ -23,13 +23,9 @@ spec:
       command: ["/bin/bash", "-c"]
       args:
         - |-
-          oc patch -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.name) --patch='{"spec":{"template":{"spec":{
-            "containers":[{
-              "name": "$(inputs.params.name)",
-              "image":"quay.io/openshiftdemos/rollouts-demo:$(inputs.params.color)"
-            }]
-          }}}}'
-
           if [ $(inputs.params.kind) = "deployment" ]; then
+            oc set image deploy $(inputs.params.name) rollouts-demo=quay.io/openshiftdemos/rollouts-demo:$(inputs.params.color) -n $(inputs.params.namespace)
             oc rollout status -n $(inputs.params.namespace) $(inputs.params.kind) $(inputs.params.name) --timeout=20s
+          else
+            oc argo rollouts set image $(inputs.params.name) rollouts-demo=quay.io/openshiftdemos/rollouts-demo:$(inputs.params.color) -n $(inputs.params.namespace)
           fi
