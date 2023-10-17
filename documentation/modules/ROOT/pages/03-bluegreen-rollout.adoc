@@ -55,8 +55,10 @@ and `replace` strategies whereas Argo Rollouts supports `blueGreen` and `canary`
 Under the `blueGreen` strategy we have identified the active and preview Kubernetes services for the rollout which will be covered
 in more detail when services are discussed next.
 
-As well as services the field `autoPromotionEnabled` is set to `true` which means the rollout will automatically promote the new
-version of the application without any human intervention. The Argo Rollouts documentation provides a complete list
+As well as services the field `autoPromotionEnabled` is set to `false` which means the rollout will require manual intervention to promote. Manual promotion
+is enabled so the behavior of the application can be observed in more-depth in subsequent modules.
+
+The Argo Rollouts documentation provides a complete list
 of all of the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features[configurable features, window='_blank'] for the blueGreen strategy
 and additional features will be explored as we progress through the workshop.
 
