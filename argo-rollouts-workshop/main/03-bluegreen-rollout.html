@@ -231,7 +231,7 @@ spec:
 </div>
 <div class="paragraph">
 <p>Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
-Kubernetes .<a href="https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates" target="_blank" rel="noopener">PodTemplate</a> but note that
+Kubernetes <a href="https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates" target="_blank" rel="noopener">PodTemplate</a> but note that
 under <code>.spec.strategy</code> we have specified the <code>blueGreen</code> strategy. The Kubernetes Deployment object supports <code>rollout</code>
 and <code>replace</code> strategies whereas Argo Rollouts supports <code>blueGreen</code> and <code>canary</code> strategies.</p>
 </div>
@@ -242,7 +242,7 @@ in more detail when services are discussed next.</p>
 <div class="paragraph">
 <p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>true</code> which means the rollout will automatically promote the new
 version of the application without any human intervention. The Argo Rollouts documentation provides a complete list
-of all of the .<a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features" target="_blank" rel="noopener">configurable features</a> for the blueGreen strategy
+of all of the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features" target="_blank" rel="noopener">configurable features</a> for the blueGreen strategy
 and additional features will be explored as we progress through the workshop.</p>
 </div>
 <div class="listingblock">
@@ -281,7 +281,7 @@ spec:
 </div>
 <div class="paragraph">
 <p>In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
-interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the .<a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview" target="_blank" rel="noopener">documentation</a>,
+interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview" target="_blank" rel="noopener">documentation</a>,
 Argo Rollouts automatically manages the traffic between the services by managing the <code>.spec.selector</code>.</p>
 </div>
 <div class="listingblock">
@@ -422,6 +422,42 @@ spec:
 <p>Notice that the selector has an additional key, <code>rollouts-pod-template-hash</code>, with a hash value. This is how the rollout manages traffic
 between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will notice the same
 selector there as well.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="argo-rollout-dashboard"><a class="anchor" href="#argo-rollout-dashboard"></a>Argo Rollout dashboard</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The Argo Rollout dashboard has been deployed in the <code>user%USERNUM%-tools</code> namespace on the cluster for this workshop. To access the dashboard,
+run the following command to get the URL for the dashboard for your specific user:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"http://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Copy the returned URL into a browser tab to access the dashboard.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollout-dashboard.png" alt="argo rollout dashboard">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The Argo Rollouts Dashboard is intended to be run on the developer&#8217;s laptop and as a result it does not support
+authentication or multi-tenancy. For convenience and simplicity it has been deployed on cluster for each user
+but this is not recommended as a general practice.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
