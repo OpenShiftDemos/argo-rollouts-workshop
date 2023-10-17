@@ -527,8 +527,8 @@ the <code>Pipelines</code> view in the Developer perspective as per this screens
 </div>
 </div>
 <div class="paragraph">
-<p>As shown in the image, the pipeline consists of two tasks, the first which will update the image for the
-Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace and the second which will update the Rollout in the
+<p>As shown in the image, the pipeline consists of two tasks, <code>deploy-dev</code> will update and deploy the selected image in the
+Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace while <code>deploy-prod</code> will do the same for the Rollout in the
 <code>`user%USERNUM%-prod</code> namespace.</p>
 </div>
 <div class="admonitionblock note">
@@ -545,6 +545,32 @@ GitHub Actions, GitLab, etc.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>To start the pipeline, click the <code>Actions</code> dropdown and select the <code>Start</code> option:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-start-promote.png" alt="console start promote">
+</div>
+</div>
+<div class="paragraph">
+<p>This will show a dialog prompting for an image color, by default this will be blue however since blue is already
+deployed let&#8217;s select a different image color and go with <code>green</code>:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-promote-params.png" alt="console promote params">
+</div>
+</div>
+<div class="paragraph">
+<p>Once <code>Start</code> is pressed, the pipeline will begin to execute. Wait until the pipeline has completed and is showing
+green checkmarks which signifies successfull completion.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-pipeline-completed.png" alt="console pipeline completed">
+</div>
 </div>
 </div>
 </div>
