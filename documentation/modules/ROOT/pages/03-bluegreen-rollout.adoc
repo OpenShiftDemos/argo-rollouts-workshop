@@ -304,3 +304,38 @@ Once the promotion has been completed, you should see that the Active service is
 as `Stable`. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
 the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds[scaledowndelayseconds,window='_blank']
 parameter.
+
+If you check the Active route the application is now displaying green squares.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+[#enable-auto-promotion]
+== Enable Auto-Promotion
+
+Now that a manual promotion of rollout has been reviewed, let's enable the auto promotion feature. To do so, execute
+the following command to patch the rollout to set `autoPromotionEnabled` to `true`:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc patch rollout rollouts-demo --type='json' -p='[{"op": "replace", "path": "/spec/strategy/blueGreen/autoPromotionEnabled", "value":true}]' -n user%USERNUM%-prod
+----
+
+Now deploy a new image color `yellow` this time, in the OpenShift console navigate to the Pipeline again in the `user%USERNUM%-tools` namespace.
+
+image::console-pipelines-overview.png[]
+
+Click on the pipeline, select the `Actions` menu and select `Start`. When the dialog appears enter the color `yellow` this time.
+
+image::console-pipelines-promote-yellow.png[]
+
+Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
+note that there is a new revision using the Yellow image associated with the Active service.
+
+While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
+the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts has this feature with
+AnalysisTemplates and we will cover that in the next module.
