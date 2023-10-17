@@ -331,7 +331,7 @@ image::console-pipelines-overview.png[]
 
 Click on the pipeline, select the `Actions` menu and select `Start`. When the dialog appears enter the color `yellow` this time.
 
-image::console-pipelines-promote-yellow.png[]
+image::argo-rollouts-dashboard-yellow.png[]
 
 Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
 note that there is a new revision using the Yellow image associated with the Active service.
