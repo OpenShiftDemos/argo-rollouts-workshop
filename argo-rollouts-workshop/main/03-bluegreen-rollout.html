@@ -424,8 +424,8 @@ between the active and preview versions. Since we have not deployed a new image,
 selector there as well.</p>
 </div>
 <div class="paragraph">
-<p>Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a ReplicaSet. This ReplicaSet will have a
-<code>rollouts-pod-template-hash</code> label in it&#8217;s PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
+<p>Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/" target="_blank" rel="noopener">ReplicaSet</a>.
+This ReplicaSet will have a <code>rollouts-pod-template-hash</code> label in it&#8217;s PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
 the selector in the service is pointing to the appropriate revision.</p>
 </div>
 <div class="paragraph">
@@ -439,10 +439,10 @@ the selector in the service is pointing to the appropriate revision.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="argo-rollout-dashboard"><a class="anchor" href="#argo-rollout-dashboard"></a>Argo Rollout dashboard</h2>
+<h2 id="argo-rollout-dashboard"><a class="anchor" href="#argo-rollout-dashboard"></a>Argo Rollouts Dashboard</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>The Argo Rollout dashboard has been deployed in the <code>user%USERNUM%-tools</code> namespace on the cluster for this workshop. To access the dashboard,
+<p>The Argo Rollouts dashboard has been deployed in the <code>user%USERNUM%-tools</code> namespace on the cluster for this workshop. To access the dashboard,
 run the following command to get the URL for the dashboard for your specific user:</p>
 </div>
 <div class="listingblock console-input">
@@ -478,7 +478,7 @@ basic information about the tile as shown here:</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="_images/argo-rollout-dashboard.png" alt="argo rollout dashboard">
+<img src="_images/argo-rollout-dashboard-details.png" alt="argo rollout dashboard details">
 </div>
 </div>
 </div>
