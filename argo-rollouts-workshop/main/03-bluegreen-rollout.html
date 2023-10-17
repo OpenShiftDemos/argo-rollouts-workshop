@@ -110,6 +110,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#argo-rollouts-dashboard">Argo Rollouts Dashboard</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#promote-image">Promote Image</a>
+  </li>
 </ul>
   </li>
 </ul>
@@ -480,12 +483,68 @@ but this is not recommended as a general practice.
 </div>
 <div class="paragraph">
 <p>In the dashboard each rollout will show in it&#8217;s own tile on the overview screen. The tile will provide some
-basic information about the tile as shown here:</p>
+basic information about the rollout as shown here:</p>
 </div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/argo-rollout-dashboard-details.png" alt="argo rollout dashboard details">
 </div>
+</div>
+<div class="paragraph">
+<p>Clicking on the tile will display a detailed view of the rollout as well as additional actions that
+are available for interacting with the rollout.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-dashboard-tile-details.png" alt="argo rollouts dashboard tile details">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="promote-image"><a class="anchor" href="#promote-image"></a>Promote Image</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this module we will promote a new image and observe the behavior of the application during the promotion
+process. To promote the image we will use a simple pipeline to update the image reference to use a different
+color.</p>
+</div>
+<div class="paragraph">
+<p>To access this pipeline, in the OpenShift Console navigate to the <code>user%USERNUM%-tools</code> namespace and select
+the <code>Pipelines</code> view in the Developer perspective as per this screenshot.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-pipelines-overview.png" alt="console pipelines overview">
+</div>
+</div>
+<div class="paragraph">
+<p>Clicking on the pipeline name, <code>rollouts-pipeline</code>, will bring you to the following view:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-pipelines-promote.png" alt="console pipelines promote">
+</div>
+</div>
+<div class="paragraph">
+<p>As shown in the image, the pipeline consists of two tasks, the first which will update the image for the
+Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace and the second which will update the Rollout in the
+<code>`user%USERNUM%-prod</code> namespace.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This pipeline is not meant to be a comprehensive example of how to do manage image promotion, rather we
+are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
+Pipelines which comes with OpenShift however any CI tool can be used with Argo Rollouts including Argo Workflows,
+GitHub Actions, GitLab, etc.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
