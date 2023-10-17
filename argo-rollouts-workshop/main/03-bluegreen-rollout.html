@@ -229,7 +229,7 @@ spec:
     blueGreen:
       activeService: active
       previewService: preview
-      autoPromotionEnabled: true</code></pre>
+      autoPromotionEnabled: false</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -243,8 +243,11 @@ and <code>replace</code> strategies whereas Argo Rollouts supports <code>blueGre
 in more detail when services are discussed next.</p>
 </div>
 <div class="paragraph">
-<p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>true</code> which means the rollout will automatically promote the new
-version of the application without any human intervention. The Argo Rollouts documentation provides a complete list
+<p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>false</code> which means the rollout will require manual intervention to promote. Manual promotion
+is enabled so the behavior of the application can be observed in more-depth in subsequent modules.</p>
+</div>
+<div class="paragraph">
+<p>The Argo Rollouts documentation provides a complete list
 of all of the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features" target="_blank" rel="noopener">configurable features</a> for the blueGreen strategy
 and additional features will be explored as we progress through the workshop.</p>
 </div>
