@@ -188,7 +188,7 @@ Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Proje
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"http://"}{.spec.host}{"\n"}'
+oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 Copy the URL into a browser and confirm that the application is running, you should see a grid of

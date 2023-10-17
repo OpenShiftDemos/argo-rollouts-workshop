@@ -192,7 +192,7 @@ run the following command to get the URL for the dashboard for your specific use
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"http://"}{.spec.host}{"\n"}'
+oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 Copy the returned URL into a browser tab to access the dashboard.
