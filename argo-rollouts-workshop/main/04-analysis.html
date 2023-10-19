@@ -130,9 +130,6 @@
     <a class="nav-link" href="#analysis-overview">Analysis Overview</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#analysis-details">Analysis Details</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#analysis-deployment">Analysis Deployment</a>
   </li>
 </ul>
@@ -215,7 +212,7 @@ with live traffic.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="analysis-details"><a class="anchor" href="#analysis-details"></a>Analysis Details</h2>
+<h2 id="analysis-deployment"><a class="anchor" href="#analysis-deployment"></a>Analysis Deployment</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In this section we will deploy the same Blue-Green rollout we did previously but with
@@ -326,20 +323,21 @@ be receiving load from users, therefore generating load with Apache Siege will g
 the promotion should proceed.</p>
 </div>
 <div class="paragraph">
-<p>In the arguments we are taking two key arguments, <code>query</code> and <code>route-url</code>, which will be passed from the Rollout. Notice that
-the <code>query</code> argument is being used in the URL of the web provider, this is the Prometheus query that we want to execute
-against the OpenShift monitoring stack.</p>
+<p>In the arguments we are taking two key arguments, <code>query</code> and <code>route-url</code>, which will be passed from the
+Rollout. Notice that the <code>query</code> argument is being used at the end of the URL of the web provider as a
+query parameter, this is the Prometheus query that we want to execute against the OpenShift monitoring stack.</p>
 </div>
 <div class="listingblock">
 <div class="content">
 <pre>provider:
   web:
-    url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ *args.query* }}</pre>
+    url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ <strong>args.query</strong> }}</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load. This parameter is used
-to specify the OpenShift route URL where we want to drive the load, i.e the URL that siege will be hitting when it generates load.</p>
+<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load. This
+parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
+siege will be hitting when it generates load.</p>
 </div>
 <div class="paragraph">
 <p>Finally a third parameter, <code>api-token</code>, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
@@ -371,7 +369,7 @@ spec:
         - name: query
           value: irate%28haproxy_backend_http_responses_total%7Bexported_namespace%3D%27rollouts-demo-prod%27%2C%20route%3D~%22bluegreen-preview%22%2C%20code%3D%225xx%22%7D%5B1m%5D%29%20%3E%205%20or%20on%28%29%20vector%280%29
         - name: route-url
-          value: bluegreen-preview-rollouts-demo-prod.${SUB_DOMAIN}
+          value: ${PREVIEW_ROUTE}
         templates:
         - templateName: smoke-tests
   template:
@@ -387,12 +385,18 @@ spec:
         - containerPort: 8080</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Notice that in <code>.spec.strategy.blueGreen</code> we have now defined the <code>prePromotionAnalysis</code> field. In this field
+we define the template we want to use as well as the arguments that the rollout needs to provide the
+analysis template.</p>
 </div>
+<div class="paragraph">
+<p>The query parameter is URL encoded since we are using the web provider rather then the prometheus
+provider hence the odd encoding.</p>
 </div>
-<div class="sect1">
-<h2 id="analysis-deployment"><a class="anchor" href="#analysis-deployment"></a>Analysis Deployment</h2>
-<div class="sectionbody">
-
+<div class="paragraph">
+<p>To deploy this new version of the blue-green rollout, execute the following command:</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
