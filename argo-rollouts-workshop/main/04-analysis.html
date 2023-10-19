@@ -179,7 +179,39 @@
 <div class="sect1">
 <h2 id="analysis-overview"><a class="anchor" href="#analysis-overview"></a>Analysis Overview</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>When performing upgrades of services there is a need to test the new version
+that is being deployed to ensure functionality is not being negatively impacted. The
+<a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis" target="_blank" rel="noopener">Analysis</a> feature
+enables Rollouts to collect data and metrics from a variety of providers to validate the
+new version of the application.</p>
+</div>
+<div class="paragraph">
+<p>In addition to collecting data, an Analysis can include a Job to drive more advanced use cases. For example
+a Job could be used to run load against an application in order to generate the metrics needed to
+validate the revision.</p>
+</div>
+<div class="paragraph">
+<p>To deploy an Analysis, first an AnalysisTemplate is created that defines the analysis that is required
+and then is associated with one or more rollouts. The association with the rollout is dependent one
+the rollout strategy used. In this module we will look at it from the perspective of the Blue-Green
+strategy we have deployed however in the next module we delve into it for the Canary strategy as well.</p>
+</div>
+<div class="paragraph">
+<p>In the blue-green strategy, an Analysis can be added as either pre-promotion or post-promotion. Pre-promotion
+is used before the new version is deployed and is useful for validating the deployment prior to cutting over to it
+for live traffic. Post-promotion is executed after the cut-over and can validate that the deployment is working
+with live traffic.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="analysis-deployment"><a class="anchor" href="#analysis-deployment"></a>Analysis Deployment</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this section we will update the Blue-Green rollout we have already
+deployed with a pre-promotion analysis template.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
