@@ -342,3 +342,22 @@ note that there is a new revision using the Yellow image associated with the Act
 While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
 the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
 which will be covered that in the next module.
+
+[#cleanup]
+== Clean-up
+
+Prior to moving on to the next module we need to perform some clean-up activites. First let's reset the Development environment back to blue:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k ./deploy/base -n user%USERNUM%-dev
+----
+
+Next we will delete the Rollout in the `user%USERNUM%-prod` so we can start with a fresh version.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc delete -k ./bluegreen/base -n user%USERNUM%-prod
+----
