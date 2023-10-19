@@ -78,7 +78,7 @@ In the arguments we are taking two key arguments, `query` and `route-url`, which
 the `query` argument is being used in the URL of the web provider, this is the Prometheus query that we want to execute
 against the OpenShift monitoring stack.
 
-[source,bash,subs="attributes+,+macros"]
+[listing]
 ----
 provider:
   web:
@@ -88,12 +88,8 @@ provider:
 The `route-url` parameter is being used in the second provider, the job, where we will be creating load. This parameter is used
 to specify the OpenShift route URL where we want to drive the load, i.e the URL that siege will be hitting when it generates load.
 
-
-
-A third parameter, `api-token`, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
+Finally a third parameter, `api-token`, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
 stack, it was created by the GitOps process which provisioned this workshop.
-
-
 
 
 
