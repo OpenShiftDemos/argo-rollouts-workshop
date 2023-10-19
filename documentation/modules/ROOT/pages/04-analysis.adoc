@@ -27,5 +27,44 @@ with live traffic.
 [#analysis-deployment]
 == Analysis Deployment
 
-In this section we will update the Blue-Green rollout we have already
-deployed with a pre-promotion analysis template.
+In this section we will deploy the same Blue-Green rollout we did previously but with
+a pre-promotion analysis included along with the corresponding analysis template. Prior to starting,
+confirm you are still at the correct path.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
+----
+
+Next, let's explore the manifests that we will be deploying in the `./bluegreen-analysis/base` folder:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ls ./bluegreen-analysis/base
+----
+
+Here you will see the same files that we used previously, however there is a new file `analysistemplate.yaml`. Examining
+the file we see it appears as follows:
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen-analysis/base/analysistemplate.yaml[./bluegreen-analysis/base/analysistemplate.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$bluegreen-analysis/base/analysistemplate.yaml[]
+----
+
+This AnalysisTemplate is broken up into two broad sections as follows:
+
+* `.spec.args`. This is where you can specify arguments which are passed by the rollout when using the template. These arguments enable the template to be reusable across many different rollouts.
+* `.spec.metrics`. These are the metric providers that will be used to collect data for the analysis as well as any jobs that need to be executed.
+
+
+
+Next let's look at the rollout and see how the AnalysisTemplate is wired into the rollout.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen-analysis/base/rollout.yaml[./bluegreen-analysis/base/rollout.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]
+----
