@@ -363,7 +363,7 @@ spec:
     blueGreen:
       activeService: active
       previewService: preview
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       prePromotionAnalysis:
         args:
         - name: query
@@ -402,6 +402,27 @@ provider hence the odd encoding.</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Check that the rollout has deployed successfully in the Argo Rollouts dashboard:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollout-dashboard-bg-analysis-initial.png" alt="argo rollout dashboard bg analysis initial">
+</div>
+</div>
+<div class="paragraph">
+<p>Next confirm that the application is displaying blue squares by opening the active route URL in your browser:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-blue.png" alt="rollouts demo app blue">
 </div>
 </div>
 </div>
