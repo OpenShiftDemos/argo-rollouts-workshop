@@ -371,7 +371,7 @@ spec:
           # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'}[1m])&gt;5 or on() vector(0)
           value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USERNUM%-prod',route=~'preview',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
         - name: route-url
-          value: preview-user%USERNUM%-prod.%SUB_DOMAIN%
+          value: preview-user$USERNUM-prod.$DOMAIN
         templates:
         - templateName: smoke-tests
   template:
@@ -401,7 +401,7 @@ provider hence the odd encoding.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USERNUM%/1/" | oc apply -n user%USERNUM%-prod -f -</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kustomize build ./bluegreen-analysis/base | sed "s/$DOMAIN/$SUB_DOMAIN/" | sed "s/$USERNUM/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -</code></pre>
 </div>
 </div>
 </div>
