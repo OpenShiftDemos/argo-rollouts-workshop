@@ -3,9 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Welcome to the Argo Rollouts Workshop :: Argo Rollouts Workshop</title>
-    <link rel="canonical" href="https://openshiftdemos.github.io/argo-rollouts-workshop/argo-rollouts-workshop/main/index.html">
-    <link rel="next" href="01-getting-started.html">
+    <title>Analysis :: Argo Rollouts Workshop</title>
+    <link rel="canonical" href="https://openshiftdemos.github.io/argo-rollouts-workshop/argo-rollouts-workshop/main/04-analysis.html">
+    <link rel="prev" href="03-bluegreen-rollout.html">
+    <link rel="next" href="05-canary-rollout.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -118,12 +119,12 @@
   </li>
 </ul>
   </li>
-  <li class="nav-item" data-depth="1">
+  <li class="nav-item is-current-page" data-depth="1">
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="04-analysis.html">4. Analysis</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="04-analysis.html#analysis-overview">Analysis Overview</a>
+    <a class="nav-link" href="#analysis-overview">Analysis Overview</a>
   </li>
 </ul>
   </li>
@@ -163,36 +164,27 @@
 <main class="article">
 <div class="toolbar" role="navigation">
 <button class="nav-toggle"></button>
-  <a href="index.html" class="home-link is-current"></a>
+  <a href="index.html" class="home-link"></a>
 <nav class="breadcrumbs" aria-label="breadcrumbs">
   <ul>
     <li><a href="index.html">Argo Rollouts Workshop</a></li>
-    <li><a href="index.html">Welcome to the Argo Rollouts Workshop</a></li>
+    <li><a href="04-analysis.html">4. Analysis</a></li>
   </ul>
 </nav>
-  <div class="edit-this-page"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/edit/main/documentation/modules/ROOT/pages/index.adoc">Edit this Page</a></div>
+  <div class="edit-this-page"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/edit/main/documentation/modules/ROOT/pages/04-analysis.adoc">Edit this Page</a></div>
   </div>
   <div class="content">
 <article class="doc">
-<h1 class="page">Welcome to the Argo Rollouts Workshop</h1>
-<div class="paragraph">
-<p><a href="https://argoproj.github.io/rollouts/" target="_blank" rel="noopener">Argo Rollouts</a> provides a
-drop-in replacement for Kubernetes deployments with support for advanced deployment
-strategies. Whereas Kubernetes deployments support simple rollout and recreate strategies, Argo Rollouts supports
-Blue-Green and Canary strategies.</p>
+<h1 class="page">Analysis</h1>
+<div class="sect1">
+<h2 id="analysis-overview"><a class="anchor" href="#analysis-overview"></a>Analysis Overview</h2>
+<div class="sectionbody">
+
 </div>
-<div class="paragraph">
-<p>To support these advanced deployment strategies, Argo Rollouts provides additional features.
-Rollouts allows users to provide analysis to drive the progressive delivery. These analyses,
-specified in an AnalysisRun, enables the testing of the Rollout by defining the nature of the
-testing, the frequency and occurence and what constitutes a pass/fail.</p>
-</div>
-<div class="paragraph">
-<p>Support for Argo Rollouts is provided by the OpenShift GitOps operator as a Tech
-Preview feature as of OpenShift GitOps 1.10.</p>
 </div>
 <nav class="pagination">
-  <span class="next"><a href="01-getting-started.html" class="query-params-link">1. Getting Started</a></span>
+  <span class="prev"><a href="03-bluegreen-rollout.html" class="query-params-link">3. Blue-Green Rollout</a></span>
+  <span class="next"><a href="05-canary-rollout.html" class="query-params-link">5. Canary Rollout</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
