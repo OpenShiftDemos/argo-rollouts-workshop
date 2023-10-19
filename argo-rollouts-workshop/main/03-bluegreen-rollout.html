@@ -379,7 +379,7 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
 </div>
 <div class="listingblock console-input">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get routes -n user%USERNUM%-prod'</code></pre>
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get routes -n user%USERNUM%-prod</code></pre>
 </div>
 </div>
 <div class="listingblock console-output">
@@ -448,6 +448,9 @@ the selector in the service is pointing to the appropriate revision.</p>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get rs -l app=rollouts-demo -n user%USERNUM%-prod -o yaml | oc neat</code></pre>
 </div>
 </div>
+<div class="paragraph">
+<p>Note the <code>rollouts-pod-template-hash</code> in <code>spec.template.metadata.labels</code> field in the ReplicaSet.</p>
+</div>
 </div>
 </div>
 <div class="sect1">
@@ -508,7 +511,7 @@ are available for interacting with the rollout.</p>
 <h2 id="promote-image"><a class="anchor" href="#promote-image"></a>Promote Image</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this module we will promote a new image and observe the behavior of the application during the promotion
+<p>In this section we will promote a new image and observe the behavior of the application during the promotion
 process. To promote the image we will use a simple pipeline to update the image reference to use a different
 color.</p>
 </div>
@@ -625,7 +628,8 @@ service whereas the Active service, which is considered Stable, is associated wi
 </div>
 <div class="paragraph">
 <p>To perform the promotion, click the <code>Promote</code> button in the Dashboard, it will change to an orange <code>Sure?</code> button
-to ask for confirmation so click it again to confirm.</p>
+to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
+Dashboard will show a countdown for this.</p>
 </div>
 <div class="paragraph">
 <p>Once the promotion has been completed, you should see that the Active service is now associated with the <code>blue</code> image and is marked
@@ -677,8 +681,8 @@ note that there is a new revision using the Yellow image associated with the Act
 </div>
 <div class="paragraph">
 <p>While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
-the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts has this feature with
-AnalysisTemplates and we will cover that in the next module.</p>
+the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
+which will be covered that in the next module.</p>
 </div>
 </div>
 </div>
