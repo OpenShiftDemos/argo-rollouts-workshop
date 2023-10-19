@@ -117,6 +117,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#enable-auto-promotion">Enable Auto-Promotion</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#cleanup">Clean-up</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -702,6 +705,27 @@ note that there is a new revision using the Yellow image associated with the Act
 <p>While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
 the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
 which will be covered that in the next module.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cleanup"><a class="anchor" href="#cleanup"></a>Clean-up</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Prior to moving on to the next module we need to perform some clean-up activites. First let&#8217;s reset the Development environment back to blue:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ./deploy/base -n user%USERNUM%-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next we will delete the Rollout in the <code>user%USERNUM%-prod</code> so we can start with a fresh version.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc delete -k ./bluegreen/base -n user%USERNUM%-prod</code></pre>
+</div>
 </div>
 </div>
 </div>
