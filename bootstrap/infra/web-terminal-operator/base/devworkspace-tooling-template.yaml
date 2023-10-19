@@ -16,6 +16,9 @@ spec:
       - tail
       - -f
       - /dev/null
+      env:
+        - name: SUB_DOMAIN
+          value: ${SUB_DOMNAIN}
       cpuLimit: 400m
       cpuRequest: 100m
       image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.10

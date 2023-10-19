@@ -108,4 +108,19 @@ analysis template.
 The query parameter is URL encoded since we are using the web provider rather then the prometheus
 provider hence the odd encoding.
 
-To deploy this new version of the blue-green rollout, execute the following command:
+Prior to deploying the rollout we need to fetch the URL for the preview service so we can
+replace the token in the route-url argument in the rollout.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+export PREVIEW_ROUTE=$(oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}')
+----
+
+Next to deploy this new version of the blue-green rollout, execute the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+kustomize build ./bluegreen-analysis/base | sed 's/$PREVIEW_ROUTE/%PREVIEW_ROUTE%/'| oc apply -n user%USERNUM%-prod -f -
+----

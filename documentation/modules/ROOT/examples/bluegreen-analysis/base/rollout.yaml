@@ -16,9 +16,11 @@ spec:
       prePromotionAnalysis:
         args:
         - name: query
-          value: irate%28haproxy_backend_http_responses_total%7Bexported_namespace%3D%27rollouts-demo-prod%27%2C%20route%3D~%22bluegreen-preview%22%2C%20code%3D%225xx%22%7D%5B1m%5D%29%20%3E%205%20or%20on%28%29%20vector%280%29
+          # Note encoded so it can be used as a query parameter, unencode:
+          # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'}[1m])>5 or on() vector(0)
+          value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
         - name: route-url
-          value: ${PREVIEW_ROUTE}
+          value: %PREVIEW_ROUTE%
         templates:
         - templateName: smoke-tests
   template:
