@@ -1,0 +1,27 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: active
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: active
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: preview
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: preview
