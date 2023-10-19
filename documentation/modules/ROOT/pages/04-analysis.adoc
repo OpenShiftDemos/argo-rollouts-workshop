@@ -24,8 +24,8 @@ is used before the new version is deployed and is useful for validating the depl
 for live traffic. Post-promotion is executed after the cut-over and can validate that the deployment is working
 with live traffic.
 
-[#analysis-deployment]
-== Analysis Deployment
+[#analysis-details]
+== Analysis Details
 
 In this section we will deploy the same Blue-Green rollout we did previously but with
 a pre-promotion analysis included along with the corresponding analysis template. Prior to starting,
@@ -100,3 +100,6 @@ Next let's look at the rollout and see how the AnalysisTemplate is wired into th
 ----
 include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]
 ----
+
+[#analysis-deployment]
+== Analysis Deployment

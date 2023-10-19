@@ -17,6 +17,8 @@
 
 * xref:04-analysis.adoc[4. Analysis]
 ** xref:04-analysis.adoc#analysis-overview[Analysis Overview]
+** xref:04-analysis.adoc#analysis-details[Analysis Details]
+** xref:04-analysis.adoc#analysis-deployment[Analysis Deployment]
 
 * xref:05-canary-rollout.adoc[5. Canary Rollout]
 ** xref:05-canary-rollout.adoc#canary-overview[Canary Overview]
