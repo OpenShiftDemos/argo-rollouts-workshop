@@ -113,5 +113,5 @@ Next to deploy this new version of the blue-green rollout, execute the following
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-kustomize build ./bluegreen-analysis/base | sed "s/$DOMAIN/$SUB_DOMAIN/" | sed "s/$USERNUM/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -
+kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -
 ----
