@@ -24,8 +24,8 @@ is used before the new version is deployed and is useful for validating the depl
 for live traffic. Post-promotion is executed after the cut-over and can validate that the deployment is working
 with live traffic.
 
-[#analysis-details]
-== Analysis Details
+[#analysis-deployment]
+== Analysis Deployment
 
 In this section we will deploy the same Blue-Green rollout we did previously but with
 a pre-promotion analysis included along with the corresponding analysis template. Prior to starting,
@@ -74,24 +74,23 @@ Remember we are running this Analysis in the pre-promotion phase of the blue-gre
 be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
 the promotion should proceed.
 
-In the arguments we are taking two key arguments, `query` and `route-url`, which will be passed from the Rollout. Notice that
-the `query` argument is being used in the URL of the web provider, this is the Prometheus query that we want to execute
-against the OpenShift monitoring stack.
+In the arguments we are taking two key arguments, `query` and `route-url`, which will be passed from the
+Rollout. Notice that the `query` argument is being used at the end of the URL of the web provider as a
+query parameter, this is the Prometheus query that we want to execute against the OpenShift monitoring stack.
 
-[listing]
+[subs="quotes"]
 ----
 provider:
   web:
     url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ *args.query* }}
 ----
 
-The `route-url` parameter is being used in the second provider, the job, where we will be creating load. This parameter is used
-to specify the OpenShift route URL where we want to drive the load, i.e the URL that siege will be hitting when it generates load.
+The `route-url` parameter is being used in the second provider, the job, where we will be creating load. This
+parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
+siege will be hitting when it generates load.
 
 Finally a third parameter, `api-token`, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
 stack, it was created by the GitOps process which provisioned this workshop.
-
-
 
 Next let's look at the rollout and see how the AnalysisTemplate is wired into the rollout.
 
@@ -101,5 +100,12 @@ Next let's look at the rollout and see how the AnalysisTemplate is wired into th
 include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]
 ----
 
-[#analysis-deployment]
-== Analysis Deployment
+Notice that in `.spec.strategy.blueGreen` we have now defined the `prePromotionAnalysis` field. In this field
+we define the template we want to use as well as the arguments that the rollout needs to provide the
+analysis template.
+
+[Note]
+The query parameter is URL encoded since we are using the web provider rather then the prometheus
+provider hence the odd encoding.
+
+To deploy this new version of the blue-green rollout, execute the following command:
