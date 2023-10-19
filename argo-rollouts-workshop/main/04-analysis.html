@@ -212,8 +212,132 @@ with live traffic.</p>
 <h2 id="analysis-deployment"><a class="anchor" href="#analysis-deployment"></a>Analysis Deployment</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In this section we will update the Blue-Green rollout we have already
-deployed with a pre-promotion analysis template.</p>
+<p>In this section we will deploy the same Blue-Green rollout we did previously but with
+a pre-promotion analysis included along with the corresponding analysis template. Prior to starting,
+confirm you are still at the correct path.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, let&#8217;s explore the manifests that we will be deploying in the <code>./bluegreen-analysis/base</code> folder:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls ./bluegreen-analysis/base</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here you will see the same files that we used previously, however there is a new file <code>analysistemplate.yaml</code>. Examining
+the file we see it appears as follows:</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen-analysis/base/analysistemplate.yaml" target="_blank" rel="noopener">./bluegreen-analysis/base/analysistemplate.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">kind: AnalysisTemplate
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: smoke-tests
+spec:
+  args:
+  - name: query
+  - name: route-url
+  - name: api-token
+    valueFrom:
+      secretKeyRef:
+        name: monitor-auth-secret
+        key: token
+  metrics:
+  - name: success-rate
+    interval: 30s
+    count: 4
+    # NOTE: prometheus queries return results in the form of a vector.
+    # So it is common to access the index 0 of the returned array to obtain the value
+    successCondition: result[0].value[1] == '0'
+    failureLimit: 0
+    provider:
+      web:
+          url: <a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> args.query }}
+          insecure: true
+          headers:
+            - key: Authorization
+              value: "Bearer {{args.api-token}}"
+          jsonPath: "{$.data.result}"
+      # prometheus:
+      #   address: <a href="https://thanos-querier.openshift-monitoring:9091" class="bare">https://thanos-querier.openshift-monitoring:9091</a>
+      #   query: |
+      #     sum(irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}", code!~"5.*"}[5m])) / sum(irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}"}[5m])) &gt; 0 or on() vector(0)
+  - name: run-load
+    provider:
+      job:
+        spec:
+          backoffLimit: 1
+          template:
+            spec:
+              containers:
+              - name: siege
+                image: quay.io/gnunn/tools:latest
+                command: [sh, -c]
+                args: ["siege -c 20 -r 15 -d10 -v <a href="http://{{args.route-url}}"" class="bare">http://{{args.route-url}}"</a>]
+              restartPolicy: Never</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This AnalysisTemplate is broken up into two broad sections as follows:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><code>.spec.args</code>. This is where you can specify arguments which are passed by the rollout when using the template. These arguments enable the template to be reusable across many different rollouts.</p>
+</li>
+<li>
+<p><code>.spec.metrics</code>. These are the metric providers that will be used to collect data for the analysis as well as any jobs that need to be executed.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>Next let&#8217;s look at the rollout and see how the AnalysisTemplate is wired into the rollout.</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen-analysis/base/rollout.yaml" target="_blank" rel="noopener">./bluegreen-analysis/base/rollout.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 2
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  strategy:
+    blueGreen:
+      activeService: active
+      previewService: preview
+      autoPromotionEnabled: false
+      prePromotionAnalysis:
+        args:
+        - name: query
+          value: irate%28haproxy_backend_http_responses_total%7Bexported_namespace%3D%27rollouts-demo-prod%27%2C%20route%3D~%22bluegreen-preview%22%2C%20code%3D%225xx%22%7D%5B1m%5D%29%20%3E%205%20or%20on%28%29%20vector%280%29
+        - name: route-url
+          value: bluegreen-preview-rollouts-demo-prod.${SUB_DOMAIN}
+        templates:
+        - templateName: smoke-tests
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - image: quay.io/openshiftdemos/rollouts-demo:blue
+        imagePullPolicy: IfNotPresent
+        name: rollouts-demo
+        ports:
+        - containerPort: 8080</code></pre>
+</div>
 </div>
 </div>
 </div>
