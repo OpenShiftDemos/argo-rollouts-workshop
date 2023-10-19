@@ -253,22 +253,18 @@ spec:
   - name: success-rate
     interval: 30s
     count: 4
-    # NOTE: prometheus queries return results in the form of a vector.
-    # So it is common to access the index 0 of the returned array to obtain the value
+    # Prometheus queries return results in the form of a vector so it is
+    # common to access the index 0 of the returned array to obtain the value
     successCondition: result[0].value[1] == '0'
     failureLimit: 0
     provider:
       web:
-          url: <a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> args.query }}
-          insecure: true
-          headers:
-            - key: Authorization
-              value: "Bearer {{args.api-token}}"
-          jsonPath: "{$.data.result}"
-      # prometheus:
-      #   address: <a href="https://thanos-querier.openshift-monitoring:9091" class="bare">https://thanos-querier.openshift-monitoring:9091</a>
-      #   query: |
-      #     sum(irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}", code!~"5.*"}[5m])) / sum(irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}"}[5m])) &gt; 0 or on() vector(0)
+        url: <a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> args.query }}
+        insecure: true
+        headers:
+          - key: Authorization
+            value: "Bearer {{args.api-token}}"
+        jsonPath: "{$.data.result}"
   - name: run-load
     provider:
       job:
@@ -290,12 +286,48 @@ spec:
 <div class="ulist">
 <ul>
 <li>
-<p><code>.spec.args</code>. This is where you can specify arguments which are passed by the rollout when using the template. These arguments enable the template to be reusable across many different rollouts.</p>
+<p><code>.spec.args</code>. This is where you can specify arguments which are passed by the rollout when using the template. These arguments
+enable the template to be reusable across many different rollouts.</p>
 </li>
 <li>
-<p><code>.spec.metrics</code>. These are the metric providers that will be used to collect data for the analysis as well as any jobs that need to be executed.</p>
+<p><code>.spec.metrics</code>. These are the metric providers that will be used to collect data for the analysis as well as any jobs
+that need to be executed.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>In the metrics provider section we can see we have two providers defined, one that uses the web metric provider to pull
+metrics from Thanos, an aggregator for Prometheus data, and a job that runs <a href="https://github.com/JoeDog/siege" target="_blank" rel="noopener">Apache Siege</a>
+to drive some load on the application.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+We are using the web metric provider here since Argo Rollouts does not currenly support authentication with the Prometheus
+provider. This is one of the gaps that Red Hat is planning on closing prior to supporting Rollouts in OpenShift GitOps
+as a Generally Available (GA) product.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
+be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
+the promotion should proceed.</p>
+</div>
+<div class="paragraph">
+<p>In the arguments we are taking two key arguments, <code>query</code> and <code>route-url</code>, which will be passed from the Rollout. Notice that
+the <code>query</code> argument is being used in the URL of the web provider, this is the Prometheus query that we want to execute
+against the OpenShift monitoring stack.</p>
+</div>
+<div class="paragraph">
+<div class="title"><a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> <strong>args.query</strong> }}</div>
+<p>A third parameter, <code>api-token</code>, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
+stack, it was created by the GitOps process which provisioned this workshop.</p>
 </div>
 <div class="paragraph">
 <p>Next let&#8217;s look at the rollout and see how the AnalysisTemplate is wired into the rollout.</p>
