@@ -12,7 +12,7 @@ spec:
     blueGreen:
       activeService: active
       previewService: preview
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       prePromotionAnalysis:
         args:
         - name: query
