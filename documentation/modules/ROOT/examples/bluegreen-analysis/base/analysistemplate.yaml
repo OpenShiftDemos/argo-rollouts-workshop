@@ -15,22 +15,18 @@ spec:
   - name: success-rate
     interval: 30s
     count: 4
-    # NOTE: prometheus queries return results in the form of a vector.
-    # So it is common to access the index 0 of the returned array to obtain the value
+    # Prometheus queries return results in the form of a vector so it is
+    # common to access the index 0 of the returned array to obtain the value
     successCondition: result[0].value[1] == '0'
     failureLimit: 0
     provider:
       web:
-          url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ args.query }}
-          insecure: true
-          headers:
-            - key: Authorization
-              value: "Bearer {{args.api-token}}"
-          jsonPath: "{$.data.result}"
-      # prometheus:
-      #   address: https://thanos-querier.openshift-monitoring:9091
-      #   query: |
-      #     sum(irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}", code!~"5.*"}[5m])) / sum(irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}"}[5m])) > 0 or on() vector(0)
+        url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ args.query }}
+        insecure: true
+        headers:
+          - key: Authorization
+            value: "Bearer {{args.api-token}}"
+        jsonPath: "{$.data.result}"
   - name: run-load
     provider:
       job:

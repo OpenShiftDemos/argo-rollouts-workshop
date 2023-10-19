@@ -56,8 +56,34 @@ include::ROOT:example$bluegreen-analysis/base/analysistemplate.yaml[]
 
 This AnalysisTemplate is broken up into two broad sections as follows:
 
-* `.spec.args`. This is where you can specify arguments which are passed by the rollout when using the template. These arguments enable the template to be reusable across many different rollouts.
-* `.spec.metrics`. These are the metric providers that will be used to collect data for the analysis as well as any jobs that need to be executed.
+* `.spec.args`. This is where you can specify arguments which are passed by the rollout when using the template. These arguments
+enable the template to be reusable across many different rollouts.
+* `.spec.metrics`. These are the metric providers that will be used to collect data for the analysis as well as any jobs
+that need to be executed.
+
+In the metrics provider section we can see we have two providers defined, one that uses the web metric provider to pull
+metrics from Thanos, an aggregator for Prometheus data, and a job that runs link:https://github.com/JoeDog/siege[Apache Siege,window='_blank']
+to drive some load on the application.
+
+[NOTE]
+We are using the web metric provider here since Argo Rollouts does not currenly support authentication with the Prometheus
+provider. This is one of the gaps that Red Hat is planning on closing prior to supporting Rollouts in OpenShift GitOps
+as a Generally Available (GA) product.
+
+Remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
+be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
+the promotion should proceed.
+
+In the arguments we are taking two key arguments, `query` and `route-url`, which will be passed from the Rollout. Notice that
+the `query` argument is being used in the URL of the web provider, this is the Prometheus query that we want to execute
+against the OpenShift monitoring stack.
+
+.https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ *args.query* }}
+
+A third parameter, `api-token`, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
+stack, it was created by the GitOps process which provisioned this workshop.
+
+
 
 
 
