@@ -326,9 +326,9 @@ against the OpenShift monitoring stack.</p>
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">provider:
+<pre>provider:
   web:
-    url: <a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> *args.query* }}</code></pre>
+    url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ *args.query* }}</pre>
 </div>
 </div>
 <div class="paragraph">
@@ -336,7 +336,7 @@ against the OpenShift monitoring stack.</p>
 to specify the OpenShift route URL where we want to drive the load, i.e the URL that siege will be hitting when it generates load.</p>
 </div>
 <div class="paragraph">
-<p>A third parameter, <code>api-token</code>, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
+<p>Finally a third parameter, <code>api-token</code>, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
 stack, it was created by the GitOps process which provisioned this workshop.</p>
 </div>
 <div class="paragraph">
