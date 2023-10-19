@@ -3,3 +3,29 @@ include::_attributes.adoc[]
 
 [#analysis-overview]
 == Analysis Overview
+
+When performing upgrades of services there is a need to test the new version
+that is being deployed to ensure functionality is not being negatively impacted. The
+link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis[Analysis,window='_blank'] feature
+enables Rollouts to collect data and metrics from a variety of providers to validate the
+new version of the application.
+
+In addition to collecting data, an Analysis can include a Job to drive more advanced use cases. For example
+a Job could be used to run load against an application in order to generate the metrics needed to
+validate the revision.
+
+To deploy an Analysis, first an AnalysisTemplate is created that defines the analysis that is required
+and then is associated with one or more rollouts. The association with the rollout is dependent one
+the rollout strategy used. In this module we will look at it from the perspective of the Blue-Green
+strategy we have deployed however in the next module we delve into it for the Canary strategy as well.
+
+In the blue-green strategy, an Analysis can be added as either pre-promotion or post-promotion. Pre-promotion
+is used before the new version is deployed and is useful for validating the deployment prior to cutting over to it
+for live traffic. Post-promotion is executed after the cut-over and can validate that the deployment is working
+with live traffic.
+
+[#analysis-deployment]
+== Analysis Deployment
+
+In this section we will update the Blue-Green rollout we have already
+deployed with a pre-promotion analysis template.
