@@ -324,8 +324,18 @@ the promotion should proceed.</p>
 the <code>query</code> argument is being used in the URL of the web provider, this is the Prometheus query that we want to execute
 against the OpenShift monitoring stack.</p>
 </div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">provider:
+  web:
+    url: <a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> *args.query* }}</code></pre>
+</div>
+</div>
 <div class="paragraph">
-<div class="title"><a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> <strong>args.query</strong> }}</div>
+<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load. This parameter is used
+to specify the OpenShift route URL where we want to drive the load, i.e the URL that siege will be hitting when it generates load.</p>
+</div>
+<div class="paragraph">
 <p>A third parameter, <code>api-token</code>, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
 stack, it was created by the GitOps process which provisioned this workshop.</p>
 </div>
