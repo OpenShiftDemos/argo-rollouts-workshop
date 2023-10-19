@@ -118,7 +118,7 @@ Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Proje
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get routes -n user%USERNUM%-prod'
+oc get routes -n user%USERNUM%-prod
 ----
 
 [.console-output]
@@ -185,6 +185,8 @@ To view this, output the manifest for the currently deployed replicaset:
 oc get rs -l app=rollouts-demo -n user%USERNUM%-prod -o yaml | oc neat
 ----
 
+Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field in the ReplicaSet.
+
 [#argo-rollouts-dashboard]
 == Argo Rollouts Dashboard
 
@@ -219,7 +221,7 @@ image::argo-rollouts-dashboard-tile-details.png[]
 [#promote-image]
 == Promote Image
 
-In this module we will promote a new image and observe the behavior of the application during the promotion
+In this section we will promote a new image and observe the behavior of the application during the promotion
 process. To promote the image we will use a simple pipeline to update the image reference to use a different
 color.
 
@@ -298,7 +300,8 @@ The dashboard shows that the newest revision is using the `green` image and is t
 service whereas the Active service, which is considered Stable, is associated with the previous revision using the `Blue` image.
 
 To perform the promotion, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
-to ask for confirmation so click it again to confirm.
+to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
+Dashboard will show a countdown for this.
 
 Once the promotion has been completed, you should see that the Active service is now associated with the `blue` image and is marked
 as `Stable`. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
@@ -337,5 +340,5 @@ Press the start button and wait for the pipeline to complete as per last time. N
 note that there is a new revision using the Yellow image associated with the Active service.
 
 While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
-the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts has this feature with
-AnalysisTemplates and we will cover that in the next module.
+the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
+which will be covered that in the next module.
