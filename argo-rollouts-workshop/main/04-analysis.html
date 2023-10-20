@@ -132,6 +132,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#analysis-deployment">Analysis Deployment</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#cleanup">Clean-up</a>
+  </li>
 </ul>
   </li>
   <li class="nav-item" data-depth="1">
@@ -433,11 +436,22 @@ provider hence the odd encoding.</p>
 </div>
 </div>
 <div class="sect1">
-<h2 id="analysis-promotion"><a class="anchor" href="#analysis-promotion"></a>Promotion</h2>
+<h2 id="analysis-promotion"><a class="anchor" href="#analysis-promotion"></a>Promotion with Analysis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>With the upodated blue-green rollout deployed, let&#8217;s run through a promotion to
-a new image and observe the behavior. In the OpenShift console, go to the Pipelines
+<p>In this section we will promote new images using the Analysis to test the new version of the
+application. In the first part we will perform a promotion where the analysis succeeds and
+the promotion occurs. In the second part we will have the application trigger errors causing
+the analysis to fail and the promotion to be aborted.</p>
+</div>
+<div class="paragraph">
+<p>Note that auto-promotion is enabled.</p>
+</div>
+<div class="sect2">
+<h3 id="_analysis_passes"><a class="anchor" href="#_analysis_passes"></a>Analysis Passes</h3>
+<div class="paragraph">
+<p>With the upodated blue-green rollout deployed, let&#8217;s run through a promotion to a new image where
+the analysis succeeds and observe the behavior. In the OpenShift console, go to the Pipelines
 and do a promotion to a green image. As a reminder this is located here in the console:</p>
 </div>
 <div class="imageblock">
@@ -495,6 +509,114 @@ completed:</p>
 <p>Notice that one row has four graph icons, this represents the four measurements that were taken
 during the execution of the AnalysisRun. Hovering the mouse over any of these graph icons will
 show you the measurement result.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+You may need to refresh the browser to see new metrics being added to the AnalysisRun depending
+on connectivity during the workshop.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_analysis_fails"><a class="anchor" href="#_analysis_fails"></a>Analysis Fails</h3>
+<div class="paragraph">
+<p>Now that we have experienced a successful promotion, let&#8217;s examine the behavior when the
+application fails. To start, open the preview version of the application in a separate
+browser tab, remember we can retrieve the route for the preview service by using this command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Slide the error bar as shown below all the way to the right. Notice how all of the flashing
+squares have red boxes around them indicating they are returning error messages.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-errors.png" alt="rollouts demo errors">
+</div>
+</div>
+<div class="admonitionblock important">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-important" title="Important"></i>
+</td>
+<td class="content">
+In this section there is some timing involved, when we promote the new image the error
+setting will be reset back to 0 for the preview service. After the pipeline completes,
+immediately switch back to the tab with the preview service and push the error bar
+back to 100%.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Now we will perform a promotion to a yellow image, go back to the OpenShift Pipeline and start it
+with the yellow image:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-pipeline-promote-yellow.png" alt="console pipeline promote yellow">
+</div>
+</div>
+<div class="paragraph">
+<p>As mentioned in the note above, once the pipeline is finished you must immediately switch back
+to the preview service and set the error rate to 100%.</p>
+</div>
+<div class="paragraph">
+<p>If you did everything correctly, you should see that the Analysis failed as indicated by the red
+button:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-analysis-failed.png" alt="argo rollouts analysis failed">
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If the timing did not work out for you, you can try again by promoting with a different color.
+You can see the list of available colors .<a href="https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags" target="_blank" rel="noopener">here</a>
+where each color is simply a tag in our quay.io registry.
+</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="cleanup"><a class="anchor" href="#cleanup"></a>Clean-up</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Prior to moving on to the next module we need to perform some clean-up activites. First let&#8217;s reset the Development environment back to blue:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ./deploy/base -n user%USERNUM%-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next we will delete the Rollout in the <code>user%USERNUM%-prod</code> so we can start fresh as we explore the canary strategy next.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc delete -n user%USERNUM%-prod -f -</code></pre>
+</div>
 </div>
 </div>
 </div>
