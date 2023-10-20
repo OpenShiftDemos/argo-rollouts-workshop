@@ -70,7 +70,11 @@ We are using the web metric provider here since Argo Rollouts does not currenly 
 provider. This is one of the gaps that Red Hat is planning on closing prior to supporting Rollouts in OpenShift GitOps
 as a Generally Available (GA) product.
 
-Remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
+The `count` and `interval` fields in the `success-rate` metric powored by the web provider indicate that the metric will be checked four times
+with a thirty second interval between each check. The `failureLimit` determines how many failures are permitted for the rollout to be considered
+a success, here we set a failure limit of 0.
+
+Finally, remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
 be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
 the promotion should proceed.
 
@@ -139,4 +143,35 @@ and do a promotion to a green image. As a reminder this is located here in the c
 
 image::console-pipelines-overview.png[]
 
-Wait for the pipelines to complete and then go to the Argo Rollouts dashboard:
+Wait for the pipelines to complete and then go to the Argo Rollouts dashboard where
+you may see the following if the Analysis is still running where the Analysis button
+is shown in grey (highlighted in the image with a red outline):
+
+image::argo-rollouts-analysis-in-progress-overview.png[]
+
+When an a promotion of a rollout with an analysis is done the controller will
+generate an analysis run for each template execution. Since we only have one template
+being used in pre-promotion we will only see one analysis run being created however
+it is possible for a promotion to have multiple analysis runs dependent on the
+rollout configuration, i.e. in blue-green defining both pre and post promotion analysis.
+
+Clicking on the analysis button will expand the view to show the in-pregress analysis
+that is running:
+
+image::argo-rollouts-analysis-in-progress-details.png[]
+
+Note there are two green boxes with graph icons that are being shown in separate
+rows. Each row represents a provider and if you recall we had two providers, the job running
+Siege and the metric provider. Hovering the mouse over the buttons will display
+additional information:
+
+image::argo-rollouts-analysis-in-progress-hover.png[]
+
+Once the analysis is complete the Analysis button will go green to show that it successfully
+completed:
+
+image::argo-rollouts-analysis-completed.png[]
+
+Notice that one row has four graph icons, this represents the four measurements that were taken
+during the execution of the AnalysisRun. Hovering the mouse over any of these graph icons will
+show you the measurement result.
