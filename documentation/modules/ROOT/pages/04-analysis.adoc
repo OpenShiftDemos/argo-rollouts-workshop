@@ -135,10 +135,19 @@ oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{
 image::rollouts-demo-app-blue.png[]
 
 [#analysis-promotion]
-== Promotion
+== Promotion with Analysis
 
-With the upodated blue-green rollout deployed, let's run through a promotion to
-a new image and observe the behavior. In the OpenShift console, go to the Pipelines
+In this section we will promote new images using the Analysis to test the new version of the
+application. In the first part we will perform a promotion where the analysis succeeds and
+the promotion occurs. In the second part we will have the application trigger errors causing
+the analysis to fail and the promotion to be aborted.
+
+Note that auto-promotion is enabled.
+
+=== Analysis Passes
+
+With the upodated blue-green rollout deployed, let's run through a promotion to a new image where
+the analysis succeeds and observe the behavior. In the OpenShift console, go to the Pipelines
 and do a promotion to a green image. As a reminder this is located here in the console:
 
 image::console-pipelines-overview.png[]
@@ -175,3 +184,67 @@ image::argo-rollouts-analysis-completed.png[]
 Notice that one row has four graph icons, this represents the four measurements that were taken
 during the execution of the AnalysisRun. Hovering the mouse over any of these graph icons will
 show you the measurement result.
+
+[NOTE]
+You may need to refresh the browser to see new metrics being added to the AnalysisRun depending
+on connectivity during the workshop.
+
+=== Analysis Fails
+
+Now that we have experienced a successful promotion, let's examine the behavior when the
+application fails. To start, open the preview version of the application in a separate
+browser tab, remember we can retrieve the route for the preview service by using this command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+Slide the error bar as shown below all the way to the right. Notice how all of the flashing
+squares have red boxes around them indicating they are returning error messages.
+
+image::rollouts-demo-errors.png[]
+
+[IMPORTANT]
+In this section there is some timing involved, when we promote the new image the error
+setting will be reset back to 0 for the preview service. After the pipeline completes,
+immediately switch back to the tab with the preview service and push the error bar
+back to 100%.
+
+Now we will perform a promotion to a yellow image, go back to the OpenShift Pipeline and start it
+with the yellow image:
+
+image::console-pipeline-promote-yellow.png[]
+
+As mentioned in the note above, once the pipeline is finished you must immediately switch back
+to the preview service and set the error rate to 100%.
+
+If you did everything correctly, you should see that the Analysis failed as indicated by the red
+button:
+
+image::argo-rollouts-analysis-failed.png[]
+
+[NOTE]
+If the timing did not work out for you, you can try again by promoting with a different color.
+You can see the list of available colors .link:https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags[here, window='_blank']
+where each color is simply a tag in our quay.io registry.
+
+[#cleanup]
+== Clean-up
+
+Prior to moving on to the next module we need to perform some clean-up activites. First let's reset the Development environment back to blue:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k ./deploy/base -n user%USERNUM%-dev
+----
+
+Next we will delete the Rollout in the `user%USERNUM%-prod` so we can start fresh as we explore the canary strategy next.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc delete -n user%USERNUM%-prod -f -
+----
