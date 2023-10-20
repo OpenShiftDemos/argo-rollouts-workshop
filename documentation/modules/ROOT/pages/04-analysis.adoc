@@ -129,3 +129,14 @@ oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{
 ----
 
 image::rollouts-demo-app-blue.png[]
+
+[#analysis-promotion]
+== Promotion
+
+With the upodated blue-green rollout deployed, let's run through a promotion to
+a new image and observe the behavior. In the OpenShift console, go to the Pipelines
+and do a promotion to a green image. As a reminder this is located here in the console:
+
+image::console-pipelines-overview.png[]
+
+Wait for the pipelines to complete and then go to the Argo Rollouts dashboard:
