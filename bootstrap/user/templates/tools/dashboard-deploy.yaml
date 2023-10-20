@@ -40,7 +40,7 @@ spec:
         command:
         - kubectl
         image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.10
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Always
         name: dashboard
         ports:
         - containerPort: 3100
