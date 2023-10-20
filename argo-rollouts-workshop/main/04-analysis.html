@@ -369,7 +369,7 @@ spec:
         - name: query
           # Note encoded so it can be used as a query parameter, unencode:
           # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'}[1m])&gt;5 or on() vector(0)
-          value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USERNUM%-prod',route=~'preview',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
+          value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USER%-prod',route=~'preview',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
         - name: route-url
           value: preview-user%USER%-prod.%SUB_DOMAIN%
         templates:
@@ -424,6 +424,24 @@ provider hence the odd encoding.</p>
 <div class="content">
 <img src="_images/rollouts-demo-app-blue.png" alt="rollouts demo app blue">
 </div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="analysis-promotion"><a class="anchor" href="#analysis-promotion"></a>Promotion</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>With the upodated blue-green rollout deployed, let&#8217;s run through a promotion to
+a new image and observe the behavior. In the OpenShift console, go to the Pipelines
+and do a promotion to a green image. As a reminder this is located here in the console:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-pipelines-overview.png" alt="console pipelines overview">
+</div>
+</div>
+<div class="paragraph">
+<p>Wait for the pipelines to complete and then go to the Argo Rollouts dashboard:</p>
 </div>
 </div>
 </div>
