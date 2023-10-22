@@ -1,4 +1,4 @@
 resources:
 - rollout.yaml
 - services.yaml
-- route.yaml
+- routes.yaml

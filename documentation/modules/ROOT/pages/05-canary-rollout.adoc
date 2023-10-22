@@ -63,3 +63,33 @@ specified in seconds, minutes or hours increments.
 [NOTE]
 For the purposes of this workshop the pause sequences are deliberately short, it is common
 to have much longer pauses for more complex applications.
+
+Next let's look at the Kubernetes services that are defined:
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/services.yaml[./canary/base/services.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$canary/base/services.yaml[]
+----
+
+As expected we have services for stable and canary defined however there is a new service called
+all. This service is not managed by the rollout and includes all pods, we will use this service
+to observe the behavior of the rollout.
+
+[Important]
+Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. As a result
+we will be relying on the best effort approach of scaling pods. The `all` service will enable
+us to see this by including all pods.
+
+With the services out of the way now examine the routes:
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/routes.yaml[./canary/base/routes.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$canary/base/routes.yaml[]
+----
+
+We have defined a route to match each service that we saw previously. Note for the `all` route
+OpenShift Route annotations are being used to disable sticky sessions and use round-robin
+load balancing. This enables us to observe the split of traffic as Rollouts manage the pod
+replicas between stable and canary services.
