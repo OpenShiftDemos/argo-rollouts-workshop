@@ -139,4 +139,4 @@ oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{
 
 The application is running with blue squares for the current version of the application:
 
-image:rollouts-demo-app-blue.png
+image::rollouts-demo-app-blue.png[]
