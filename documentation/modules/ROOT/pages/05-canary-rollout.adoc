@@ -13,6 +13,11 @@ previous version.
 This process is depicted in the diagram below where we see how we slowly migrate traffic from
 the current version to the new version until the process is completed.
 
+[NOTE]
+Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. This
+work is in progress and will be available in the future as Rollouts moves to GA status
+in OpenShift GitOps.
+
 image::overview-canary.png[]
 
 To manage the transition of traffic between stable and canary services, Argo Rollouts supports a variety
@@ -77,9 +82,9 @@ all. This service is not managed by the rollout and includes all pods, we will u
 to observe the behavior of the rollout.
 
 [Important]
-Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. As a result
-we will be relying on the best effort approach of scaling pods. The `all` service will enable
-us to see this by including all pods.
+As mentioned previously, Argo Rollouts does not currently have support for traffic shaping for
+OpenShift Routes. As a result we will be relying on the best effort approach of scaling pods.
+The `all` service will enable us to see this by including all pods.
 
 With the services out of the way now examine the routes:
 
@@ -89,7 +94,49 @@ With the services out of the way now examine the routes:
 include::ROOT:example$canary/base/routes.yaml[]
 ----
 
-We have defined a route to match each service that we saw previously. Note for the `all` route
+We have defined a route to match each service that we saw previously. Note for the `all` route,
 OpenShift Route annotations are being used to disable sticky sessions and use round-robin
 load balancing. This enables us to observe the split of traffic as Rollouts manage the pod
 replicas between stable and canary services.
+
+To deploy the canary rollout, use the following command to process the kustomization:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k ./canary/base -n user%USERNUM%-prod
+----
+
+Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
+that the pods are up and running:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get pods -l app=rollouts-demo -n user%USERNUM%-prod
+----
+
+The console should return something similar to:
+
+[TODO]
+Update list below for eight replicas
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+NAME                             READY   STATUS    RESTARTS   AGE
+rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
+rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s
+----
+
+Retrieve the stable route URL using the command below and copy to a browser tab:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+The application is running with blue squares for the current version of the application:
+
+image:rollouts-demo-app-blue.png
