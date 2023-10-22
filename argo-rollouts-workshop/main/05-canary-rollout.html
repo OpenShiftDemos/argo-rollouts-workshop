@@ -190,6 +190,27 @@
 <div class="sect1">
 <h2 id="canary-overview"><a class="anchor" href="#canary-overview"></a>Canary Overview</h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p>Canary can be thought of as an advanced version of blue-green where instead of an abrupt cut-over
+of live traffic between a current and new revision instead traffic is gradually increased to the new
+version in increments, or steps. Like the canary in the coal mine euphemism, the idea is to allow
+users to access the new version over time and if unexpected problems occur revert back to the
+previous version.</p>
+</div>
+<div class="paragraph">
+<p>This process is depicted in the diagram below where we see how we slowly migrate traffic from
+the current version to the new version until the process is completed.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/overview-canary.png" alt="overview canary">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="deploy-canary-rollout"><a class="anchor" href="#deploy-canary-rollout"></a>Deploy Canary Rollout</h2>
+<div class="sectionbody">
 
 </div>
 </div>
