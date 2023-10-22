@@ -204,6 +204,20 @@ previous version.</p>
 <p>This process is depicted in the diagram below where we see how we slowly migrate traffic from
 the current version to the new version until the process is completed.</p>
 </div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. This
+work is in progress and will be available in the future as Rollouts moves to GA status
+in OpenShift GitOps.
+</td>
+</tr>
+</table>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/overview-canary.png" alt="overview canary">
@@ -359,9 +373,9 @@ all. This service is not managed by the rollout and includes all pods, we will u
 to observe the behavior of the rollout.</p>
 </div>
 <div class="paragraph">
-<p>Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. As a result
-we will be relying on the best effort approach of scaling pods. The <code>all</code> service will enable
-us to see this by including all pods.</p>
+<p>As mentioned previously, Argo Rollouts does not currently have support for traffic shaping for
+OpenShift Routes. As a result we will be relying on the best effort approach of scaling pods.
+The <code>all</code> service will enable us to see this by including all pods.</p>
 </div>
 <div class="paragraph">
 <p>With the services out of the way now examine the routes:</p>
@@ -407,10 +421,54 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>We have defined a route to match each service that we saw previously. Note for the <code>all</code> route
+<p>We have defined a route to match each service that we saw previously. Note for the <code>all</code> route,
 OpenShift Route annotations are being used to disable sticky sessions and use round-robin
 load balancing. This enables us to observe the split of traffic as Rollouts manage the pod
 replicas between stable and canary services.</p>
+</div>
+<div class="paragraph">
+<p>To deploy the canary rollout, use the following command to process the kustomization:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ./canary/base -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
+that the pods are up and running:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get pods -l app=rollouts-demo -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The console should return something similar to:</p>
+</div>
+<div class="paragraph">
+<p>Update list below for eight replicas</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                             READY   STATUS    RESTARTS   AGE
+rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
+rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Retrieve the stable route URL using the command below and copy to a browser tab:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The application is running with blue squares for the current version of the application:</p>
+</div>
+<div class="paragraph">
+<p>image:rollouts-demo-app-blue.png</p>
 </div>
 </div>
 </div>
