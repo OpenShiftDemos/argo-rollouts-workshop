@@ -307,6 +307,111 @@ to have much longer pauses for more complex applications.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>Next let&#8217;s look at the Kubernetes services that are defined:</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/services.yaml" target="_blank" rel="noopener">./canary/base/services.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: v1
+kind: Service
+metadata:
+  name: stable
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: rollouts-demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: canary
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: rollouts-demo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: all
+spec:
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: rollouts-demo</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>As expected we have services for stable and canary defined however there is a new service called
+all. This service is not managed by the rollout and includes all pods, we will use this service
+to observe the behavior of the rollout.</p>
+</div>
+<div class="paragraph">
+<p>Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. As a result
+we will be relying on the best effort approach of scaling pods. The <code>all</code> service will enable
+us to see this by including all pods.</p>
+</div>
+<div class="paragraph">
+<p>With the services out of the way now examine the routes:</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/routes.yaml" target="_blank" rel="noopener">./canary/base/routes.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: stable
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: stable
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: canary
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: canary
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: all
+  annotations:
+    haproxy.router.openshift.io/disable_cookies: 'true'
+    haproxy.router.openshift.io/balance: roundrobin
+spec:
+  port:
+    targetPort: http
+  to:
+    kind: Service
+    name: all</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have defined a route to match each service that we saw previously. Note for the <code>all</code> route
+OpenShift Route annotations are being used to disable sticky sessions and use round-robin
+load balancing. This enables us to observe the split of traffic as Rollouts manage the pod
+replicas between stable and canary services.</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
