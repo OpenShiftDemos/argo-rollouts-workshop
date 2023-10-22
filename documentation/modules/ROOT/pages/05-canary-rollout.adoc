@@ -17,3 +17,28 @@ image::overview-canary.png[]
 
 [#deploy-canary-rollout]
 == Deploy Canary Rollout
+
+Now we will deploy the canary rollout in the `user%USERNUM%-prod` namespace following the same process that we did for the
+blue-green in the previous modules. Prior to starting, confirm you are still at the correct path.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
+----
+
+Next, let's explore the manifests that we will be deploying in the `./canary/base` folder:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ls ./canary/base
+----
+
+Similar to previous modules, note we have files for `rollout.yaml`, `services.yaml` and `routes.yaml` which represent our Rollout, Services and Routes.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/rollout.yaml[./canary/base/rollout.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$canary/base/rollout.yaml[]
+----
