@@ -6,8 +6,8 @@ include::_attributes.adoc[]
 
 Canary can be thought of as an advanced version of blue-green where instead of an abrupt cut-over
 of live traffic between a current and new revision instead traffic is gradually increased to the new
-version in increments, or steps. Like the canary in the coal mine euphemism, the idea is to allow
-users to access the new version over time and if unexpected problems occur revert back to the
+version in increments, or steps. Like the proverbial link:https://en.wiktionary.org/wiki/canary_in_a_coal_mine[canary in the coal mine,window="_blank"],
+the intent is to allow users to access the new version over time and if unexpected problems occur revert back to the
 previous version.
 
 This process is depicted in the diagram below where we see how we slowly migrate traffic from
