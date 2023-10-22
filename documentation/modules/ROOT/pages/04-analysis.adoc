@@ -66,11 +66,11 @@ metrics from Thanos, an aggregator for Prometheus data, and a job that runs link
 to drive some load on the application.
 
 [NOTE]
-We are using the web metric provider here since Argo Rollouts does not currenly support authentication with the Prometheus
+We are using the web metric provider here since Argo Rollouts does not currently support authentication with the Prometheus
 provider. This is one of the gaps that Red Hat is planning on closing prior to supporting Rollouts in OpenShift GitOps
 as a Generally Available (GA) product.
 
-The `count` and `interval` fields in the `success-rate` metric powored by the web provider indicate that the metric will be checked four times
+The `count` and `interval` fields in the `success-rate` metric powered by the web provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The `failureLimit` determines how many failures are permitted for the rollout to be considered
 a success, here we set a failure limit of 0.
 
@@ -146,7 +146,7 @@ Note that auto-promotion is enabled.
 
 === Analysis Passes
 
-With the upodated blue-green rollout deployed, let's run through a promotion to a new image where
+With the updated blue-green rollout deployed, let's run through a promotion to a new image where
 the analysis succeeds and observe the behavior. In the OpenShift console, go to the Pipelines
 and do a promotion to a green image. As a reminder this is located here in the console:
 
@@ -164,7 +164,7 @@ being used in pre-promotion we will only see one analysis run being created howe
 it is possible for a promotion to have multiple analysis runs dependent on the
 rollout configuration, i.e. in blue-green defining both pre and post promotion analysis.
 
-Clicking on the analysis button will expand the view to show the in-pregress analysis
+Clicking on the analysis button will expand the view to show the in-progress analysis
 that is running:
 
 image::argo-rollouts-analysis-in-progress-details.png[]
@@ -233,7 +233,7 @@ where each color is simply a tag in our quay.io registry.
 [#cleanup]
 == Clean-up
 
-Prior to moving on to the next module we need to perform some clean-up activites. First let's reset the Development environment back to blue:
+Prior to moving on to the next module we need to perform some clean-up activities. First let's reset the Development environment back to blue:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

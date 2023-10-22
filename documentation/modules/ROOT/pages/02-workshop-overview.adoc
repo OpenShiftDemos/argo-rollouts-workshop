@@ -83,7 +83,7 @@ git clone https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollou
 
 All of the code used in this workshop will be located in:
 
-`~/argo-rollouts-workshop/docmentation/modules/ROOT/examples`
+`~/argo-rollouts-workshop/documentation/modules/ROOT/examples`
 
 Once you have cloned the repo, enter this directory in the terminal:
 

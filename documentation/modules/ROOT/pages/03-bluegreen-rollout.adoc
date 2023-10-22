@@ -177,7 +177,7 @@ Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout i
 This ReplicaSet will have a `rollouts-pod-template-hash` label in it's PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
 the selector in the service is pointing to the appropriate revision.
 
-To view this, output the manifest for the currently deployed replicaset:
+To view this, output the manifest for the currently deployed ReplicaSet:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -254,7 +254,7 @@ deployed let's select a different image color and go with `green`:
 image::console-promote-params.png[]
 
 Once `Start` is pressed, the pipeline will begin to execute. Wait until the pipeline has completed and is showing
-green checkmarks which signifies successfull completion.
+green check marks which signifies successful completion.
 
 image::console-pipeline-completed.png[]
 
@@ -340,13 +340,13 @@ Press the start button and wait for the pipeline to complete as per last time. N
 note that there is a new revision using the Yellow image associated with the Active service.
 
 While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
-the validity of the new reviewion before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
+the validity of the new revision before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
 which will be covered that in the next module.
 
 [#cleanup]
 == Clean-up
 
-Prior to moving on to the next module we need to perform some clean-up activites. First let's reset the Development environment back to blue:
+Prior to moving on to the next module we need to perform some clean-up activities. First let's reset the Development environment back to blue:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
