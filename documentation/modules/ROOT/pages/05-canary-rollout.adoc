@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 [#canary-overview]
 == Canary Overview
 
-Canary can be thought of as an advanced version of blue-green where instead of an abrupt cut-over
+link:https://argo-rollouts.readthedocs.io/en/stable/features/canary/[Canary, window='_blank'] can be thought of as an advanced version of blue-green where instead of an abrupt cut-over
 of live traffic between a current and new revision instead traffic is gradually increased to the new
 version in increments, or steps. Like the proverbial link:https://en.wiktionary.org/wiki/canary_in_a_coal_mine[canary in the coal mine,window="_blank"],
 the intent is to allow users to access the new version over time and if unexpected problems occur revert back to the
@@ -14,6 +14,11 @@ This process is depicted in the diagram below where we see how we slowly migrate
 the current version to the new version until the process is completed.
 
 image::overview-canary.png[]
+
+To manage the transition of traffic between stable and canary services, Argo Rollouts supports a variety
+of link:https://argo-rollouts.readthedocs.io/en/stable/features/traffic-management/[traffic management, window='_blank'] solutions. In
+the absence of a traffic management solution, Rollouts will manage traffic weight on a best effort basis by adjusting
+the number of pod replicas associated with each service.
 
 [#deploy-canary-rollout]
 == Deploy Canary Rollout
@@ -42,3 +47,19 @@ Similar to previous modules, note we have files for `rollout.yaml`, `services.ya
 ----
 include::ROOT:example$canary/base/rollout.yaml[]
 ----
+
+In the canary strategy, like the blue-green strategy, we specify the services to use for stable and canary. However
+unlike blue-green we specify a series of steps determining the flow of traffic between services. At each step we
+can set the traffic weight, pause or perform an inline analysis.
+
+For this example, the first step sets the weight to 20% and then pauses indefinitely since no duration
+is specified. This will allow us to observe the behavior of the canary and validate that it is
+performing as expected before performing a manual promotion.
+
+Once the manual promotion has been performed, the remaining steps will continue to increase the
+traffic weight with short pauses between each step. For the pause step the duration can be
+specified in seconds, minutes or hours increments.
+
+[NOTE]
+For the purposes of this workshop the pause sequences are deliberately short, it is common
+to have much longer pauses for more complex applications.
