@@ -146,6 +146,9 @@
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#canary-overview">Canary Overview</a>
   </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#deploy-canary-rollout">Deploy Canary Rollout</a>
+  </li>
 </ul>
   </li>
 </ul>
@@ -211,7 +214,65 @@ the current version to the new version until the process is completed.</p>
 <div class="sect1">
 <h2 id="deploy-canary-rollout"><a class="anchor" href="#deploy-canary-rollout"></a>Deploy Canary Rollout</h2>
 <div class="sectionbody">
-
+<div class="paragraph">
+<p>Now we will deploy the canary rollout in the <code>user%USERNUM%-prod</code> namespace following the same process that we did for the
+blue-green in the previous modules. Prior to starting, confirm you are still at the correct path.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Next, let&#8217;s explore the manifests that we will be deploying in the <code>./canary/base</code> folder:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls ./canary/base</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Similar to previous modules, note we have files for <code>rollout.yaml</code>, <code>services.yaml</code> and <code>routes.yaml</code> which represent our Rollout, Services and Routes.</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/rollout.yaml" target="_blank" rel="noopener">./canary/base/rollout.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 8
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: quay.io/openshiftdemos/rollouts-demo:blue
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+  strategy:
+    canary:
+      canaryService: canary
+      stableService: stable
+      steps:
+      - setWeight: 20
+      - pause: {}
+      - setWeight: 40
+      - pause: {duration: 10}
+      - setWeight: 60
+      - pause: {duration: 10}
+      - setWeight: 80
+      - pause: {duration: 10}</code></pre>
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
