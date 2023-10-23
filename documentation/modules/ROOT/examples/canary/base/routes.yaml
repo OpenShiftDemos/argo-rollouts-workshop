@@ -5,6 +5,9 @@ metadata:
 spec:
   port:
     targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
   to:
     kind: Service
     name: stable
@@ -16,6 +19,9 @@ metadata:
 spec:
   port:
     targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
   to:
     kind: Service
     name: canary
@@ -30,6 +36,9 @@ metadata:
 spec:
   port:
     targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
   to:
     kind: Service
     name: all
