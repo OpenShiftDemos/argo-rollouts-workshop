@@ -807,11 +807,26 @@ NAME                                       KIND        STATUS     AGE    INFO
 </div>
 </div>
 <div class="paragraph">
-<p>Since we no longer have a manual pause step the promotion will occur automatically as long as the analysis step completes successfully.</p>
+<p>Note that since we no longer have a manual pause step the promotion will complete automatically as long as the
+analysis step executes successfully.</p>
 </div>
 <div class="paragraph">
-<p>While the analysis is executing, or at anytime during the promotion, you can view the progress either in the dashboard or with the
-Argo Rollouts kubectl command.</p>
+<p>Let&#8217;s do our promotion to the <code>green</code> image, go to the <code>user%USERNUM%-tools</code> namespace and start the pipeline
+again. Once the pipeline has completed, observe the behavior of the canary deployment during the process in
+the Argo Rollouts Dashboard.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If you want to try this multiple times to look at different things feel free to use the pipeline
+to deploy different colors. Remember the available colors are available .<a href="https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags" target="_blank" rel="noopener">here</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
