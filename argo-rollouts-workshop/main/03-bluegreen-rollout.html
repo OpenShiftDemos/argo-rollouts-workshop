@@ -490,8 +490,8 @@ the selector in the service is pointing to the appropriate revision.</p>
 <div class="sect2">
 <h3 id="argo-rollouts-cli"><a class="anchor" href="#argo-rollouts-cli"></a>Argo Rollouts CLI</h3>
 <div class="paragraph">
-<p>Argo Rollouts provides a <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noopener">kubectl</a> extension to support
-working with rollouts. <a href="https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation" target="blank">Instructions</a>
+<p>Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as an
+<a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noopener">kubectl</a> extension. <a href="https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation" target="blank">Instructions</a>
 for installing the extension are available here however note that this has already been done for you in this workshop.</p>
 </div>
 <div class="paragraph">
@@ -711,95 +711,145 @@ live users are still seeing the old version of the applications leaving the prev
 for testing.</p>
 </div>
 <div class="paragraph">
-<p>Navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
-now has two revisions available:</p>
+<p>We can see how the rollout is managing the different revisions across ReplicaSets by using the Argo Rollouts
+CLI. Execute the following command:</p>
 </div>
-<div class="imageblock">
+<div class="listingblock console-input">
 <div class="content">
-<img src="_images/argo-rollout-dashboard-promote.png" alt="argo rollout dashboard promote">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>The dashboard shows that the newest revision is using the <code>green</code> image and is tied to the Preview
-service whereas the Active service, which is considered Stable, is associated with the previous revision using the <code>Blue</code> image.</p>
+<p>This should return the following output:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ॥ Paused
+Message:         BlueGreenPause
+Strategy:        BlueGreen
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable, active)
+                 quay.io/openshiftdemos/rollouts-demo:green (preview)
+Replicas:
+  Desired:       2
+  Current:       4
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                       KIND        STATUS     AGE  INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   17m
+├──# revision:2
+│  └──⧉ rollouts-demo-5999df6cf9           ReplicaSet  ✔ Healthy  41s  preview
+│     ├──□ rollouts-demo-5999df6cf9-q4kxg  Pod         ✔ Running  41s  ready:1/1
+│     └──□ rollouts-demo-5999df6cf9-t2hsd  Pod         ✔ Running  41s  ready:1/1
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  17m  stable,active
+      ├──□ rollouts-demo-66d84bcd76-dxv4x  Pod         ✔ Running  17m  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-k67q4  Pod         ✔ Running  17m  ready:1/1
+---
+
+Notice that the status is `Paused` and that we now have two ReplicaSets, one for the preview service
+and one for the active (i.e. stable service).
+
+Now navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
+displays the same two revisions that were presented in the CLI:
+
+image::argo-rollout-dashboard-promote.png[]
+
+The dashboard shows that the newest revision is using the `green` image and is tied to the Preview
+service whereas the Active service, which is considered Stable, is associated with the previous revision using the `Blue` image.
+
+To perform the promotion, you can either use the dashboard or the CLI to do it:
+
+1. For the CLI, execute the following command to perform the promotion:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]</code></pre>
+</div>
 </div>
 <div class="paragraph">
-<p>To perform the promotion, click the <code>Promote</code> button in the Dashboard, it will change to an orange <code>Sure?</code> button
+<p>oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>2. For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
 to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
-Dashboard will show a countdown for this.</p>
+Dashboard will show a countdown for this.
+
+Once the promotion has been completed, you should see that the Active service is now associated with the `blue` image and is marked
+as `Stable`. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
+the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds[scaledowndelayseconds,window='_blank']
+parameter.
+
+If you check the Active route the application is now displaying green squares.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]</pre>
+</div>
 </div>
 <div class="paragraph">
-<p>Once the promotion has been completed, you should see that the Active service is now associated with the <code>blue</code> image and is marked
-as <code>Stable</code>. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
-the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds" target="_blank" rel="noopener">scaledowndelayseconds</a>
-parameter.</p>
+<p>oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'</p>
 </div>
-<div class="paragraph">
-<p>If you check the Active route the application is now displaying green squares.</p>
-</div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+<pre>[#enable-auto-promotion]
+== Enable Auto-Promotion
+
+Now that a manual promotion of rollout has been reviewed, let's enable the auto promotion feature. To do so, execute
+the following command to patch the rollout to set `autoPromotionEnabled` to `true`:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]</pre>
 </div>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="enable-auto-promotion"><a class="anchor" href="#enable-auto-promotion"></a>Enable Auto-Promotion</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>Now that a manual promotion of rollout has been reviewed, let&#8217;s enable the auto promotion feature. To do so, execute
-the following command to patch the rollout to set <code>autoPromotionEnabled</code> to <code>true</code>:</p>
+<p>oc patch rollout rollouts-demo --type='json' -p='[{"op": "replace", "path": "/spec/strategy/blueGreen/autoPromotionEnabled", "value":true}]' -n user%USERNUM%-prod</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc patch rollout rollouts-demo --type='json' -p='[{"op": "replace", "path": "/spec/strategy/blueGreen/autoPromotionEnabled", "value":true}]' -n user%USERNUM%-prod</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>Now deploy a new image color <code>yellow</code> this time, in the OpenShift console navigate to the Pipeline again in the <code>user%USERNUM%-tools</code> namespace.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/console-pipelines-overview.png" alt="console pipelines overview">
-</div>
-</div>
-<div class="paragraph">
-<p>Click on the pipeline, select the <code>Actions</code> menu and select <code>Start</code>. When the dialog appears enter the color <code>yellow</code> this time.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/argo-rollouts-dashboard-yellow.png" alt="argo rollouts dashboard yellow">
-</div>
-</div>
-<div class="paragraph">
-<p>Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
-note that there is a new revision using the Yellow image associated with the Active service.</p>
-</div>
-<div class="paragraph">
-<p>While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
+<pre>Now deploy a new image color `yellow` this time, in the OpenShift console navigate to the Pipeline again in the `user%USERNUM%-tools` namespace.
+
+image::console-pipelines-overview.png[]
+
+Click on the pipeline, select the `Actions` menu and select `Start`. When the dialog appears enter the color `yellow` this time.
+
+image::argo-rollouts-dashboard-yellow.png[]
+
+Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
+note that there is a new revision using the Yellow image associated with the Active service.
+
+While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
 the validity of the new revision before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
-which will be covered that in the next module.</p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="cleanup"><a class="anchor" href="#cleanup"></a>Clean-up</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>Prior to moving on to the next module we need to perform some clean-up activities. First let&#8217;s reset the Development environment back to blue:</p>
-</div>
-<div class="listingblock console-input">
-<div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ./deploy/base -n user%USERNUM%-dev</code></pre>
+which will be covered that in the next module.
+
+[#cleanup]
+== Clean-up
+
+Prior to moving on to the next module we need to perform some clean-up activities. First let's reset the Development environment back to blue:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]</pre>
 </div>
 </div>
 <div class="paragraph">
-<p>Next we will delete the Rollout in the <code>user%USERNUM%-prod</code> so we can start with a fresh version.</p>
+<p>oc apply -k ./deploy/base -n user%USERNUM%-dev</p>
 </div>
-<div class="listingblock console-input">
+<div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc delete -k ./bluegreen/base -n user%USERNUM%-prod</code></pre>
+<pre>Next we will delete the Rollout in the `user%USERNUM%-prod` so we can start with a fresh version.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>oc delete -k ./bluegreen/base -n user%USERNUM%-prod</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre></pre>
 </div>
 </div>
 </div>
