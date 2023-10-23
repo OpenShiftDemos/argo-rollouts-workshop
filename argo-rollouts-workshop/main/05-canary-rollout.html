@@ -564,9 +564,10 @@ NAME                                       KIND        STATUS     AGE    INFO
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that we have two ReplicaSets, one with 2 pods and the other with 7 pods
-corresponding to the preview and stable services respectively. Recall in our first step that
- we set a weight of 20% to the canary service.</p>
+<p>There are a few things of note here. First the status of the Rollout is <code>Paused</code> due
+to the pause step with no duration. Second that we have two ReplicaSets, one with 2 pods
+and the other with 7 pods corresponding to the preview and stable services respectively.
+Recall in our first step that we set a weight of 20% to the canary service.</p>
 </div>
 <div class="paragraph">
 <p>Next visit the Argo Rollouts Dashboard and note that the the rollout is paused on the <code>pause</code>
