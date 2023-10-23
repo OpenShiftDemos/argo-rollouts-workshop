@@ -187,8 +187,8 @@ Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field i
 [#argo-rollouts-cli]
 === Argo Rollouts CLI
 
-Argo Rollouts provides a link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] extension to support
-working with rollouts. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
+Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as an
+link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] extension. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
 for installing the extension are available here however note that this has already been done for you in this workshop.
 
 The extension is well link:https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/[documented,window='_blank']
@@ -347,15 +347,68 @@ Notice that the application is displaying blue squares. Since the rollout is usi
 live users are still seeing the old version of the applications leaving the preview version available
 for testing.
 
-Navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
-now has two revisions available:
+We can see how the rollout is managing the different revisions across ReplicaSets by using the Argo Rollouts
+CLI. Execute the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+----
+
+This should return the following output:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ॥ Paused
+Message:         BlueGreenPause
+Strategy:        BlueGreen
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable, active)
+                 quay.io/openshiftdemos/rollouts-demo:green (preview)
+Replicas:
+  Desired:       2
+  Current:       4
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                       KIND        STATUS     AGE  INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   17m
+├──# revision:2
+│  └──⧉ rollouts-demo-5999df6cf9           ReplicaSet  ✔ Healthy  41s  preview
+│     ├──□ rollouts-demo-5999df6cf9-q4kxg  Pod         ✔ Running  41s  ready:1/1
+│     └──□ rollouts-demo-5999df6cf9-t2hsd  Pod         ✔ Running  41s  ready:1/1
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  17m  stable,active
+      ├──□ rollouts-demo-66d84bcd76-dxv4x  Pod         ✔ Running  17m  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-k67q4  Pod         ✔ Running  17m  ready:1/1
+---
+
+Notice that the status is `Paused` and that we now have two ReplicaSets, one for the preview service
+and one for the active (i.e. stable service).
+
+Now navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
+displays the same two revisions that were presented in the CLI:
 
 image::argo-rollout-dashboard-promote.png[]
 
 The dashboard shows that the newest revision is using the `green` image and is tied to the Preview
 service whereas the Active service, which is considered Stable, is associated with the previous revision using the `Blue` image.
 
-To perform the promotion, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
+To perform the promotion, you can either use the dashboard or the CLI to do it:
+
+1. For the CLI, execute the following command to perform the promotion:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
+----
+
+2. For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
 to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
 Dashboard will show a countdown for this.
 
