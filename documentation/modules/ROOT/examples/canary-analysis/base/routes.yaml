@@ -1,0 +1,44 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: stable
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: stable
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: canary
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: canary
+---
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: all
+  annotations:
+    haproxy.router.openshift.io/disable_cookies: 'true'
+    haproxy.router.openshift.io/balance: roundrobin
+spec:
+  port:
+    targetPort: http
+  tls:
+    insecureEdgeTerminationPolicy: Redirect
+    termination: edge
+  to:
+    kind: Service
+    name: all

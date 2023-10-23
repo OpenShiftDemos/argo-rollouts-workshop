@@ -1,0 +1,42 @@
+kind: AnalysisTemplate
+apiVersion: argoproj.io/v1alpha1
+metadata:
+  name: smoke-tests
+spec:
+  args:
+  - name: query
+  - name: route-url
+  - name: api-token
+    valueFrom:
+      secretKeyRef:
+        name: monitor-auth-secret
+        key: token
+  metrics:
+  - name: success-rate
+    interval: 30s
+    count: 4
+    # Prometheus queries return results in the form of a vector so it is
+    # common to access the index 0 of the returned array to obtain the value
+    successCondition: result[0].value[1] == '0'
+    failureLimit: 0
+    provider:
+      web:
+        url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ args.query }}
+        insecure: true
+        headers:
+          - key: Authorization
+            value: "Bearer {{args.api-token}}"
+        jsonPath: "{$.data.result}"
+  - name: run-load
+    provider:
+      job:
+        spec:
+          backoffLimit: 1
+          template:
+            spec:
+              containers:
+              - name: siege
+                image: quay.io/gnunn/tools:latest
+                command: [sh, -c]
+                args: ["siege -c 20 -r 15 -d10 -v http://{{args.route-url}}"]
+              restartPolicy: Never

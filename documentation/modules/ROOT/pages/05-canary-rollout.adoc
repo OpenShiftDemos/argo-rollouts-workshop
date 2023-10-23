@@ -275,7 +275,88 @@ oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 Observe the dashboard once it has been promoted, the dashboard will show the progression
 of the steps by highlight each step as it is being executed.
 
+Prior to moving on to the next section, perform a cleanup to remove the current rollout
+and reset the Deployment in the dev environment back to blue.
+
+Update the deployment:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k ./deploy/base -n user%USERNUM%-dev
+----
+
+Delete the current rollout:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc delete -k ./canary/base -n user%USERNUM%-prod
+----
+
 [#inline-analysis]
 == Inline Analysis
 
-In the last section there was a pause step that provided an opportunity
+In the last section there was a pause step that provided an opportunity to test the canary
+before progressing further. However we can accomplish the same goal my using an analysis. With
+respect the canary strategy, an analysis can be performed in the link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#background-analysis[background,window='_blank']
+or as an link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#inline-analysis[inline] analysis.
+
+A background analysis happens asynchronously and does not block the progression of steps, however
+if the analysis fails it will abort the rollout similar to what we saw in the previous module with
+the blue-green strategy. In the case of an inline analysis, the analysis is performed as a step
+and will block the progression of the rollout until it completes.
+
+The files for this example are in the `./canary-analysis/base` folder, to view the list of files
+perform an `ls` as follows:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ls ./canary-analysis/base
+----
+
+Note that the files are identical to the previous example other then the `rollout.yaml` and the
+`analysistemplate.yaml` file. The AnalysisTemplate being used here is identical to the one
+we used in the blue-green example so we will not cover it again here.
+
+The one change in the rollout is that it now as an inline analysis step.
+
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary-analysis/base/rollout.yaml[./canary-analysis/base/rollout.yaml,window='_blank']
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$canary-analysis/base/rollout.yaml[]
+----
+
+Notice that the structure of the inline analysis is identical to what was used in the `prePromotionAnalysis`
+in the blue-green rollout with analysis.
+
+To deploy the canary with the inline analysis execute the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc delete -n user%USERNUM%-prod -f -
+----
+
+Once the command has been executed, verify that the rollout was deployed:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+----
+
+You should see output as follows:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+
+
+----
+
+Since we no longer have a manual pause step the promotion will occur automatically as long as the analysis step completes successfully.
+
+While the analysis is executing, or at anytime during the promotion, you can view the progress either in the dashboard or with the
+Argo Rollouts kubectl command.

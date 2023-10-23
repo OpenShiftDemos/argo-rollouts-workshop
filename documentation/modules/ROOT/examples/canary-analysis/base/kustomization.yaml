@@ -1,0 +1,5 @@
+resources:
+- analysistemplate.yaml
+- rollout.yaml
+- services.yaml
+- routes.yaml
