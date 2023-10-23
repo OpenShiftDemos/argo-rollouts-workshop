@@ -452,8 +452,14 @@ that the pods are up and running:</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME                             READY   STATUS    RESTARTS   AGE
-rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
-rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
+rollouts-demo-66d84bcd76-79c26   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-c8mm7   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-jcccp   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-mt5wc   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-npjvk   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-pn77f   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-r8rmv   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-vcv6z   1/1     Running   0          20s</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -470,6 +476,101 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
 <div class="imageblock">
 <div class="content">
 <img src="_images/rollouts-demo-app-blue.png" alt="rollouts demo app blue">
+</div>
+</div>
+<div class="paragraph">
+<p>If you go to the Argo Rollouts Dashboard you can see that the dashboard displays
+the steps that are defined in the rollout. Again, the dashboard URL can be retrieved
+through the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-dashboard-canary.png" alt="argo rollouts dashboard canary">
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="promote-image"><a class="anchor" href="#promote-image"></a>Promote Image</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this section we will promote a new image and observe the behavior of the canary rollout using
+the same pipeline that we used previously. As a reminder, the pipeline can be accessed in
+the <code>user%USERNUM%-tools</code> namespace.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-pipelines-overview.png" alt="console pipelines overview">
+</div>
+</div>
+<div class="paragraph">
+<p>Go ahead and start the pipeline selecting the green image and wait for the pipeline to complete:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/console-promote-params.png" alt="console promote params">
+</div>
+</div>
+<div class="paragraph">
+<p>Once the promotion is complete, run this command to see state of the rollout:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see output similar to the following:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/8
+  SetWeight:     20
+  ActualWeight:  22
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
+                 quay.io/openshiftdemos/rollouts-demo:green (canary)
+Replicas:
+  Desired:       8
+  Current:       9
+  Updated:       2
+  Ready:         9
+  Available:     9
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   19m
+├──# revision:2
+│  └──⧉ rollouts-demo-5999df6cf9           ReplicaSet  ✔ Healthy  9m56s  canary
+│     ├──□ rollouts-demo-5999df6cf9-5fwsx  Pod         ✔ Running  9m56s  ready:1/1
+│     └──□ rollouts-demo-5999df6cf9-sl9pw  Pod         ✔ Running  9m56s  ready:1/1
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  19m    stable
+      ├──□ rollouts-demo-66d84bcd76-79c26  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-c8mm7  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-mt5wc  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-npjvk  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-pn77f  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-r8rmv  Pod         ✔ Running  19m    ready:1/1
+      └──□ rollouts-demo-66d84bcd76-vcv6z  Pod         ✔ Running  19m    ready:1/1
+---
+
+Notice that we have two ReplicaSets, one with 2 pods and the other with 7 pods
+corresponding to the preview and stable services respectively. Recall in our first step that
+ we set a weight of 20% to the canary service.
+
+Next visit the Argo Rollouts Dashboard and note that the the rollout is paused on the `pause`
+step:
+
+image::argo-rollouts-dashboard-canary-pause.png[]</code></pre>
 </div>
 </div>
 </div>
