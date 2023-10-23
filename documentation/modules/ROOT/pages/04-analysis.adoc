@@ -12,9 +12,9 @@ a Job could be used to run load against an application in order to generate the 
 validate the revision.
 
 To deploy an Analysis, first an AnalysisTemplate is created that defines the analysis that is required
-and then is associated with one or more rollouts. The association with the rollout is dependent one
+and then is associated with one or more rollouts. The way an analysis is associated with a rollout is dependent on
 the rollout strategy used. In this module we will look at it from the perspective of the Blue-Green
-strategy we have deployed however in the next module we delve into it for the Canary strategy as well.
+strategy we have deployed previously however in the next module we delve into it for the Canary strategy as well.
 
 In the blue-green strategy, an Analysis can be added as either pre-promotion or post-promotion. Pre-promotion
 is used before the new version is deployed and is useful for validating the deployment prior to cutting over to it
