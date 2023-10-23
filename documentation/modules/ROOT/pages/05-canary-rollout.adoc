@@ -336,7 +336,7 @@ To deploy the canary with the inline analysis execute the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc delete -n user%USERNUM%-prod -f -
+kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -
 ----
 
 Once the command has been executed, verify that the rollout was deployed:

@@ -26,15 +26,15 @@ spec:
       steps:
       - setWeight: 20
       - analysis:
-        args:
-        - name: query
-          # Note encoded so it can be used as a query parameter, unencode:
-          # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'}[1m])>5 or on() vector(0)
-          value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USER%-prod',route=~'canary',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
-        - name: route-url
-          value: canary-user%USER%-prod.%SUB_DOMAIN%
         templates:
         - templateName: smoke-tests
+        args:
+          - name: query
+            # Note encoded so it can be used as a query parameter, unencode:
+            # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'}[1m])>5 or on() vector(0)
+            value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USER%-prod',route=~'canary',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
+          - name: route-url
+            value: canary-user%USER%-prod.%SUB_DOMAIN%
       - pause: {duration: 10s}
       - setWeight: 60
       - pause: {duration: 10s}
