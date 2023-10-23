@@ -499,7 +499,24 @@ for installing the extension are available here however note that this has alrea
 and provides a number of commands and these can be used with our currently deployed rollout.</p>
 </div>
 <div class="paragraph">
-<p>To view the rollout we just deployed, run the following command:</p>
+<p>To view a list of rollouts we can use the <code>list</code> command as follows:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts list rollout -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will display output as follows:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME           STRATEGY   STATUS        STEP  SET-WEIGHT  READY  DESIRED  UP-TO-DATE  AVAILABLE
+rollouts-demo  BlueGreen  Healthy       -     -           2/2    2        2           2</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To view detailed information about rollout that was listed, use the <code>get</code> command:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
