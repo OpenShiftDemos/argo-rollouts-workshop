@@ -1,6 +1,19 @@
-WIP
+### OpenShift Argo Rollouts Workshop
 
-To deploy in RHDP:
-- Provision OpenShift Workshop 4.13 instance in RHDP
-- Modify `bootstrap/bootstrap/ansible/bootstrap.yaml` to set the number of users you need, must match users provisioned in RHDP
-- Run command `./bootstrap/bootstrap.sh`
+#### Introduction
+
+This workshop provides an Argo Rollouts 101 experience on OpenShift using the OpenShift
+GitOps operator. It walks workshop attendees through the process of using blue-green
+and canary strategies with Rollouts as well as automated testing using Analysis.
+
+#### Installation
+
+Eventually this workshop will be available in RHDP but for now it can be installed as follows:
+
+* Provision OpenShift Workshop 4.13 instance in RHDP with the desired number of users
+* Login on the command line as the `admin` user with the credentials RHDP provided
+* Modify `bootstrap/bootstrap/ansible/bootstrap.yaml` to set the number of users you need, this must match the number of users selected in RHDP
+* Run the command `./bootstrap/bootstrap.sh`
+
+Note that the installation is using ansible so you must have ansible installed on your system along with the requirements to use the ansible
+k8s module.
