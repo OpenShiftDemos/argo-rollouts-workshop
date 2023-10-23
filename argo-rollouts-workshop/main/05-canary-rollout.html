@@ -578,6 +578,70 @@ step:</p>
 <img src="_images/argo-rollouts-dashboard-canary-pause.png" alt="argo rollouts dashboard canary pause">
 </div>
 </div>
+<div class="paragraph">
+<p>Now let&#8217;s see the behavior of the routes, first if you check the stable you will see
+the blue version of the application:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-blue.png" alt="rollouts demo app blue">
+</div>
+</div>
+<div class="paragraph">
+<p>Next if we check the canary version of the application we should see the green version
+of the application.</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod canary -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-green.png" alt="rollouts demo app green">
+</div>
+</div>
+<div class="paragraph">
+<p>Finally if we check the version of the application being delivered by the <code>all</code> route
+which includes all pods there will be approximately 20% green squares versus 80%
+blue squares:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod all -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-canary-blue-green.png" alt="rollouts demo app canary blue green">
+</div>
+</div>
+<div class="paragraph">
+<p>To promote the rollout, you can either promote it from the dashboard using the <code>Promote</code>
+button or you can promote it using the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Observe the dashboard once it has been promoted, the dashboard will show the progression
+of the steps by highlight each step as it is being executed.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="inline-analysis"><a class="anchor" href="#inline-analysis"></a>Inline Analysis</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In the last section there was a pause step that provided an opportunity</p>
+</div>
 </div>
 </div>
 <nav class="pagination">
