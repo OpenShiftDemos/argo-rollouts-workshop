@@ -9,7 +9,6 @@
 
 * xref:03-bluegreen-rollout.adoc[3. Blue-Green Rollout]
 ** xref:03-bluegreen-rollout.adoc#deploy-blue-green-rollout[Deploy Blue-Green Rollout]
-** xref:03-bluegreen-rollout.adoc#argo-rollouts-dashboard[Argo Rollouts Dashboard]
 ** xref:03-bluegreen-rollout.adoc#promote-image[Promote Image]
 ** xref:03-bluegreen-rollout.adoc#enable-auto-promotion[Enable Auto-Promotion]
 ** xref:03-bluegreen-rollout.adoc#cleanup[Clean-up]
