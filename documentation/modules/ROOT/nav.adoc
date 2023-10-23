@@ -24,3 +24,8 @@
 * xref:05-canary-rollout.adoc[5. Canary Rollout]
 ** xref:05-canary-rollout.adoc#canary-overview[Canary Overview]
 ** xref:05-canary-rollout.adoc#deploy-canary-rollout[Deploy Canary Rollout]
+** xref:05-canary-rollout.adoc#promote-image[promote Image]
+** xref:05-canary-rollout.adoc#inline-analysis[Inline Analysis]
+
+* xref:06-conclusion.adoc[6. Conclusion]
+** xref:06-conclusion.adoc#more-resources[More Resources]

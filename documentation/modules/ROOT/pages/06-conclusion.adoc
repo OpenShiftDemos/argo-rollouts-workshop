@@ -1,0 +1,16 @@
+= Conclusion
+include::_attributes.adoc[]
+
+In this workshop we learned about Argo Rollouts, how the blue-green and canary strategies work and finally using
+Analysis to perform automated testing of the Rollout.
+
+[#more-resources]
+== More Resources
+
+To learn more about Argo Rollouts, please feel free to checkout this resources:
+
+* link:https://argo-rollouts.readthedocs.io/en/stable/[Argo Rollout documentation, window='_blank']
+
+* link:https://www.redhat.com/architect/blue-green-canary-argo-rollouts[How to do blue/green and canary deployments with Argo Rollouts,window='_blank']
+
+* link:https://cloud.redhat.com/blog/trying-out-argo-rollouts-in-openshift-gitops-1.9[Trying out Argo Rollouts in OpenShift GitOps 1.9,window='_blank']
