@@ -6,6 +6,7 @@
     <title>Canary :: Argo Rollouts Workshop</title>
     <link rel="canonical" href="https://openshiftdemos.github.io/argo-rollouts-workshop/argo-rollouts-workshop/main/05-canary-rollout.html">
     <link rel="prev" href="04-analysis.html">
+    <link rel="next" href="06-conclusion.html">
     <meta name="generator" content="Antora 3.0.0">
     <link rel="stylesheet" href="../../_/css/site.css">
 <link rel="icon" href="../../_/img/favicon.ico" type="image/x-icon">
@@ -148,6 +149,21 @@
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#deploy-canary-rollout">Deploy Canary Rollout</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#promote-image">promote Image</a>
+  </li>
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#inline-analysis">Inline Analysis</a>
+  </li>
+</ul>
+  </li>
+  <li class="nav-item" data-depth="1">
+    <button class="nav-item-toggle"></button>
+    <a class="nav-link" href="06-conclusion.html">6. Conclusion</a>
+<ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="06-conclusion.html#more-resources">More Resources</a>
   </li>
 </ul>
   </li>
@@ -828,10 +844,22 @@ to deploy different colors. Remember the available colors are available .<a href
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>In the dashboard, if you catch it before it completes, you can see the analysis step executing. Similar to
+what we saw in the previous module, the analysis button will be grey while it is executing, green when it
+has completed successfully or red if it failed. Here is what the dashboard looks like while the
+analysis is executing:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-dashboard-analysis-executing.png" alt="argo rollouts dashboard analysis executing">
+</div>
+</div>
 </div>
 </div>
 <nav class="pagination">
   <span class="prev"><a href="04-analysis.html" class="query-params-link">4. Analysis</a></span>
+  <span class="next"><a href="06-conclusion.html" class="query-params-link">6. Conclusion</a></span>
 </nav>
 </article>
 <aside class="toc sidebar" data-title="Contents" data-levels="2">
