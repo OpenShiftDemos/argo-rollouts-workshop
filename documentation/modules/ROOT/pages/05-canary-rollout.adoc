@@ -125,8 +125,14 @@ Update list below for eight replicas
 [source,bash,subs="attributes+,+macros"]
 ----
 NAME                             READY   STATUS    RESTARTS   AGE
-rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
-rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s
+rollouts-demo-66d84bcd76-79c26   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-c8mm7   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-jcccp   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-mt5wc   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-npjvk   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-pn77f   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-r8rmv   1/1     Running   0          20s
+rollouts-demo-66d84bcd76-vcv6z   1/1     Running   0          20s
 ----
 
 Retrieve the stable route URL using the command below and copy to a browser tab:
@@ -140,3 +146,84 @@ oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{
 The application is running with blue squares for the current version of the application:
 
 image::rollouts-demo-app-blue.png[]
+
+If you go to the Argo Rollouts Dashboard you can see that the dashboard displays
+the steps that are defined in the rollout. Again, the dashboard URL can be retrieved
+through the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+image::argo-rollouts-dashboard-canary.png[]
+
+[#promote-image]
+== Promote Image
+
+In this section we will promote a new image and observe the behavior of the canary rollout using
+the same pipeline that we used previously. As a reminder, the pipeline can be accessed in
+the `user%USERNUM%-tools` namespace.
+
+image::console-pipelines-overview.png[]
+
+Go ahead and start the pipeline selecting the green image and wait for the pipeline to complete:
+
+image::console-promote-params.png[]
+
+Once the promotion is complete, run this command to see state of the rollout:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+----
+
+You should see output similar to the following:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ॥ Paused
+Message:         CanaryPauseStep
+Strategy:        Canary
+  Step:          1/8
+  SetWeight:     20
+  ActualWeight:  22
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
+                 quay.io/openshiftdemos/rollouts-demo:green (canary)
+Replicas:
+  Desired:       8
+  Current:       9
+  Updated:       2
+  Ready:         9
+  Available:     9
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   19m
+├──# revision:2
+│  └──⧉ rollouts-demo-5999df6cf9           ReplicaSet  ✔ Healthy  9m56s  canary
+│     ├──□ rollouts-demo-5999df6cf9-5fwsx  Pod         ✔ Running  9m56s  ready:1/1
+│     └──□ rollouts-demo-5999df6cf9-sl9pw  Pod         ✔ Running  9m56s  ready:1/1
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  19m    stable
+      ├──□ rollouts-demo-66d84bcd76-79c26  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-c8mm7  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-mt5wc  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-npjvk  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-pn77f  Pod         ✔ Running  19m    ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-r8rmv  Pod         ✔ Running  19m    ready:1/1
+      └──□ rollouts-demo-66d84bcd76-vcv6z  Pod         ✔ Running  19m    ready:1/1
+---
+
+Notice that we have two ReplicaSets, one with 2 pods and the other with 7 pods
+corresponding to the preview and stable services respectively. Recall in our first step that
+ we set a weight of 20% to the canary service.
+
+Next visit the Argo Rollouts Dashboard and note that the the rollout is paused on the `pause`
+step:
+
+image::argo-rollouts-dashboard-canary-pause.png[]
