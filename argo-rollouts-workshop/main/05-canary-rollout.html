@@ -643,13 +643,141 @@ button or you can promote it using the following command:</p>
 <p>Observe the dashboard once it has been promoted, the dashboard will show the progression
 of the steps by highlight each step as it is being executed.</p>
 </div>
+<div class="paragraph">
+<p>Prior to moving on to the next section, perform a cleanup to remove the current rollout
+and reset the Deployment in the dev environment back to blue.</p>
+</div>
+<div class="paragraph">
+<p>Update the deployment:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc apply -k ./deploy/base -n user%USERNUM%-dev</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Delete the current rollout:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc delete -k ./canary/base -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="inline-analysis"><a class="anchor" href="#inline-analysis"></a>Inline Analysis</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>In the last section there was a pause step that provided an opportunity</p>
+<p>In the last section there was a pause step that provided an opportunity to test the canary
+before progressing further. However we can accomplish the same goal my using an analysis. With
+respect the canary strategy, an analysis can be performed in the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#background-analysis" target="_blank" rel="noopener">background</a>
+or as an <a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#inline-analysis">inline</a> analysis.</p>
+</div>
+<div class="paragraph">
+<p>A background analysis happens asynchronously and does not block the progression of steps, however
+if the analysis fails it will abort the rollout similar to what we saw in the previous module with
+the blue-green strategy. In the case of an inline analysis, the analysis is performed as a step
+and will block the progression of the rollout until it completes.</p>
+</div>
+<div class="paragraph">
+<p>The files for this example are in the <code>./canary-analysis/base</code> folder, to view the list of files
+perform an <code>ls</code> as follows:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">ls ./canary-analysis/base</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note that the files are identical to the previous example other then the <code>rollout.yaml</code> and the
+<code>analysistemplate.yaml</code> file. The AnalysisTemplate being used here is identical to the one
+we used in the blue-green example so we will not cover it again here.</p>
+</div>
+<div class="paragraph">
+<p>The one change in the rollout is that it now as an inline analysis step.</p>
+</div>
+<div class="listingblock">
+<div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary-analysis/base/rollout.yaml" target="_blank" rel="noopener">./canary-analysis/base/rollout.yaml</a></div>
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-yaml hljs" data-lang="yaml">apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: rollouts-demo
+spec:
+  replicas: 8
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: rollouts-demo
+  template:
+    metadata:
+      labels:
+        app: rollouts-demo
+    spec:
+      containers:
+      - name: rollouts-demo
+        image: quay.io/openshiftdemos/rollouts-demo:blue
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8080
+  strategy:
+    canary:
+      canaryService: canary
+      stableService: stable
+      steps:
+      - setWeight: 20
+      - analysis:
+        args:
+        - name: query
+          # Note encoded so it can be used as a query parameter, unencode:
+          # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'rollout-bluegreen-preview',code='5xx'}[1m])&gt;5 or on() vector(0)
+          value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USER%-prod',route=~'canary',code='5xx'%7D%5B1m%5D)%3E5%20or%20on()%20vector(0)
+        - name: route-url
+          value: canary-user%USER%-prod.%SUB_DOMAIN%
+        templates:
+        - templateName: smoke-tests
+      - pause: {duration: 10s}
+      - setWeight: 60
+      - pause: {duration: 10s}
+      - setWeight: 80
+      - pause: {duration: 10s}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that the structure of the inline analysis is identical to what was used in the <code>prePromotionAnalysis</code>
+in the blue-green rollout with analysis.</p>
+</div>
+<div class="paragraph">
+<p>To deploy the canary with the inline analysis execute the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc delete -n user%USERNUM%-prod -f -</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Once the command has been executed, verify that the rollout was deployed:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You should see output as follows:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash"></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Since we no longer have a manual pause step the promotion will occur automatically as long as the analysis step completes successfully.</p>
+</div>
+<div class="paragraph">
+<p>While the analysis is executing, or at anytime during the promotion, you can view the progress either in the dashboard or with the
+Argo Rollouts kubectl command.</p>
 </div>
 </div>
 </div>
