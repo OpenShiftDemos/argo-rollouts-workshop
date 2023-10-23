@@ -194,7 +194,24 @@ for installing the extension are available here however note that this has alrea
 The extension is well link:https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/[documented,window='_blank']
 and provides a number of commands and these can be used with our currently deployed rollout.
 
-To view the rollout we just deployed, run the following command:
+To view a list of rollouts we can use the `list` command as follows:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts list rollout -n user%USERNUM%-prod
+----
+
+This will display output as follows:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+NAME           STRATEGY   STATUS        STEP  SET-WEIGHT  READY  DESIRED  UP-TO-DATE  AVAILABLE
+rollouts-demo  BlueGreen  Healthy       -     -           2/2    2        2           2
+----
+
+To view detailed information about rollout that was listed, use the `get` command:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
