@@ -217,7 +217,7 @@ NAME                                       KIND        STATUS     AGE    INFO
       ├──□ rollouts-demo-66d84bcd76-pn77f  Pod         ✔ Running  19m    ready:1/1
       ├──□ rollouts-demo-66d84bcd76-r8rmv  Pod         ✔ Running  19m    ready:1/1
       └──□ rollouts-demo-66d84bcd76-vcv6z  Pod         ✔ Running  19m    ready:1/1
----
+----
 
 Notice that we have two ReplicaSets, one with 2 pods and the other with 7 pods
 corresponding to the preview and stable services respectively. Recall in our first step that
