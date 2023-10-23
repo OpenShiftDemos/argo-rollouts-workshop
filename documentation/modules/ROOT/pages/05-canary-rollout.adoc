@@ -352,9 +352,38 @@ You should see output as follows:
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
 ----
+Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          7/7
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
+Replicas:
+  Desired:       8
+  Current:       8
+  Updated:       8
+  Ready:         8
+  Available:     8
 
-
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  4m56s
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  5s     stable
+      ├──□ rollouts-demo-66d84bcd76-c4d6j  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-f9qvw  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-gp9xp  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-gpqwj  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-k6dwl  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-mlj5q  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-wp4tj  Pod         ✔ Running  5s     ready:1/1
+      └──□ rollouts-demo-66d84bcd76-z8kr2  Pod         ✔ Running  5s     ready:1/1
 ----
+
+Next, examining the Argo Rollouts Dashboard we can see the inline Analysis being shown with the other steps:
+
+image::argo-rollouts-dashboard-canary-analysis.png[]
 
 Since we no longer have a manual pause step the promotion will occur automatically as long as the analysis step completes successfully.
 
