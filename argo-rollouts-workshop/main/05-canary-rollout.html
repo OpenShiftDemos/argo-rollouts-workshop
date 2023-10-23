@@ -560,17 +560,21 @@ NAME                                       KIND        STATUS     AGE    INFO
       ├──□ rollouts-demo-66d84bcd76-npjvk  Pod         ✔ Running  19m    ready:1/1
       ├──□ rollouts-demo-66d84bcd76-pn77f  Pod         ✔ Running  19m    ready:1/1
       ├──□ rollouts-demo-66d84bcd76-r8rmv  Pod         ✔ Running  19m    ready:1/1
-      └──□ rollouts-demo-66d84bcd76-vcv6z  Pod         ✔ Running  19m    ready:1/1
----
-
-Notice that we have two ReplicaSets, one with 2 pods and the other with 7 pods
+      └──□ rollouts-demo-66d84bcd76-vcv6z  Pod         ✔ Running  19m    ready:1/1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Notice that we have two ReplicaSets, one with 2 pods and the other with 7 pods
 corresponding to the preview and stable services respectively. Recall in our first step that
- we set a weight of 20% to the canary service.
-
-Next visit the Argo Rollouts Dashboard and note that the the rollout is paused on the `pause`
-step:
-
-image::argo-rollouts-dashboard-canary-pause.png[]</code></pre>
+ we set a weight of 20% to the canary service.</p>
+</div>
+<div class="paragraph">
+<p>Next visit the Argo Rollouts Dashboard and note that the the rollout is paused on the <code>pause</code>
+step:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-dashboard-canary-pause.png" alt="argo rollouts dashboard canary pause">
 </div>
 </div>
 </div>
