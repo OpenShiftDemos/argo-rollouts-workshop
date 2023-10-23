@@ -402,7 +402,7 @@ NAME                                       KIND        STATUS     AGE  INFO
    └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  17m  stable,active
       ├──□ rollouts-demo-66d84bcd76-dxv4x  Pod         ✔ Running  17m  ready:1/1
       └──□ rollouts-demo-66d84bcd76-k67q4  Pod         ✔ Running  17m  ready:1/1
----
+----
 
 Notice that the status is `Paused` and that we now have two ReplicaSets, one for the preview service
 and one for the active (i.e. stable service).
