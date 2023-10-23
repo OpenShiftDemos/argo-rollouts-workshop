@@ -106,9 +106,6 @@
     <a class="nav-link" href="#deploy-blue-green-rollout">Deploy Blue-Green Rollout</a>
   </li>
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="#argo-rollouts-dashboard">Argo Rollouts Dashboard</a>
-  </li>
-  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#promote-image">Promote Image</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -490,11 +487,71 @@ the selector in the service is pointing to the appropriate revision.</p>
 <div class="paragraph">
 <p>Note the <code>rollouts-pod-template-hash</code> in <code>spec.template.metadata.labels</code> field in the ReplicaSet.</p>
 </div>
+<div class="sect2">
+<h3 id="argo-rollouts-cli"><a class="anchor" href="#argo-rollouts-cli"></a>Argo Rollouts CLI</h3>
+<div class="paragraph">
+<p>Argo Rollouts provides a <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noopener">kubectl</a> extension to support
+working with rollouts. <a href="https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation" target="blank">Instructions</a>
+for installing the extension are available here however note that this has already been done for you in this workshop.</p>
+</div>
+<div class="paragraph">
+<p>The extension is well <a href="https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/" target="_blank" rel="noopener">documented</a>
+and provides a number of commands and these can be used with our currently deployed rollout.</p>
+</div>
+<div class="paragraph">
+<p>To view the rollout we just deployed, run the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod</code></pre>
 </div>
 </div>
-<div class="sect1">
-<h2 id="argo-rollouts-dashboard"><a class="anchor" href="#argo-rollouts-dashboard"></a>Argo Rollouts Dashboard</h2>
-<div class="sectionbody">
+<div class="paragraph">
+<p>This command should output something similar to the following:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✔ Healthy
+Strategy:        BlueGreen
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable, active)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  6m46s
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  6m46s  stable,active
+      ├──□ rollouts-demo-66d84bcd76-dxv4x  Pod         ✔ Running  6m46s  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-k67q4  Pod         ✔ Running  6m46s  ready:1/1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>With this command we can view the status of the rollout, <code>Healthy</code> here, as well as
+the ReplicaSets and Pods that are associated with the rollout.</p>
+</div>
+<div class="paragraph">
+<p>To view the status of the rollout by itself you can use the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts status rollouts-demo -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This should return a simple <code>Healthy</code> in the output. Other commands are available to perform
+actions on the rollout such as a promoting a rollout, aborting a rollout, etc. A complete
+list of commands can be viewed with the <code>--help</code> switch and we will look at some of them
+during the course of this workshop.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="argo-rollouts-dashboard"><a class="anchor" href="#argo-rollouts-dashboard"></a>Argo Rollouts Dashboard</h3>
 <div class="paragraph">
 <p>The Argo Rollouts dashboard has been deployed in the <code>user%USERNUM%-tools</code> namespace on the cluster for this workshop. To access the dashboard,
 run the following command to get the URL for the dashboard for your specific user:</p>
@@ -542,6 +599,7 @@ are available for interacting with the rollout.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/argo-rollouts-dashboard-tile-details.png" alt="argo rollouts dashboard tile details">
+</div>
 </div>
 </div>
 </div>
