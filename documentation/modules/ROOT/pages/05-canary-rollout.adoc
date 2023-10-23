@@ -228,3 +228,54 @@ Next visit the Argo Rollouts Dashboard and note that the the rollout is paused o
 step:
 
 image::argo-rollouts-dashboard-canary-pause.png[]
+
+Now let's see the behavior of the routes, first if you check the stable you will see
+the blue version of the application:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+image::rollouts-demo-app-blue.png[]
+
+Next if we check the canary version of the application we should see the green version
+of the application.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod canary -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+image::rollouts-demo-app-green.png[]
+
+Finally if we check the version of the application being delivered by the `all` route
+which includes all pods there will be approximately 20% green squares versus 80%
+blue squares:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-prod all -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+image::rollouts-demo-app-canary-blue-green.png[]
+
+To promote the rollout, you can either promote it from the dashboard using the `Promote`
+button or you can promote it using the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
+----
+
+Observe the dashboard once it has been promoted, the dashboard will show the progression
+of the steps by highlight each step as it is being executed.
+
+[#inline-analysis]
+== Inline Analysis
+
+In the last section there was a pause step that provided an opportunity
