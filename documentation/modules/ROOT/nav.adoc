@@ -8,7 +8,6 @@
 ** xref:02-workshop-overview.adoc#deploy-application[Deploy Application]
 
 * xref:03-bluegreen-rollout.adoc[3. Blue-Green Rollout]
-** xref:03-bluegreen-rollout.adoc#deploy-blue-green-overview[Blue-Green Overview]
 ** xref:03-bluegreen-rollout.adoc#deploy-blue-green-rollout[Deploy Blue-Green Rollout]
 ** xref:03-bluegreen-rollout.adoc#argo-rollouts-dashboard[Argo Rollouts Dashboard]
 ** xref:03-bluegreen-rollout.adoc#promote-image[Promote Image]
@@ -16,13 +15,11 @@
 ** xref:03-bluegreen-rollout.adoc#cleanup[Clean-up]
 
 * xref:04-analysis.adoc[4. Analysis]
-** xref:04-analysis.adoc#analysis-overview[Analysis Overview]
 ** xref:04-analysis.adoc#analysis-deployment[Analysis Deployment]
 ** xref:04-analysis.adoc#analysis-promotion[Promotion with Analysis]
 ** xref:04-analysis.adoc#cleanup[Clean-up]
 
 * xref:05-canary-rollout.adoc[5. Canary Rollout]
-** xref:05-canary-rollout.adoc#canary-overview[Canary Overview]
 ** xref:05-canary-rollout.adoc#deploy-canary-rollout[Deploy Canary Rollout]
 ** xref:05-canary-rollout.adoc#promote-image[promote Image]
 ** xref:05-canary-rollout.adoc#inline-analysis[Inline Analysis]

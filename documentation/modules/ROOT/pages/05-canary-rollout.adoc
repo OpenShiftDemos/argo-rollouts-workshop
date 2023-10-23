@@ -1,9 +1,6 @@
 = Canary
 include::_attributes.adoc[]
 
-[#canary-overview]
-== Canary Overview
-
 link:https://argo-rollouts.readthedocs.io/en/stable/features/canary/[Canary, window='_blank'] can be thought of as an advanced version of blue-green where instead of an abrupt cut-over
 of live traffic between a current and new revision instead traffic is gradually increased to the new
 version in increments, or steps. Like the proverbial link:https://en.wiktionary.org/wiki/canary_in_a_coal_mine[canary in the coal mine,window="_blank"],

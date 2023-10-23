@@ -9,7 +9,7 @@ Analysis to perform automated testing of the Rollout.
 
 To learn more about Argo Rollouts, please feel free to checkout this resources:
 
-* link:https://argo-rollouts.readthedocs.io/en/stable/[Argo Rollout documentation, window='_blank']
+* link:https://argo-rollouts.readthedocs.io/en/stable/[Argo Rollouts documentation, window='_blank']
 
 * link:https://www.redhat.com/architect/blue-green-canary-argo-rollouts[How to do blue/green and canary deployments with Argo Rollouts,window='_blank']
 
