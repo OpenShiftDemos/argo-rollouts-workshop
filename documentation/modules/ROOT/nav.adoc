@@ -20,7 +20,7 @@
 
 * xref:05-canary-rollout.adoc[5. Canary Rollout]
 ** xref:05-canary-rollout.adoc#deploy-canary-rollout[Deploy Canary Rollout]
-** xref:05-canary-rollout.adoc#promote-image[promote Image]
+** xref:05-canary-rollout.adoc#promote-image[Promote Image]
 ** xref:05-canary-rollout.adoc#inline-analysis[Inline Analysis]
 
 * xref:06-conclusion.adoc[6. Conclusion]
