@@ -35,10 +35,10 @@ oc get rolloutmanager argo-rollout -o yaml -n user%USERNUM%-prod | oc neat
 ----
 
 [NOTE]
-We are using a kubectl plugin called kubectl-neat in order to tidy the yaml by removing
-additional fields, labels and annotations added automatically by Kubernetes.
+We are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
+in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
 
-This will return a simple object as follows:
+This will return an object as follows:
 
 [source,yaml]
 ---
@@ -55,7 +55,7 @@ a simple deployment with the Argo Rollout controller monitoring the `user%USERNU
 `Rollout` resources.
 
 [NOTE]
-You can use the command `oc explain RolloutManager.spec` to see the supported configuration
+You can use the command '`oc explain RolloutManager.spec`' to see the supported configuration
 options.
 
 [#deploy-application]
@@ -73,7 +73,7 @@ this will enable use to visually see how the application is progressing.
 === Clone the Repository
 
 You need to clone the repository into your web terminal because you will need to
-make very small changes to some of the files for the examples:
+deploy various versions of the application as you progress through the workshop:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -81,7 +81,7 @@ make very small changes to some of the files for the examples:
 git clone https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
 ----
 
-All of the code used in this workshop will be located in:
+All of the code used in this workshop will be located in the folder:
 
 `~/argo-rollouts-workshop/documentation/modules/ROOT/examples`
 
@@ -109,7 +109,7 @@ DevSpaces] is a better choice.
 In the development environment we will be deploying the application as a basic
 Kubernetes Deployment so that we can compare and contrast the behavior with Argo Rollouts.
 
-To view the code that we will be using, examine the code in `./deploy/base`:
+To view the manifests that we will be using, examine the code in `./deploy/base`:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -140,8 +140,8 @@ include::ROOT:example$deploy/base/route.yaml[]
 
 [NOTE]
 Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
-while OpenShift supports both of them, Routes retain some additional capabilities and features not yet available
-in Ingress hence their continued usage.
+while OpenShift supports both Routes and Ingress, Routes retain some additional capabilities and
+features not yet available in Ingress hence their continued usage.
 
 There is a fourth file called `kustomization.yaml`, this file is used by the https://kustomize.io[Kustomize,window='_blank'] tool and enables
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
@@ -183,7 +183,7 @@ rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s
 
 There are two pods since the Deployment specified two replicas.
 
-Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Project.
+Next view the Route URL for this application. It's in the `user%USERNUM%-dev1` Project.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
