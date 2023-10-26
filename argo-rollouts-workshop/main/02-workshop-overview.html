@@ -257,14 +257,14 @@ currently only supports namespace scope.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We are using a kubectl plugin called kubectl-neat in order to tidy the yaml by removing
-additional fields, labels and annotations added automatically by Kubernetes.
+We are using a kubectl plugin called <a href="https://github.com/itaysk/kubectl-neat" target="_blank" rel="noopener">kubectl-neat</a>
+in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>This will return a simple object as follows:</p>
+<p>This will return an object as follows:</p>
 </div>
 <div class="listingblock">
 <div class="content">
@@ -290,7 +290,7 @@ a simple deployment with the Argo Rollout controller monitoring the <code>user%U
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-You can use the command <code>oc explain RolloutManager.spec</code> to see the supported configuration
+You can use the command &#8216;oc explain RolloutManager.spec&#8217; to see the supported configuration
 options.
 </td>
 </tr>
@@ -319,7 +319,7 @@ this will enable use to visually see how the application is progressing.</p>
 <h3 id="_clone_the_repository"><a class="anchor" href="#_clone_the_repository"></a>Clone the Repository</h3>
 <div class="paragraph">
 <p>You need to clone the repository into your web terminal because you will need to
-make very small changes to some of the files for the examples:</p>
+deploy various versions of the application as you progress through the workshop:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -327,7 +327,7 @@ make very small changes to some of the files for the examples:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>All of the code used in this workshop will be located in:</p>
+<p>All of the code used in this workshop will be located in the folder:</p>
 </div>
 <div class="paragraph">
 <p><code>~/argo-rollouts-workshop/documentation/modules/ROOT/examples</code></p>
@@ -368,7 +368,7 @@ DevSpaces</a> is a better choice.</p>
 Kubernetes Deployment so that we can compare and contrast the behavior with Argo Rollouts.</p>
 </div>
 <div class="paragraph">
-<p>To view the code that we will be using, examine the code in <code>./deploy/base</code>:</p>
+<p>To view the manifests that we will be using, examine the code in <code>./deploy/base</code>:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -456,8 +456,8 @@ spec:
 </td>
 <td class="content">
 Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
-while OpenShift supports both of them, Routes retain some additional capabilities and features not yet available
-in Ingress hence their continued usage.
+while OpenShift supports both Routes and Ingress, Routes retain some additional capabilities and
+features not yet available in Ingress hence their continued usage.
 </td>
 </tr>
 </table>
@@ -511,7 +511,7 @@ rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s</code></pre>
 <p>There are two pods since the Deployment specified two replicas.</p>
 </div>
 <div class="paragraph">
-<p>Next Open the Route for this application. It&#8217;s in the <code>user%USERNUM%-dev1</code> Project.</p>
+<p>Next view the Route URL for this application. It&#8217;s in the <code>user%USERNUM%-dev1</code> Project.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
