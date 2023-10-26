@@ -437,15 +437,16 @@ service whereas the Active service, which is considered Stable, is associated wi
 
 To perform the promotion, you can either use the dashboard or the CLI to do it:
 
-1. For the CLI, execute the following command to perform the promotion:
+. For the CLI, execute the following command to perform the promotion:
 
++
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
 oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 ----
 
-2. For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
+. For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
 to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
 Dashboard will show a countdown for this.
 
