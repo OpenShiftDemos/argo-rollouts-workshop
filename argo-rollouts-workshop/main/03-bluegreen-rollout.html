@@ -199,7 +199,7 @@
 <div class="paragraph">
 <p>In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
 the two versions running in parallel for a period of time. This enables testing on the new version while users continue
-to access the current version of the application until a cut-over of traffic happens.</p>
+to access the current version of the application until a cut-over of traffic occurs.</p>
 </div>
 <div class="paragraph">
 <p>The diagram below shows this process over time.</p>
@@ -210,7 +210,7 @@ to access the current version of the application until a cut-over of traffic hap
 </div>
 </div>
 <div class="paragraph">
-<p>In traditional infrastructure this approach can very challenging and while Kubernetes is simpler due to it&#8217;s declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+<p>In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to it&#8217;s declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
 testing and traffic management between versions.</p>
 </div>
 <div class="paragraph">
@@ -275,23 +275,23 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
+<p>The structure of the Rollout is quite similar to the Deployment, it still uses the standard
 Kubernetes <a href="https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates" target="_blank" rel="noopener">PodTemplate</a> but note that
 under <code>.spec.strategy</code> we have specified the <code>blueGreen</code> strategy. The Kubernetes Deployment object supports <code>rollout</code>
 and <code>replace</code> strategies whereas Argo Rollouts supports <code>blueGreen</code> and <code>canary</code> strategies.</p>
 </div>
 <div class="paragraph">
-<p>Under the <code>blueGreen</code> strategy we have identified the active and preview Kubernetes services for the rollout which will be covered
+<p>Under the <code>blueGreen</code> strategy we have identified the <code>active</code> and <code>preview</code> Kubernetes services for the rollout which will be covered
 in more detail when services are discussed next.</p>
 </div>
 <div class="paragraph">
 <p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>false</code> which means the rollout will require manual intervention to promote. Manual promotion
-is enabled so the behavior of the application can be observed in more-depth in subsequent modules.</p>
+is enabled so the behavior of the application can be observed in more-depth in subsequent sections of this module.</p>
 </div>
 <div class="paragraph">
 <p>The Argo Rollouts documentation provides a complete list
 of all of the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features" target="_blank" rel="noopener">configurable features</a> for the blueGreen strategy
-and additional features will be explored as we progress through the workshop.</p>
+and some of these additional features will be explored as we progress through the workshop.</p>
 </div>
 <div class="listingblock">
 <div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml" target="_blank" rel="noopener">./bluegreen/base/services.yaml</a></div>
@@ -328,9 +328,14 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
-interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview" target="_blank" rel="noopener">documentation</a>,
-Argo Rollouts automatically manages the traffic between the services by managing the <code>.spec.selector</code>.</p>
+<p>In the services manifest we define two services, an active service and a preview service. The active service is the service that users of the application will be
+interacting with, the preview service will be used to access the new version of the application for testing purposes.</p>
+</div>
+<div class="paragraph">
+<p>As per the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview" target="_blank" rel="noopener">documentation</a>,
+Argo Rollouts automatically manages the traffic between the services by managing the <code>.spec.selector</code>. In a nutshell, Argo Rollouts
+will add a unique identifier to pods and then update the selector in the service to bind the right pods to the right service. As
+we deploy the rollout this will be reviewed in more detail.</p>
 </div>
 <div class="listingblock">
 <div class="title"><a href="https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml" target="_blank" rel="noopener">./bluegreen/base/routes.yaml</a></div>
@@ -365,7 +370,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Finally we have two Route objects for active and preview with each tied to their respective service.</p>
+<p>Finally we have two Route objects, one for active and one for preview, each tied to their respective service.</p>
 </div>
 <div class="paragraph">
 <p>To deploy the blue-green rollout, use the following command to process the kustomization:</p>
@@ -392,13 +397,14 @@ that the pods are up and running:</p>
 </td>
 <td class="content">
 We are getting pods using the label <code>app=rollouts-demo</code> to specifically select pods from the rollout, remember
-the RolloutManager pod is also deployed in the <code>user%USERNUM%-prod</code> namespace.
+the RolloutManager pod is also deployed in the <code>user%USERNUM%-prod</code> namespace. Using the label enables us
+to exclude that pod.
 </td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>The console should return something along the lines of</p>
+<p>The console should return something along the lines of:</p>
 </div>
 <div class="listingblock console-output">
 <div class="content">
@@ -408,10 +414,10 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
 </div>
 </div>
 <div class="paragraph">
-<p>There are two pods since the Rollout again specified two replicas.</p>
+<p>There are two pods since the Rollout application specified two replicas.</p>
 </div>
 <div class="paragraph">
-<p>Next Open the Route for this application. It&#8217;s in the <code>user%USERNUM%-dev1</code> Project.</p>
+<p>Next retrieve the Routes for this application. It&#8217;s in the <code>user%USERNUM%-dev1</code> Project.</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -428,6 +434,11 @@ preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com   
 <div class="paragraph">
 <p>Copy the value of the <code>HOST/PORT</code> of each route into an individual browser tab to confirm that both display the application with blue squares.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-blue.png" alt="rollouts demo app blue">
+</div>
+</div>
 <div class="paragraph">
 <p>Next let&#8217;s examine the active and preview services that were deployed, run the following command to see the active service.</p>
 </div>
@@ -437,7 +448,7 @@ preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com   
 </div>
 </div>
 <div class="paragraph">
-<p>The console should display the service definition similar to the following:</p>
+<p>The console should display a service definition similar to the following:</p>
 </div>
 <div class="listingblock console-output">
 <div class="content">
@@ -467,9 +478,9 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that the selector has an additional key, <code>rollouts-pod-template-hash</code>, with a hash value. This is how the rollout manages traffic
-between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will notice the same
-selector there as well.</p>
+<p>Notice that the selector now has an additional key, <code>rollouts-pod-template-hash</code>, with a unique value. This is how the rollout manages traffic
+between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will see the same
+selector used there as well.</p>
 </div>
 <div class="paragraph">
 <p>Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/" target="_blank" rel="noopener">ReplicaSet</a>.
@@ -492,7 +503,7 @@ the selector in the service is pointing to the appropriate revision.</p>
 <div class="paragraph">
 <p>Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as an
 <a href="https://kubernetes.io/docs/reference/kubectl/" target="_blank" rel="noopener">kubectl</a> extension. <a href="https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation" target="blank">Instructions</a>
-for installing the extension are available here however note that this has already been done for you in this workshop.</p>
+for installing the extension are available however this has already been done for you in this workshop.</p>
 </div>
 <div class="paragraph">
 <p>The extension is well <a href="https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/" target="_blank" rel="noopener">documented</a>
@@ -549,8 +560,9 @@ NAME                                       KIND        STATUS     AGE    INFO
 </div>
 </div>
 <div class="paragraph">
-<p>With this command we can view the status of the rollout, <code>Healthy</code> here, as well as
-the ReplicaSets and Pods that are associated with the rollout.</p>
+<p>With this command we can view the status of the rollout, <code>Healthy</code> in this case (hopefully!), as well as
+the ReplicaSets and Pods that are associated with the rollout. Notice that the ReplicaSet and Pod names
+include the <code>rollouts-pod-template-hash</code> that was shown earlier.</p>
 </div>
 <div class="paragraph">
 <p>To view the status of the rollout by itself you can use the following command:</p>
@@ -561,10 +573,17 @@ the ReplicaSets and Pods that are associated with the rollout.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>This should return a simple <code>Healthy</code> in the output. Other commands are available to perform
-actions on the rollout such as a promoting a rollout, aborting a rollout, etc. A complete
-list of commands can be viewed with the <code>--help</code> switch and we will look at some of them
-during the course of this workshop.</p>
+<p>This should return a simple <code>Healthy</code> in the output.</p>
+</div>
+<div class="paragraph">
+<p>Similar to <code>kubectl rollout status</code> for Deployments, the <code>status</code> command
+will block when the rollout is not healthy which can be useful when used with
+automation where you need to wait until it has finished rolling out (pun intended).</p>
+</div>
+<div class="paragraph">
+<p>Other commands are available to perform actions on the rollout such as a promoting
+a rollout, aborting a rollout, etc. A complete list of commands can be viewed with
+the <code>--help</code> switch and we will look at some of them during the course of this workshop.</p>
 </div>
 </div>
 <div class="sect2">
@@ -658,7 +677,7 @@ Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace while <cod
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-This pipeline is not meant to be a comprehensive example of how to do manage image promotion, rather we
+This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
 Pipelines however any CI tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
@@ -705,6 +724,11 @@ application in Development can be retrieved with the following command:</p>
 <p>Paste this url into a browser tab and confirm that the application is showing Green squares reflective of the green image that
 we deployed.</p>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-green.png" alt="rollouts demo app green">
+</div>
+</div>
 <div class="paragraph">
 <p>Now let&#8217;s see what the application looks like in production where we are using Rollouts. First, let&#8217;s check the preview service by
 retrieving it&#8217;s URL and viewing it in the browser:</p>
@@ -712,6 +736,11 @@ retrieving it&#8217;s URL and viewing it in the browser:</p>
 <div class="listingblock console-input">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-green.png" alt="rollouts demo app green">
 </div>
 </div>
 <div class="paragraph">
@@ -722,10 +751,15 @@ retrieving it&#8217;s URL and viewing it in the browser:</p>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-blue.png" alt="rollouts demo app blue">
+</div>
+</div>
 <div class="paragraph">
 <p>Notice that the application is displaying blue squares. Since the rollout is using manual promotion,
-live users are still seeing the old version of the applications leaving the preview version available
-for testing.</p>
+live users are still seeing the previous version of the application leaving the preview version, with the new
+version, available for testing.</p>
 </div>
 <div class="paragraph">
 <p>We can see how the rollout is managing the different revisions across ReplicaSets by using the Argo Rollouts
@@ -782,7 +816,7 @@ displays the same two revisions that were presented in the CLI:</p>
 </div>
 <div class="paragraph">
 <p>The dashboard shows that the newest revision is using the <code>green</code> image and is tied to the Preview
-service whereas the Active service, which is considered Stable, is associated with the previous revision using the <code>Blue</code> image.</p>
+service whereas the Active service, which is considered Stable, is associated with the previous revision using the <code>blue</code> image.</p>
 </div>
 <div class="paragraph">
 <p>To perform the promotion, you can either use the dashboard or the CLI to do it:</p>
@@ -822,13 +856,18 @@ parameter.</p>
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
 </div>
 </div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/rollouts-demo-app-green.png" alt="rollouts demo app green">
+</div>
+</div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="enable-auto-promotion"><a class="anchor" href="#enable-auto-promotion"></a>Enable Auto-Promotion</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>Now that a manual promotion of rollout has been reviewed, let&#8217;s enable the auto promotion feature. To do so, execute
+<p>Now that a manual promotion of rollout has been performed, let&#8217;s proceed to enable the auto promotion feature. To do so, execute
 the following command to patch the rollout to set <code>autoPromotionEnabled</code> to <code>true</code>:</p>
 </div>
 <div class="listingblock console-input">
