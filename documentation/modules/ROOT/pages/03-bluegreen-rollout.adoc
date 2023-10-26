@@ -3,13 +3,13 @@ include::_attributes.adoc[]
 
 In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
 the two versions running in parallel for a period of time. This enables testing on the new version while users continue
-to access the current version of the application until a cut-over of traffic happens.
+to access the current version of the application until a cut-over of traffic occurs.
 
 The diagram below shows this process over time.
 
 image::overview-blue-green.png[]
 
-In traditional infrastructure this approach can very challenging and while Kubernetes is simpler due to it's declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to it's declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
 testing and traffic management between versions.
 
 This is where Argo Rollouts comes in, it greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module
@@ -44,20 +44,20 @@ Notice that this time we have files for `rollout.yaml`, `services.yaml` and `rou
 include::ROOT:example$bluegreen/base/rollout.yaml[]
 ----
 
-Notice that the structure of the Rollout is quite similar to the Deployment, it still uses the standard
+The structure of the Rollout is quite similar to the Deployment, it still uses the standard
 Kubernetes link:https://kubernetes.io/docs/concepts/workloads/pods/#pod-templates[PodTemplate,window='_blank'] but note that
 under `.spec.strategy` we have specified the `blueGreen` strategy. The Kubernetes Deployment object supports `rollout`
 and `replace` strategies whereas Argo Rollouts supports `blueGreen` and `canary` strategies.
 
-Under the `blueGreen` strategy we have identified the active and preview Kubernetes services for the rollout which will be covered
+Under the `blueGreen` strategy we have identified the `active` and `preview` Kubernetes services for the rollout which will be covered
 in more detail when services are discussed next.
 
 As well as services the field `autoPromotionEnabled` is set to `false` which means the rollout will require manual intervention to promote. Manual promotion
-is enabled so the behavior of the application can be observed in more-depth in subsequent modules.
+is enabled so the behavior of the application can be observed in more-depth in subsequent sections of this module.
 
 The Argo Rollouts documentation provides a complete list
 of all of the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features[configurable features, window='_blank'] for the blueGreen strategy
-and additional features will be explored as we progress through the workshop.
+and some of these additional features will be explored as we progress through the workshop.
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml[./bluegreen/base/services.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -65,9 +65,13 @@ and additional features will be explored as we progress through the workshop.
 include::ROOT:example$bluegreen/base/services.yaml[]
 ----
 
-In the services we define two services, an active service and a preview service. The active service is the service that users of the application will be
-interacting with, the preview service would be used to access the new version of the application for testing purposes. As per the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview[documentation,window='_blank'],
-Argo Rollouts automatically manages the traffic between the services by managing the `.spec.selector`.
+In the services manifest we define two services, an active service and a preview service. The active service is the service that users of the application will be
+interacting with, the preview service will be used to access the new version of the application for testing purposes.
+
+As per the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview[documentation,window='_blank'],
+Argo Rollouts automatically manages the traffic between the services by managing the `.spec.selector`. In a nutshell, Argo Rollouts
+will add a unique identifier to pods and then update the selector in the service to bind the right pods to the right service. As
+we deploy the rollout this will be reviewed in more detail.
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -75,7 +79,7 @@ Argo Rollouts automatically manages the traffic between the services by managing
 include::ROOT:example$bluegreen/base/routes.yaml[]
 ----
 
-Finally we have two Route objects for active and preview with each tied to their respective service.
+Finally we have two Route objects, one for active and one for preview, each tied to their respective service.
 
 To deploy the blue-green rollout, use the following command to process the kustomization:
 
@@ -96,9 +100,10 @@ oc get pods -l app=rollouts-demo -n user%USERNUM%-prod
 
 [NOTE]
 We are getting pods using the label `app=rollouts-demo` to specifically select pods from the rollout, remember
-the RolloutManager pod is also deployed in the `user%USERNUM%-prod` namespace.
+the RolloutManager pod is also deployed in the `user%USERNUM%-prod` namespace. Using the label enables us
+to exclude that pod.
 
-The console should return something along the lines of
+The console should return something along the lines of:
 
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
@@ -108,9 +113,9 @@ rollouts-demo-66d84bcd76-pxtnc   1/1     Running   0          64s
 rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s
 ----
 
-There are two pods since the Rollout again specified two replicas.
+There are two pods since the Rollout application specified two replicas.
 
-Next Open the Route for this application. It's in the `user%USERNUM%-dev1` Project.
+Next retrieve the Routes for this application. It's in the `user%USERNUM%-dev1` Project.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -128,6 +133,8 @@ preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com   
 
 Copy the value of the `HOST/PORT` of each route into an individual browser tab to confirm that both display the application with blue squares.
 
+image::rollouts-demo-app-blue.png[]
+
 Next let's examine the active and preview services that were deployed, run the following command to see the active service.
 
 [.console-input]
@@ -136,7 +143,7 @@ Next let's examine the active and preview services that were deployed, run the f
 oc get svc active -o yaml -n user%USERNUM%-prod | oc neat
 ----
 
-The console should display the service definition similar to the following:
+The console should display a service definition similar to the following:
 
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
@@ -166,9 +173,9 @@ spec:
     rollouts-pod-template-hash: 66d84bcd76
 ----
 
-Notice that the selector has an additional key, `rollouts-pod-template-hash`, with a hash value. This is how the rollout manages traffic
-between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will notice the same
-selector there as well.
+Notice that the selector now has an additional key, `rollouts-pod-template-hash`, with a unique value. This is how the rollout manages traffic
+between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will see the same
+selector used there as well.
 
 Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a link:https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/[ReplicaSet,window='_blank'].
 This ReplicaSet will have a `rollouts-pod-template-hash` label in it's PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
@@ -189,7 +196,7 @@ Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field i
 
 Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as an
 link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] extension. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
-for installing the extension are available here however note that this has already been done for you in this workshop.
+for installing the extension are available however this has already been done for you in this workshop.
 
 The extension is well link:https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/[documented,window='_blank']
 and provides a number of commands and these can be used with our currently deployed rollout.
@@ -244,8 +251,9 @@ NAME                                       KIND        STATUS     AGE    INFO
       └──□ rollouts-demo-66d84bcd76-k67q4  Pod         ✔ Running  6m46s  ready:1/1
 ----
 
-With this command we can view the status of the rollout, `Healthy` here, as well as
-the ReplicaSets and Pods that are associated with the rollout.
+With this command we can view the status of the rollout, `Healthy` in this case (hopefully!), as well as
+the ReplicaSets and Pods that are associated with the rollout. Notice that the ReplicaSet and Pod names
+include the `rollouts-pod-template-hash` that was shown earlier.
 
 To view the status of the rollout by itself you can use the following command:
 
@@ -255,10 +263,16 @@ To view the status of the rollout by itself you can use the following command:
 oc argo rollouts status rollouts-demo -n user%USERNUM%-prod
 ----
 
-This should return a simple `Healthy` in the output. Other commands are available to perform
-actions on the rollout such as a promoting a rollout, aborting a rollout, etc. A complete
-list of commands can be viewed with the `--help` switch and we will look at some of them
-during the course of this workshop.
+This should return a simple `Healthy` in the output.
+
+[Note]
+Similar to `kubectl rollout status` for Deployments, the `status` command
+will block when the rollout is not healthy which can be useful when used with
+automation where you need to wait until it has finished rolling out (pun intended).
+
+Other commands are available to perform actions on the rollout such as a promoting
+a rollout, aborting a rollout, etc. A complete list of commands can be viewed with
+the `--help` switch and we will look at some of them during the course of this workshop.
 
 [#argo-rollouts-dashboard]
 === Argo Rollouts Dashboard
@@ -312,7 +326,7 @@ Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` w
 ``user%USERNUM%-prod` namespace.
 
 [NOTE]
-This pipeline is not meant to be a comprehensive example of how to do manage image promotion, rather we
+This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
 Pipelines however any CI tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
@@ -343,6 +357,8 @@ oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.
 Paste this url into a browser tab and confirm that the application is showing Green squares reflective of the green image that
 we deployed.
 
+image::rollouts-demo-app-green.png[]
+
 Now let's see what the application looks like in production where we are using Rollouts. First, let's check the preview service by
 retrieving it's URL and viewing it in the browser:
 
@@ -352,6 +368,8 @@ retrieving it's URL and viewing it in the browser:
 oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
+image::rollouts-demo-app-green.png[]
+
 Again the application will display green squares, now let's check the active service:
 
 [.console-input]
@@ -360,9 +378,11 @@ Again the application will display green squares, now let's check the active ser
 oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
+image::rollouts-demo-app-blue.png[]
+
 Notice that the application is displaying blue squares. Since the rollout is using manual promotion,
-live users are still seeing the old version of the applications leaving the preview version available
-for testing.
+live users are still seeing the previous version of the application leaving the preview version, with the new
+version, available for testing.
 
 We can see how the rollout is managing the different revisions across ReplicaSets by using the Argo Rollouts
 CLI. Execute the following command:
@@ -413,7 +433,7 @@ displays the same two revisions that were presented in the CLI:
 image::argo-rollout-dashboard-promote.png[]
 
 The dashboard shows that the newest revision is using the `green` image and is tied to the Preview
-service whereas the Active service, which is considered Stable, is associated with the previous revision using the `Blue` image.
+service whereas the Active service, which is considered Stable, is associated with the previous revision using the `blue` image.
 
 To perform the promotion, you can either use the dashboard or the CLI to do it:
 
@@ -442,10 +462,12 @@ If you check the Active route the application is now displaying green squares.
 oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
+image::rollouts-demo-app-green.png[]
+
 [#enable-auto-promotion]
 == Enable Auto-Promotion
 
-Now that a manual promotion of rollout has been reviewed, let's enable the auto promotion feature. To do so, execute
+Now that a manual promotion of rollout has been performed, let's proceed to enable the auto promotion feature. To do so, execute
 the following command to patch the rollout to set `autoPromotionEnabled` to `true`:
 
 [.console-input]

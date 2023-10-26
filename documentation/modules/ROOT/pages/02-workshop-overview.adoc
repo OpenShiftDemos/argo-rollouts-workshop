@@ -4,6 +4,8 @@ include::_attributes.adoc[]
 [#workshop-layout]
 == Workshop Layout
 
+image::openshift-projects.png[]
+
 In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:
 
 * _user%USERNUM%-dev_. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
