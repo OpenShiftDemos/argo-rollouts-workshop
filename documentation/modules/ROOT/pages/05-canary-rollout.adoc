@@ -120,9 +120,6 @@ oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
 
 The console should return something similar to:
 
-[TODO]
-Update list below for eight replicas
-
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
 ----
