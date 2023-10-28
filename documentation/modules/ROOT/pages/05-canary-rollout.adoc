@@ -1,19 +1,16 @@
 = Canary
 include::_attributes.adoc[]
 
-link:https://argo-rollouts.readthedocs.io/en/stable/features/canary/[Canary, window='_blank'] can be thought of as an advanced version of blue-green where instead of an abrupt cut-over
-of live traffic between a current and new revision instead traffic is gradually increased to the new
-version in increments, or steps. Like the proverbial link:https://en.wiktionary.org/wiki/canary_in_a_coal_mine[canary in the coal mine,window="_blank"],
+link:https://argo-rollouts.readthedocs.io/en/stable/features/canary/[Canary, window='_blank'] can be
+thought of as an advanced version of blue-green where instead of an abrupt cut-over
+of live traffic between a current and new revision traffic is instead gradually increased to the new
+version in increments, or steps, while simultaneously decreasing the current revision. Like the
+proverbial link:https://en.wiktionary.org/wiki/canary_in_a_coal_mine[canary in the coal mine,window="_blank"],
 the intent is to allow users to access the new version over time and if unexpected problems occur revert back to the
 previous version.
 
-This process is depicted in the diagram below where we see how we slowly migrate traffic from
-the current version to the new version until the process is completed.
-
-[NOTE]
-Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. This
-work is in progress and will be available in the future as Rollouts moves to GA status
-in OpenShift GitOps.
+This process is depicted in the diagram below that shows how traffic is slowly migrated from
+the current revision to the new revision until the process is completed.
 
 image::overview-canary.png[]
 
@@ -21,6 +18,11 @@ To manage the transition of traffic between stable and canary services, Argo Rol
 of link:https://argo-rollouts.readthedocs.io/en/stable/features/traffic-management/[traffic management, window='_blank'] solutions. In
 the absence of a traffic management solution, Rollouts will manage traffic weight on a best effort basis by adjusting
 the number of pod replicas associated with each service.
+
+[NOTE]
+Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. This
+work is in progress and will be available in the future as Rollouts moves to GA status
+in OpenShift GitOps. For this module we will rely on Rollouts best effort approach.
 
 [#deploy-canary-rollout]
 == Deploy Canary Rollout
@@ -42,7 +44,9 @@ Next, let's explore the manifests that we will be deploying in the `./canary/bas
 ls ./canary/base
 ----
 
-Similar to previous modules, note we have files for `rollout.yaml`, `services.yaml` and `routes.yaml` which represent our Rollout, Services and Routes.
+Similar to previous modules, note we have files for `rollout.yaml`, `services.yaml` and `routes.yaml` which are
+our Kubernetes resources for Rollout, Services and Routes respectively. Examining the Rollout first you will
+see the following:
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/rollout.yaml[./canary/base/rollout.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -50,17 +54,18 @@ Similar to previous modules, note we have files for `rollout.yaml`, `services.ya
 include::ROOT:example$canary/base/rollout.yaml[]
 ----
 
-In the canary strategy, like the blue-green strategy, we specify the services to use for stable and canary. However
-unlike blue-green we specify a series of steps determining the flow of traffic between services. At each step we
-can set the traffic weight, pause or perform an inline analysis.
+In the rollout we have changed our strategy from blue-green to canary. In the canary strategy, like the blue-green strategy, we specify
+the services to use however here they are stable and canary services. Unlike blue-green we explicitly define the promotion process by
+specifying a series of discrete steps. At each step we can set the traffic weight between the services, pause or perform an
+inline analysis.
 
-For this example, the first step sets the weight to 20% and then pauses indefinitely since no duration
+For this example, the first step sets the weight to 20% and then the second step pauses indefinitely since no duration
 is specified. This will allow us to observe the behavior of the canary and validate that it is
 performing as expected before performing a manual promotion.
 
 Once the manual promotion has been performed, the remaining steps will continue to increase the
 traffic weight with short pauses between each step. For the pause step the duration can be
-specified in seconds, minutes or hours increments.
+specified in seconds(s), minutes(m) or hours(h) increments.
 
 [NOTE]
 For the purposes of this workshop the pause sequences are deliberately short, it is common
@@ -74,16 +79,16 @@ Next let's look at the Kubernetes services that are defined:
 include::ROOT:example$canary/base/services.yaml[]
 ----
 
-As expected we have services for stable and canary defined however there is a new service called
-all. This service is not managed by the rollout and includes all pods, we will use this service
-to observe the behavior of the rollout.
+As expected, services have been defined `stable` and `canary` as referenced in the Rollout, however there is a new service called
+`all`. This `all` service is not managed by the rollout and includes all pods, this service is used
+to observe the behavior of rollouts as traffic weight shifts between stable and canary services.
 
 [Important]
 As mentioned previously, Argo Rollouts does not currently have support for traffic shaping for
 OpenShift Routes. As a result we will be relying on the best effort approach of scaling pods.
 The `all` service will enable us to see this by including all pods.
 
-With the services out of the way now examine the routes:
+With the services out of the way, let's examine the routes:
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary/base/routes.yaml[./canary/base/routes.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -91,10 +96,10 @@ With the services out of the way now examine the routes:
 include::ROOT:example$canary/base/routes.yaml[]
 ----
 
-We have defined a route to match each service that we saw previously. Note for the `all` route,
+Here a route has been defined to match each service that were shown previously. Note for the `all` route,
 OpenShift Route annotations are being used to disable sticky sessions and use round-robin
-load balancing. This enables us to observe the split of traffic as Rollouts manage the pod
-replicas between stable and canary services.
+load balancing. This enables us to properly observe the split of traffic as Rollouts manage the pod
+replicas between stable and canary services without interference from OpenShift's load balancer.
 
 To deploy the canary rollout, use the following command to process the kustomization:
 
@@ -105,12 +110,12 @@ oc apply -k ./canary/base -n user%USERNUM%-prod
 ----
 
 Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
-that the pods are up and running:
+that the rollout is up and running and in a Healthy state:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get pods -l app=rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
 ----
 
 The console should return something similar to:
@@ -121,18 +126,40 @@ Update list below for eight replicas
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
 ----
-NAME                             READY   STATUS    RESTARTS   AGE
-rollouts-demo-66d84bcd76-79c26   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-c8mm7   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-jcccp   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-mt5wc   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-npjvk   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-pn77f   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-r8rmv   1/1     Running   0          20s
-rollouts-demo-66d84bcd76-vcv6z   1/1     Running   0          20s
+Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          8/8
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
+Replicas:
+  Desired:       8
+  Current:       8
+  Updated:       8
+  Ready:         8
+  Available:     8
+
+NAME                                       KIND        STATUS     AGE  INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  24s
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  24s  stable
+      ├──□ rollouts-demo-66d84bcd76-55fd9  Pod         ✔ Running  24s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-8jh88  Pod         ✔ Running  24s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-d29gr  Pod         ✔ Running  24s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-d8vk9  Pod         ✔ Running  24s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-gqlkq  Pod         ✔ Running  24s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-hr77t  Pod         ✔ Running  24s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-rprt7  Pod         ✔ Running  24s  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-wkg2s  Pod         ✔ Running  24s  ready:1/1
 ----
 
-Retrieve the stable route URL using the command below and copy to a browser tab:
+The command shows additional information about the canary rollout including the
+number of steps and the weight between services.
+
+Confirm the application is accessible, retrieve the stable route URL using the
+command below and copy to a browser tab:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -270,7 +297,7 @@ oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 ----
 
 Observe the dashboard once it has been promoted, the dashboard will show the progression
-of the steps by highlight each step as it is being executed.
+of the steps by highlighting each step as it is being executed.
 
 Prior to moving on to the next section, perform a cleanup to remove the current rollout
 and reset the Deployment in the dev environment back to blue.
@@ -294,14 +321,14 @@ oc delete -k ./canary/base -n user%USERNUM%-prod
 [#inline-analysis]
 == Inline Analysis
 
-In the last section there was a pause step that provided an opportunity to test the canary
+In the last section there was a pause step that provided an opportunity to manually test the canary
 before progressing further. However we can accomplish the same goal my using an analysis. With
 respect the canary strategy, an analysis can be performed in the link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#background-analysis[background,window='_blank']
 or as an link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#inline-analysis[inline] analysis.
 
 A background analysis happens asynchronously and does not block the progression of steps, however
 if the analysis fails it will abort the rollout similar to what we saw in the previous module with
-the blue-green strategy. In the case of an inline analysis, the analysis is performed as a step
+the blue-green strategy. In the case of an inline analysis, the analysis is performed as a discrete step
 and will block the progression of the rollout until it completes.
 
 The files for this example are in the `./canary-analysis/base` folder, to view the list of files
@@ -317,7 +344,7 @@ Note that the files are identical to the previous example other then the `rollou
 `analysistemplate.yaml` file. The AnalysisTemplate being used here is identical to the one
 we used in the blue-green example so we will not cover it again here.
 
-The one change in the rollout is that it now as an inline analysis step.
+The one change in the rollout is that it now has an inline analysis step as per below:
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/canary-analysis/base/rollout.yaml[./canary-analysis/base/rollout.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
@@ -399,3 +426,52 @@ has completed successfully or red if it failed. Here is what the dashboard looks
 analysis is executing:
 
 image::argo-rollouts-dashboard-analysis-executing.png[]
+
+Once the promotion is completed, the dashboard will appear as follows:
+
+image::argo-rollouts-dashboard-analysis-completed.png[]
+
+In the command line, you can view the rollout using the command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+----
+
+Information about the rollout will appear as follows:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✔ Healthy
+Strategy:        Canary
+  Step:          7/7
+  SetWeight:     100
+  ActualWeight:  100
+Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
+Replicas:
+  Desired:       8
+  Current:       8
+  Updated:       8
+  Ready:         8
+  Available:     8
+
+NAME                                       KIND        STATUS     AGE    INFO
+⟳ rollouts-demo                            Rollout     ✔ Healthy  4m56s
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  5s     stable
+      ├──□ rollouts-demo-66d84bcd76-c4d6j  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-f9qvw  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-gp9xp  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-gpqwj  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-k6dwl  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-mlj5q  Pod         ✔ Running  5s     ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-wp4tj  Pod         ✔ Running  5s     ready:1/1
+      └──□ rollouts-demo-66d84bcd76-z8kr2  Pod         ✔ Running  5s     ready:1/1
+----
+
+In this module the canary strategy for Argo Rollouts has been reviewed along
+with how to use an inline analysis step to perform testing of the canary deployment.
