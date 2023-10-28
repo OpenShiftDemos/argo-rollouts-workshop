@@ -274,18 +274,15 @@ to the preview service and set the error rate to 100%.
 If you did everything correctly, you should see that the Analysis failed as indicated by the red
 button:
 
-image::argo-rollouts-analysis-failed.png[]
+image::argo-rollouts-analysis-failed-details.png[]
 
 [NOTE]
 If the timing did not work out for you, you can try again by promoting with a different color.
 You can see the list of available colors .link:https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags[here, window='_blank']
 where each color is simply a tag in our quay.io registry.
 
-If you expand the Analysis section, you will see at least one metric test has failed:
-
-image::argo-rollouts-analysis-failed-details.png[]
-
-You can hover the mouse over the failed analysis to see the details.
+If you expand the Analysis section, you will see at least one metric test has failed as
+pictured above. You can hover the mouse over the failed analysis to see the details.
 
 [#cleanup]
 == Clean-up
