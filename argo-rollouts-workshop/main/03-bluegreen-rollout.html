@@ -112,6 +112,9 @@
     <a class="nav-link" href="#enable-auto-promotion">Enable Auto-Promotion</a>
   </li>
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#perform-rollback">Perform Rollback</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#cleanup">Clean-up</a>
   </li>
 </ul>
@@ -833,8 +836,7 @@ service whereas the Active service, which is considered Stable, is associated wi
 </li>
 <li>
 <p>For the UI, click the <code>Promote</code> button in the Dashboard, it will change to an orange <code>Sure?</code> button
-to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
-Dashboard will show a countdown for this.</p>
+to ask for confirmation so click it again to confirm.</p>
 <div class="imageblock">
 <div class="content">
 <img src="_images/argo-rollout-dashboard-promote-button.png" alt="argo rollout dashboard promote button">
@@ -899,7 +901,56 @@ note that there is a new revision using the Yellow image associated with the Act
 <div class="paragraph">
 <p>While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
 the validity of the new revision before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
-which will be covered that in the next module.</p>
+which will be covered in the next module.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_perform_rollback"><a class="anchor" href="#_perform_rollback"></a>Perform Rollback</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>We have deployed our application with the color yellow but disaster, our users really dislike yellow for some reason and insist
+that we switch back to the green color while we work to determine an acceptable shade of yellow for users.</p>
+</div>
+<div class="paragraph">
+<p>To accomplish this we will perform a rollback to the green version. This can be done either in the dashboard or in the CLI but
+here we will show the CLI way of doing it.</p>
+</div>
+<div class="paragraph">
+<p>To execute the rollback, first we need to determine the revision to rollback to. Looking at the dashboard we can see that
+the <code>green</code> image is associated with Revision 2 (assuming you did not need to do multiple deployments due to problems).</p>
+</div>
+<div class="paragraph">
+<p>To rollback the revision the <code>undo</code> command can be used, execute the following command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts undo rollouts-demo --to-revision=2  -n user%USERNUM%-prod</code></pre>
+</div>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+An info message will appear when running the command, <code>unknown field `spec.template.metadata.creationTimestamp`</code>, this can be ignored.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Once this command is run, if you look at the dashboard you will see a new revision has started, revision 4. What happened?</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-rollback.png" alt="argo rollouts rollback">
+</div>
+</div>
+<div class="paragraph">
+<p>Like Kubernetes Deployments, Argo Rollouts treats a rollback as a roll forward by creating a new revision for the desired state. This
+enables</p>
 </div>
 </div>
 </div>
