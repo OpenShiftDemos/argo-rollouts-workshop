@@ -5,7 +5,7 @@ In a blue-green deployment we deploy a new version of the application in a separ
 the two versions running in parallel for a period of time. This enables testing on the new version while users continue
 to access the current version of the application until a cut-over of traffic occurs.
 
-The diagram below shows this process over time.
+The diagram below illustrates this process over time.
 
 image::overview-blue-green.png[]
 
@@ -53,7 +53,7 @@ Under the `blueGreen` strategy we have identified the `active` and `preview` Kub
 in more detail when services are discussed next.
 
 As well as services the field `autoPromotionEnabled` is set to `false` which means the rollout will require manual intervention to promote. Manual promotion
-is enabled so the behavior of the application can be observed in more-depth in subsequent sections of this module.
+is enabled so the behavior of the rollout can be observed in-depth in subsequent sections of this module.
 
 The Argo Rollouts documentation provides a complete list
 of all of the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features[configurable features, window='_blank'] for the blueGreen strategy
@@ -70,7 +70,7 @@ interacting with, the preview service will be used to access the new version of 
 
 As per the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview[documentation,window='_blank'],
 Argo Rollouts automatically manages the traffic between the services by managing the `.spec.selector`. In a nutshell, Argo Rollouts
-will add a unique identifier to pods and then update the selector in the service to bind the right pods to the right service. As
+will add a unique identifier label to pods and then update the selector in the service to bind the right pods to the right service. As
 we deploy the rollout this will be reviewed in more detail.
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
@@ -173,7 +173,7 @@ spec:
     rollouts-pod-template-hash: 66d84bcd76
 ----
 
-Notice that the selector now has an additional key, `rollouts-pod-template-hash`, with a unique value. This is how the rollout manages traffic
+Notice that the selector now has an additional key, `rollouts-pod-template-hash`, with a hashed value. This is how the rollout manages traffic
 between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will see the same
 selector used there as well.
 
@@ -267,7 +267,7 @@ This should return a simple `Healthy` in the output.
 
 [Note]
 Similar to `kubectl rollout status` for Deployments, the `status` command
-will block when the rollout is not healthy which can be useful when used with
+will block when the rollout is in a paused state which can be useful when used with
 automation where you need to wait until it has finished rolling out (pun intended).
 
 Other commands are available to perform actions on the rollout such as a promoting
@@ -291,7 +291,7 @@ Copy the returned URL into a browser tab to access the dashboard.
 image::argo-rollout-dashboard.png[]
 
 [NOTE]
-The Argo Rollouts Dashboard is intended to be run on the developer's laptop and as a result it does not support
+The Argo Rollouts Dashboard is intended to be run on the developer's local machine and as a result it does not support
 authentication or multi-tenancy. For convenience and simplicity it has been deployed on cluster for each user
 but this is not recommended as a general practice.
 
@@ -328,7 +328,7 @@ Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` w
 [NOTE]
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines however any CI tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 
 To start the pipeline, click the `Actions` dropdown and select the `Start` option:

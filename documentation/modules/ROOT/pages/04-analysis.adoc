@@ -54,7 +54,7 @@ include::ROOT:example$bluegreen-analysis/base/analysistemplate.yaml[]
 This AnalysisTemplate is broken up into two broad sections as follows:
 
 * `.spec.args`. This is where you can specify arguments which are passed by the rollout when using the template. These arguments
-enable the template to be reusable across many different rollouts.
+enable the template to be reused across many different rollouts.
 * `.spec.metrics`. These are the metric providers that will be used to collect data for the analysis as well as any jobs
 that need to be executed.
 
@@ -73,7 +73,7 @@ a success, here we set a failure limit of 0.
 
 Finally, remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
 be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
-the promotion should proceed.
+to proceed with the promotion.
 
 In the arguments we are taking two key arguments, `query` and `route-url`, which will be passed from the
 Rollout. Notice that the `query` argument is being used at the end of the URL of the web provider as a
@@ -86,12 +86,12 @@ provider:
     url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ *args.query* }}
 ----
 
-The `route-url` parameter is being used in the second provider, the job, where we will be creating load. This
+The `route-url` parameter is being used in the second provider, the job, where we will be creating load against. This
 parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
 siege will be hitting when it generates load.
 
-Finally a third parameter, `api-token`, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
-stack, it was created by the GitOps process which provisioned this workshop.
+Finally a third parameter, `api-token`, is provided by a secret. This secret provides the token needed
+to access the OpenShift monitoring stack, it was created by the GitOps process which provisioned this workshop.
 
 Next let's look at the rollout and see how the AnalysisTemplate is wired into the rollout.
 
@@ -102,12 +102,12 @@ include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]
 ----
 
 Notice that in `.spec.strategy.blueGreen` we have now defined the `prePromotionAnalysis` field. In this field
-we define the template we want to use as well as the arguments that the rollout needs to provide the
-analysis template.
+we define the analysis template we want to use as well as the arguments that the rollout needs to provide the
+template.
 
-[Note]
-The query parameter is URL encoded since we are using the web provider rather then the prometheus
-provider hence the odd encoding.
+[NOTE]
+The query parameter is URL encoded since we are using the Web provider rather then the Prometheus
+provider hence the need to encode it appropriately.
 
 Next to deploy this new version of the blue-green rollout, execute the following command:
 
@@ -117,7 +117,16 @@ Next to deploy this new version of the blue-green rollout, execute the following
 kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -
 ----
 
-Check that the rollout has deployed successfully in the Argo Rollouts dashboard:
+Check that the rollout has deployed successfully in the Argo Rollouts dashboard, if you have
+closed the browser tab with the dashboard remember the URL can be retrieved as follows:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+The dashboard for our blue-green rollout will appear identically as follows:
 
 image::argo-rollout-dashboard-bg-analysis-initial.png[]
 
@@ -155,7 +164,7 @@ is shown in grey (highlighted in the image with a red outline):
 
 image::argo-rollouts-analysis-in-progress-overview.png[]
 
-When an a promotion of a rollout with an analysis is done the controller will
+When a promotion of a rollout with an analysis is executed the controller will
 generate an analysis run for each template execution. Since we only have one template
 being used in pre-promotion we will only see one analysis run being created however
 it is possible for a promotion to have multiple analysis runs dependent on the
@@ -186,6 +195,50 @@ show you the measurement result.
 You may need to refresh the browser to see new metrics being added to the AnalysisRun depending
 on connectivity during the workshop.
 
+You can also use the Argo Rollouts CLI to examine the status of the Rollout by executing the `get`
+command that we used earlier:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts get rollout rollouts-demo -n user1-prod
+----
+
+This will display output similar to the following assuming the analysis run has completed executing:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✔ Healthy
+Strategy:        BlueGreen
+Images:          quay.io/openshiftdemos/rollouts-demo:green (stable, active)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                                        KIND         STATUS         AGE    INFO
+⟳ rollouts-demo                                             Rollout      ✔ Healthy      6m58s
+├──# revision:2
+│  ├──⧉ rollouts-demo-5999df6cf9                            ReplicaSet   ✔ Healthy      2m23s  stable,active
+│  │  ├──□ rollouts-demo-5999df6cf9-cw5bm                   Pod          ✔ Running      2m23s  ready:1/1
+│  │  └──□ rollouts-demo-5999df6cf9-rfgzr                   Pod          ✔ Running      2m23s  ready:1/1
+│  └──α rollouts-demo-5999df6cf9-2-pre                      AnalysisRun  ✔ Successful   2m20s  ✔ 5
+│     └──⊞ 17525abd-96e7-4abe-bac3-e9f62249a353.run-load.1  Job          ✔ Successful   2m20s
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76                            ReplicaSet   • ScaledDown   6m58s
+      ├──□ rollouts-demo-66d84bcd76-95xh8                   Pod          ◌ Terminating  6m58s  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-qq8lt                   Pod          ◌ Terminating  6m58s  ready:1/1
+----
+
+Note for the new revision the results of the AnalysisRun is shown with the INFO column
+showing a checkmark with a 5. The five shows the aggregated total of four measurement
+checks plus the job executing successfully for a total of five.
+
 === Analysis Fails
 
 Now that we have experienced a successful promotion, let's examine the behavior when the
@@ -204,8 +257,9 @@ squares have red boxes around them indicating they are returning error messages.
 image::rollouts-demo-errors.png[]
 
 [IMPORTANT]
-In this section there is some timing involved, when we promote the new image the error
-setting will be reset back to 0 for the preview service. After the pipeline completes,
+This section should not be overly timing sensitive since we are
+cheating a bit by pre-generating errors. However when we promote the new image the error
+setting will be reset back to 0 for the preview service. After the promotion pipeline completes,
 immediately switch back to the tab with the preview service and push the error bar
 back to 100%.
 
@@ -226,6 +280,12 @@ image::argo-rollouts-analysis-failed.png[]
 If the timing did not work out for you, you can try again by promoting with a different color.
 You can see the list of available colors .link:https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags[here, window='_blank']
 where each color is simply a tag in our quay.io registry.
+
+If you expand the Analysis section, you will see at least one metric test has failed:
+
+image::argo-rollouts-analysis-failed-details.png[]
+
+You can hover the mouse over the failed analysis to see the details.
 
 [#cleanup]
 == Clean-up

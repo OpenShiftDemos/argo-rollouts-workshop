@@ -120,7 +120,7 @@ ls ./deploy/base
 ----
 
 You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
-and `route.yaml` represent the Deployment, Service and OpenShift route for the application.
+and `route.yaml` represent the Deployment, Service and OpenShift Route respectively for the application.
 
 .link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml[./deploy/base/deploy.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
