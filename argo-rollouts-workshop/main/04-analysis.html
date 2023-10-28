@@ -672,6 +672,48 @@ where each color is simply a tag in our quay.io registry.
 <p>If you expand the Analysis section, you will see at least one metric test has failed as
 pictured above. You can hover the mouse over the failed analysis to see the details.</p>
 </div>
+<div class="paragraph">
+<p>Examining the rollout with the CLI using the previous <code>get</code> command:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts get rollout rollouts-demo -n user1-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Will now show the following:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✖ Degraded
+Message:         RolloutAborted: Rollout aborted update to revision 3: Metric "success-rate" assessed Failed due to failed (1) &gt; failureLimit (0)
+Strategy:        BlueGreen
+Images:          quay.io/openshiftdemos/rollouts-demo:green (stable, active)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       0
+  Ready:         2
+  Available:     2
+
+NAME                                                        KIND         STATUS        AGE    INFO
+⟳ rollouts-demo                                             Rollout      ✖ Degraded    23m
+├──# revision:3
+│  ├──⧉ rollouts-demo-6b8dccb648                            ReplicaSet   • ScaledDown  8m46s  preview,delay:passed
+│  └──α rollouts-demo-6b8dccb648-3-pre                      AnalysisRun  ✖ Failed      8m43s  ✔ 1,✖ 1
+│     └──⊞ d484ff69-4ef1-4cf1-9a10-1b78530dadc7.run-load.1  Job          ✔ Successful  8m43s
+├──# revision:2
+│  ├──⧉ rollouts-demo-5999df6cf9                            ReplicaSet   ✔ Healthy     18m    stable,active
+│  │  ├──□ rollouts-demo-5999df6cf9-cw5bm                   Pod          ✔ Running     18m    ready:1/1
+│  │  └──□ rollouts-demo-5999df6cf9-rfgzr                   Pod          ✔ Running     18m    ready:1/1
+│  └──α rollouts-demo-5999df6cf9-2-pre                      AnalysisRun  ✔ Successful  18m    ✔ 5
+│     └──⊞ 17525abd-96e7-4abe-bac3-e9f62249a353.run-load.1  Job          ✔ Successful  18m
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76                            ReplicaSet   • ScaledDown  23m</code></pre>
+</div>
+</div>
 </div>
 </div>
 </div>
