@@ -494,7 +494,7 @@ While not requiring manual intervention is great, it would be wonderful if there
 the validity of the new revision before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
 which will be covered in the next module.
 
-[#perform rollback]
+[#perform-rollback]
 == Perform Rollback
 
 We have deployed our application with the color yellow but disaster, our users really dislike yellow for some reason and insist
