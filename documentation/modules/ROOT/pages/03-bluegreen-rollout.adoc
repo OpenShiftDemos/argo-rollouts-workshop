@@ -447,8 +447,7 @@ oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 ----
 
 . For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
-to ask for confirmation so click it again to confirm. Note that the promotion will be delayed by 15 seconds and the Rollouts
-Dashboard will show a countdown for this.
+to ask for confirmation so click it again to confirm.
 
 +
 image::argo-rollout-dashboard-promote-button.png[]
@@ -493,7 +492,37 @@ note that there is a new revision using the Yellow image associated with the Act
 
 While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
 the validity of the new revision before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
-which will be covered that in the next module.
+which will be covered in the next module.
+
+[#perform rollback]
+== Perform Rollback
+
+We have deployed our application with the color yellow but disaster, our users really dislike yellow for some reason and insist
+that we switch back to the green color while we work to determine an acceptable shade of yellow for users.
+
+To accomplish this we will perform a rollback to the green version. This can be done either in the dashboard or in the CLI but
+here we will show the CLI way of doing it.
+
+To execute the rollback, first we need to determine the revision to rollback to. Looking at the dashboard we can see that
+the `green` image is associated with Revision 2 (assuming you did not need to do multiple deployments due to problems).
+
+To rollback the revision the `undo` command can be used, execute the following command:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc argo rollouts undo rollouts-demo --to-revision=2  -n user%USERNUM%-prod
+----
+
+[NOTE]
+An info message will appear when running the command, `unknown field `spec.template.metadata.creationTimestamp``, this can be ignored.
+
+Once this command is run, if you look at the dashboard you will see a new revision has started, revision 4. What happened?
+
+image::argo-rollouts-rollback.png[]
+
+Like Kubernetes Deployments, Argo Rollouts treats a rollback as a roll forward by creating a new revision for the desired state. This
+enables
 
 [#cleanup]
 == Clean-up

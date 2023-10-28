@@ -11,6 +11,7 @@
 ** xref:03-bluegreen-rollout.adoc#deploy-blue-green-rollout[Deploy Blue-Green Rollout]
 ** xref:03-bluegreen-rollout.adoc#promote-image[Promote Image]
 ** xref:03-bluegreen-rollout.adoc#enable-auto-promotion[Enable Auto-Promotion]
+** xref:03-bluegreen-rollout.adoc#perform-rollback[Perform Rollback]
 ** xref:03-bluegreen-rollout.adoc#cleanup[Clean-up]
 
 * xref:04-analysis.adoc[4. Analysis]
