@@ -202,7 +202,7 @@ the two versions running in parallel for a period of time. This enables testing 
 to access the current version of the application until a cut-over of traffic occurs.</p>
 </div>
 <div class="paragraph">
-<p>The diagram below shows this process over time.</p>
+<p>The diagram below illustrates this process over time.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -286,7 +286,7 @@ in more detail when services are discussed next.</p>
 </div>
 <div class="paragraph">
 <p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>false</code> which means the rollout will require manual intervention to promote. Manual promotion
-is enabled so the behavior of the application can be observed in more-depth in subsequent sections of this module.</p>
+is enabled so the behavior of the rollout can be observed in-depth in subsequent sections of this module.</p>
 </div>
 <div class="paragraph">
 <p>The Argo Rollouts documentation provides a complete list
@@ -334,7 +334,7 @@ interacting with, the preview service will be used to access the new version of 
 <div class="paragraph">
 <p>As per the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#overview" target="_blank" rel="noopener">documentation</a>,
 Argo Rollouts automatically manages the traffic between the services by managing the <code>.spec.selector</code>. In a nutshell, Argo Rollouts
-will add a unique identifier to pods and then update the selector in the service to bind the right pods to the right service. As
+will add a unique identifier label to pods and then update the selector in the service to bind the right pods to the right service. As
 we deploy the rollout this will be reviewed in more detail.</p>
 </div>
 <div class="listingblock">
@@ -478,7 +478,7 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>Notice that the selector now has an additional key, <code>rollouts-pod-template-hash</code>, with a unique value. This is how the rollout manages traffic
+<p>Notice that the selector now has an additional key, <code>rollouts-pod-template-hash</code>, with a hashed value. This is how the rollout manages traffic
 between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will see the same
 selector used there as well.</p>
 </div>
@@ -577,7 +577,7 @@ include the <code>rollouts-pod-template-hash</code> that was shown earlier.</p>
 </div>
 <div class="paragraph">
 <p>Similar to <code>kubectl rollout status</code> for Deployments, the <code>status</code> command
-will block when the rollout is not healthy which can be useful when used with
+will block when the rollout is in a paused state which can be useful when used with
 automation where you need to wait until it has finished rolling out (pun intended).</p>
 </div>
 <div class="paragraph">
@@ -612,7 +612,7 @@ run the following command to get the URL for the dashboard for your specific use
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The Argo Rollouts Dashboard is intended to be run on the developer&#8217;s laptop and as a result it does not support
+The Argo Rollouts Dashboard is intended to be run on the developer&#8217;s local machine and as a result it does not support
 authentication or multi-tenancy. For convenience and simplicity it has been deployed on cluster for each user
 but this is not recommended as a general practice.
 </td>
@@ -679,7 +679,7 @@ Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace while <cod
 <td class="content">
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines however any CI tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 </td>
 </tr>

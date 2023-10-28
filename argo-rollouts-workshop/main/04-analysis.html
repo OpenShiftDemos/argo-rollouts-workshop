@@ -301,7 +301,7 @@ spec:
 <ul>
 <li>
 <p><code>.spec.args</code>. This is where you can specify arguments which are passed by the rollout when using the template. These arguments
-enable the template to be reusable across many different rollouts.</p>
+enable the template to be reused across many different rollouts.</p>
 </li>
 <li>
 <p><code>.spec.metrics</code>. These are the metric providers that will be used to collect data for the analysis as well as any jobs
@@ -336,7 +336,7 @@ a success, here we set a failure limit of 0.</p>
 <div class="paragraph">
 <p>Finally, remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
 be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
-the promotion should proceed.</p>
+to proceed with the promotion.</p>
 </div>
 <div class="paragraph">
 <p>In the arguments we are taking two key arguments, <code>query</code> and <code>route-url</code>, which will be passed from the
@@ -351,13 +351,13 @@ query parameter, this is the Prometheus query that we want to execute against th
 </div>
 </div>
 <div class="paragraph">
-<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load. This
+<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load against. This
 parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
 siege will be hitting when it generates load.</p>
 </div>
 <div class="paragraph">
-<p>Finally a third parameter, <code>api-token</code>, is provided by a secret. This secret provides a token needed to access the OpenShift monitoring
-stack, it was created by the GitOps process which provisioned this workshop.</p>
+<p>Finally a third parameter, <code>api-token</code>, is provided by a secret. This secret provides the token needed
+to access the OpenShift monitoring stack, it was created by the GitOps process which provisioned this workshop.</p>
 </div>
 <div class="paragraph">
 <p>Next let&#8217;s look at the rollout and see how the AnalysisTemplate is wired into the rollout.</p>
@@ -405,12 +405,21 @@ spec:
 </div>
 <div class="paragraph">
 <p>Notice that in <code>.spec.strategy.blueGreen</code> we have now defined the <code>prePromotionAnalysis</code> field. In this field
-we define the template we want to use as well as the arguments that the rollout needs to provide the
-analysis template.</p>
+we define the analysis template we want to use as well as the arguments that the rollout needs to provide the
+template.</p>
 </div>
-<div class="paragraph">
-<p>The query parameter is URL encoded since we are using the web provider rather then the prometheus
-provider hence the odd encoding.</p>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The query parameter is URL encoded since we are using the Web provider rather then the Prometheus
+provider hence the need to encode it appropriately.
+</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>Next to deploy this new version of the blue-green rollout, execute the following command:</p>
@@ -421,7 +430,16 @@ provider hence the odd encoding.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Check that the rollout has deployed successfully in the Argo Rollouts dashboard:</p>
+<p>Check that the rollout has deployed successfully in the Argo Rollouts dashboard, if you have
+closed the browser tab with the dashboard remember the URL can be retrieved as follows:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The dashboard for our blue-green rollout will appear identically as follows:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -478,7 +496,7 @@ is shown in grey (highlighted in the image with a red outline):</p>
 </div>
 </div>
 <div class="paragraph">
-<p>When an a promotion of a rollout with an analysis is done the controller will
+<p>When a promotion of a rollout with an analysis is executed the controller will
 generate an analysis run for each template execution. Since we only have one template
 being used in pre-promotion we will only see one analysis run being created however
 it is possible for a promotion to have multiple analysis runs dependent on the
@@ -531,6 +549,51 @@ on connectivity during the workshop.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>You can also use the Argo Rollouts CLI to examine the status of the Rollout by executing the <code>get</code>
+command that we used earlier:</p>
+</div>
+<div class="listingblock console-input">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">oc argo rollouts get rollout rollouts-demo -n user1-prod</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will display output similar to the following assuming the analysis run has completed executing:</p>
+</div>
+<div class="listingblock console-output">
+<div class="content">
+<pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
+Namespace:       user1-prod
+Status:          ✔ Healthy
+Strategy:        BlueGreen
+Images:          quay.io/openshiftdemos/rollouts-demo:green (stable, active)
+Replicas:
+  Desired:       2
+  Current:       2
+  Updated:       2
+  Ready:         2
+  Available:     2
+
+NAME                                                        KIND         STATUS         AGE    INFO
+⟳ rollouts-demo                                             Rollout      ✔ Healthy      6m58s
+├──# revision:2
+│  ├──⧉ rollouts-demo-5999df6cf9                            ReplicaSet   ✔ Healthy      2m23s  stable,active
+│  │  ├──□ rollouts-demo-5999df6cf9-cw5bm                   Pod          ✔ Running      2m23s  ready:1/1
+│  │  └──□ rollouts-demo-5999df6cf9-rfgzr                   Pod          ✔ Running      2m23s  ready:1/1
+│  └──α rollouts-demo-5999df6cf9-2-pre                      AnalysisRun  ✔ Successful   2m20s  ✔ 5
+│     └──⊞ 17525abd-96e7-4abe-bac3-e9f62249a353.run-load.1  Job          ✔ Successful   2m20s
+└──# revision:1
+   └──⧉ rollouts-demo-66d84bcd76                            ReplicaSet   • ScaledDown   6m58s
+      ├──□ rollouts-demo-66d84bcd76-95xh8                   Pod          ◌ Terminating  6m58s  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-qq8lt                   Pod          ◌ Terminating  6m58s  ready:1/1</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note for the new revision the results of the AnalysisRun is shown with the INFO column
+showing a checkmark with a 5. The five shows the aggregated total of four measurement
+checks plus the job executing successfully for a total of five.</p>
+</div>
 </div>
 <div class="sect2">
 <h3 id="_analysis_fails"><a class="anchor" href="#_analysis_fails"></a>Analysis Fails</h3>
@@ -560,8 +623,9 @@ squares have red boxes around them indicating they are returning error messages.
 <i class="fa icon-important" title="Important"></i>
 </td>
 <td class="content">
-In this section there is some timing involved, when we promote the new image the error
-setting will be reset back to 0 for the preview service. After the pipeline completes,
+This section should not be overly timing sensitive since we are
+cheating a bit by pre-generating errors. However when we promote the new image the error
+setting will be reset back to 0 for the preview service. After the promotion pipeline completes,
 immediately switch back to the tab with the preview service and push the error bar
 back to 100%.
 </td>
@@ -603,6 +667,17 @@ where each color is simply a tag in our quay.io registry.
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>If you expand the Analysis section, you will see at least one metric test has failed:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollouts-analysis-failed-details.png" alt="argo rollouts analysis failed details">
+</div>
+</div>
+<div class="paragraph">
+<p>You can hover the mouse over the failed analysis to see the details.</p>
 </div>
 </div>
 </div>
