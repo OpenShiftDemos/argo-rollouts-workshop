@@ -277,8 +277,9 @@ the `--help` switch and we will look at some of them during the course of this w
 [#argo-rollouts-dashboard]
 === Argo Rollouts Dashboard
 
-The Argo Rollouts dashboard has been deployed in the `user%USERNUM%-tools` namespace on the cluster for this workshop. To access the dashboard,
-run the following command to get the URL for the dashboard for your specific user:
+The Argo Rollouts dashboard has been deployed for you already in the `user%USERNUM%-tools` namespace
+on the cluster for this workshop. To access the dashboard, run the following command to get the
+URL for the dashboard for your specific user:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]

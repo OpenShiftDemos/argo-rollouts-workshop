@@ -1,6 +1,12 @@
 = Workshop Overview
 include::_attributes.adoc[]
 
+In this module we will:
+
+* Review the namespaces being used
+* Review how Rollouts was deployed with OpenShift GitOps
+* Deploy the application in the Development environment
+
 [#workshop-layout]
 == Workshop Layout
 
