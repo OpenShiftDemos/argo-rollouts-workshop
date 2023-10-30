@@ -115,7 +115,7 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s
 
 There are two pods since the Rollout application specified two replicas.
 
-Next retrieve the Routes for this application. It's in the `user%USERNUM%-dev1` Project.
+Next retrieve the Routes for this application. It's in the `user%USERNUM%-prod` Project.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
