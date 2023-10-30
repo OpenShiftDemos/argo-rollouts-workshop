@@ -210,7 +210,7 @@ This will display output similar to the following assuming the analysis run has 
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        BlueGreen
 Images:          quay.io/openshiftdemos/rollouts-demo:green (stable, active)
@@ -298,7 +298,7 @@ Will now show the following:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✖ Degraded
 Message:         RolloutAborted: Rollout aborted update to revision 3: Metric "success-rate" assessed Failed due to failed (1) > failureLimit (0)
 Strategy:        BlueGreen

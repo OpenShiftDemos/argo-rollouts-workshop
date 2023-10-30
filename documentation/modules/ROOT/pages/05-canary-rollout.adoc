@@ -124,7 +124,7 @@ The console should return something similar to:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          8/8
@@ -207,7 +207,7 @@ You should see output similar to the following:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ॥ Paused
 Message:         CanaryPauseStep
 Strategy:        Canary
@@ -374,7 +374,7 @@ You should see output as follows:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          7/7
@@ -442,7 +442,7 @@ Information about the rollout will appear as follows:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          7/7

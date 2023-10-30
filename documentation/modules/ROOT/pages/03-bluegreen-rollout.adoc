@@ -127,8 +127,8 @@ oc get routes -n user%USERNUM%-prod
 [source,bash,subs="attributes+,+macros"]
 ----
 NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION     WILDCARD
-active    active-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
-preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None
+active    active-user%USERNUM%-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
+preview   preview-user%USERNUM%-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None
 ----
 
 Copy the value of the `HOST/PORT` of each route into an individual browser tab to confirm that both display the application with blue squares.
@@ -156,7 +156,7 @@ metadata:
   labels:
     app: rollouts-demo
   name: active
-  namespace: user1-prod
+  namespace: user%USERNUM%-prod
 spec:
   clusterIP: 172.30.104.238
   clusterIPs:
@@ -232,7 +232,7 @@ This command should output something similar to the following:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        BlueGreen
 Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable, active)
@@ -399,7 +399,7 @@ This should return the following output:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ॥ Paused
 Message:         BlueGreenPause
 Strategy:        BlueGreen
@@ -521,8 +521,7 @@ Once this command is run, if you look at the dashboard you will see a new revisi
 
 image::argo-rollouts-rollback.png[]
 
-Like Kubernetes Deployments, Argo Rollouts treats a rollback as a roll forward by creating a new revision for the desired state. This
-enables
+Like Kubernetes Deployments, Argo Rollouts treats a rollback as a roll forward by creating a new revision for the desired state.
 
 [#cleanup]
 == Clean-up
