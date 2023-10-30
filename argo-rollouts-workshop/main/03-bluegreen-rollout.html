@@ -430,8 +430,8 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s</code></pre>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION     WILDCARD
-active    active-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
-preview   preview-user1-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None</code></pre>
+active    active-user%USERNUM%-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
+preview   preview-user%USERNUM%-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -463,7 +463,7 @@ metadata:
   labels:
     app: rollouts-demo
   name: active
-  namespace: user1-prod
+  namespace: user%USERNUM%-prod
 spec:
   clusterIP: 172.30.104.238
   clusterIPs:
@@ -543,7 +543,7 @@ rollouts-demo  BlueGreen  Healthy       -     -           2/2    2        2     
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        BlueGreen
 Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable, active)
@@ -779,7 +779,7 @@ CLI. Execute the following command:</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ॥ Paused
 Message:         BlueGreenPause
 Strategy:        BlueGreen
@@ -949,8 +949,7 @@ An info message will appear when running the command, <code>unknown field `spec.
 </div>
 </div>
 <div class="paragraph">
-<p>Like Kubernetes Deployments, Argo Rollouts treats a rollback as a roll forward by creating a new revision for the desired state. This
-enables</p>
+<p>Like Kubernetes Deployments, Argo Rollouts treats a rollback as a roll forward by creating a new revision for the desired state.</p>
 </div>
 </div>
 </div>

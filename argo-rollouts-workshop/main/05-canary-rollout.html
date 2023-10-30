@@ -469,7 +469,7 @@ that the rollout is up and running and in a Healthy state:</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          8/8
@@ -570,7 +570,7 @@ the <code>user%USERNUM%-tools</code> namespace.</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ॥ Paused
 Message:         CanaryPauseStep
 Strategy:        Canary
@@ -801,7 +801,7 @@ in the blue-green rollout with analysis.</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          7/7
@@ -892,7 +892,7 @@ analysis is executing:</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          7/7

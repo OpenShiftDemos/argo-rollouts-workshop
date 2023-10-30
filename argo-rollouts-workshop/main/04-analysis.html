@@ -567,7 +567,7 @@ command that we used earlier:</p>
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✔ Healthy
 Strategy:        BlueGreen
 Images:          quay.io/openshiftdemos/rollouts-demo:green (stable, active)
@@ -689,7 +689,7 @@ pictured above. You can hover the mouse over the failed analysis to see the deta
 <div class="listingblock console-output">
 <div class="content">
 <pre class="highlightjs highlight"><code class="language-bash hljs" data-lang="bash">Name:            rollouts-demo
-Namespace:       user1-prod
+Namespace:       user%USERNUM%-prod
 Status:          ✖ Degraded
 Message:         RolloutAborted: Rollout aborted update to revision 3: Metric "success-rate" assessed Failed due to failed (1) &gt; failureLimit (0)
 Strategy:        BlueGreen
