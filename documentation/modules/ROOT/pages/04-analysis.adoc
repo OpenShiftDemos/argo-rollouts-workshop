@@ -201,7 +201,7 @@ command that we used earlier:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user1-prod
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
 ----
 
 This will display output similar to the following assuming the analysis run has completed executing:
