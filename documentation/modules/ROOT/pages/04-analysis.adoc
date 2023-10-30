@@ -289,7 +289,7 @@ Examining the rollout with the CLI using the previous `get` command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user1-prod
+oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
 ----
 
 Will now show the following:
