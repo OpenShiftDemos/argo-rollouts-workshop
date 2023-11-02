@@ -73,9 +73,9 @@ metrics from Thanos, an aggregator for Prometheus data, and a job that runs link
 to drive some load on the application.
 
 [NOTE]
-We are using the web metric provider here since Argo Rollouts does not currently support authentication with the Prometheus
-provider. This is one of the gaps that Red Hat is planning on closing prior to supporting Rollouts in OpenShift GitOps
-as a Generally Available (GA) product.
+We are using the web metric provider here since the Argo Rollouts v1.2 that we are using does not
+support authentication with the Prometheus provider. This capability has been recently added in Rollouts as
+of v1.6.0.
 
 The `count` and `interval` fields in the `success-rate` metric powered by the web provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The `failureLimit` determines how many failures are permitted for the rollout to be considered
