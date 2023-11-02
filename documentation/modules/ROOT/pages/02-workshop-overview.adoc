@@ -134,13 +134,13 @@ and `route.yaml` represent the Deployment, Service and OpenShift Route respectiv
 include::ROOT:example$deploy/base/deploy.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml[./deploy/base/route.yaml/service.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml[./deploy/base/service.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/service.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml[./deploy/base/route.yaml/route.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml[./deploy/base/route.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/route.yaml[]
