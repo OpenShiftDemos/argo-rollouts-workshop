@@ -88,7 +88,7 @@
     <a class="nav-link" href="02-workshop-overview.html">2. Workshop Overview</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-workshop-overview.html#workshop-layout">Workshop Layout</a>
+    <a class="nav-link" href="02-workshop-overview.html#workshop-namespaces">Workshop Namespaces</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="02-workshop-overview.html#review-rollout-manager">Review RolloutManager</a>
@@ -102,6 +102,9 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="03-bluegreen-rollout.html">3. Blue-Green Rollout</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <span class="nav-text">xref:03-bluegreen-rollout.adoc#blue-green-strategy[Blue-Green Strategy</span>
+  </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="03-bluegreen-rollout.html#deploy-blue-green-rollout">Deploy Blue-Green Rollout</a>
   </li>
@@ -124,6 +127,9 @@
     <a class="nav-link" href="04-analysis.html">4. Analysis</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="#analysis-overview">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#analysis-deployment">Analysis Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -138,6 +144,9 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="05-canary-rollout.html">5. Canary Rollout</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="05-canary-rollout.html#canary-strategy">Canary Strategy</a>
+  </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="05-canary-rollout.html#deploy-canary-rollout">Deploy Canary Rollout</a>
   </li>
@@ -198,6 +207,30 @@
 <article class="doc">
 <h1 class="page">Analysis</h1>
 <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this module we will:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Review and understand the concept of an Analysis</p>
+</li>
+<li>
+<p>Deploy a Blue-Green rollout with an Analysis</p>
+</li>
+<li>
+<p>Perform a successful promotion of an image tested by an Analysis</p>
+</li>
+<li>
+<p>Perform and observe a promotion that fails an Analysis</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="analysis-overview"><a class="anchor" href="#analysis-overview"></a>Analysis Overview</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>When performing upgrades of services there is a need to test the new version

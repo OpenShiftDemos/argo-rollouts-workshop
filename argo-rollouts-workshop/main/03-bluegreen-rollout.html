@@ -88,7 +88,7 @@
     <a class="nav-link" href="02-workshop-overview.html">2. Workshop Overview</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
-    <a class="nav-link" href="02-workshop-overview.html#workshop-layout">Workshop Layout</a>
+    <a class="nav-link" href="02-workshop-overview.html#workshop-namespaces">Workshop Namespaces</a>
   </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="02-workshop-overview.html#review-rollout-manager">Review RolloutManager</a>
@@ -102,6 +102,9 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="03-bluegreen-rollout.html">3. Blue-Green Rollout</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <span class="nav-text">xref:03-bluegreen-rollout.adoc#blue-green-strategy[Blue-Green Strategy</span>
+  </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="#deploy-blue-green-rollout">Deploy Blue-Green Rollout</a>
   </li>
@@ -124,6 +127,9 @@
     <a class="nav-link" href="04-analysis.html">4. Analysis</a>
 <ul class="nav-list">
   <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="04-analysis.html#analysis-overview">Overview</a>
+  </li>
+  <li class="nav-item" data-depth="2">
     <a class="nav-link" href="04-analysis.html#analysis-deployment">Analysis Deployment</a>
   </li>
   <li class="nav-item" data-depth="2">
@@ -138,6 +144,9 @@
     <button class="nav-item-toggle"></button>
     <a class="nav-link" href="05-canary-rollout.html">5. Canary Rollout</a>
 <ul class="nav-list">
+  <li class="nav-item" data-depth="2">
+    <a class="nav-link" href="05-canary-rollout.html#canary-strategy">Canary Strategy</a>
+  </li>
   <li class="nav-item" data-depth="2">
     <a class="nav-link" href="05-canary-rollout.html#deploy-canary-rollout">Deploy Canary Rollout</a>
   </li>
@@ -198,6 +207,30 @@
 <article class="doc">
 <h1 class="page">Blue-Green Rollout</h1>
 <div id="preamble">
+<div class="sectionbody">
+<div class="paragraph">
+<p>In this module we will:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Review and understand the Blue-Green Strategy</p>
+</li>
+<li>
+<p>Deploy the Blue-Green Rollout to the production namespace</p>
+</li>
+<li>
+<p>Deploy a new image and observe the Rollout promotion process</p>
+</li>
+<li>
+<p>Perform a Rollback of a promotion</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="blue-green-strategy"><a class="anchor" href="#blue-green-strategy"></a>Blue-Green Strategy</h2>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
