@@ -3,11 +3,12 @@
 ** xref:01-getting-started.adoc#open-web-terminal[Open the Web Terminal]
 
 * xref:02-workshop-overview.adoc[2. Workshop Overview]
-** xref:02-workshop-overview.adoc#workshop-layout[Workshop Layout]
+** xref:02-workshop-overview.adoc#workshop-namespaces[Workshop Namespaces]
 ** xref:02-workshop-overview.adoc#review-rollout-manager[Review RolloutManager]
 ** xref:02-workshop-overview.adoc#deploy-application[Deploy Application]
 
 * xref:03-bluegreen-rollout.adoc[3. Blue-Green Rollout]
+** xref:03-bluegreen-rollout.adoc#blue-green-strategy[Blue-Green Strategy
 ** xref:03-bluegreen-rollout.adoc#deploy-blue-green-rollout[Deploy Blue-Green Rollout]
 ** xref:03-bluegreen-rollout.adoc#promote-image[Promote Image]
 ** xref:03-bluegreen-rollout.adoc#enable-auto-promotion[Enable Auto-Promotion]
@@ -15,11 +16,13 @@
 ** xref:03-bluegreen-rollout.adoc#cleanup[Clean-up]
 
 * xref:04-analysis.adoc[4. Analysis]
+** xref:04-analysis.adoc#analysis-overview[Overview]
 ** xref:04-analysis.adoc#analysis-deployment[Analysis Deployment]
 ** xref:04-analysis.adoc#analysis-promotion[Promotion with Analysis]
 ** xref:04-analysis.adoc#cleanup[Clean-up]
 
 * xref:05-canary-rollout.adoc[5. Canary Rollout]
+** xref:05-canary-rollout.adoc#canary-strategy[Canary Strategy]
 ** xref:05-canary-rollout.adoc#deploy-canary-rollout[Deploy Canary Rollout]
 ** xref:05-canary-rollout.adoc#promote-image[Promote Image]
 ** xref:05-canary-rollout.adoc#inline-analysis[Inline Analysis]

@@ -1,6 +1,16 @@
 = Analysis
 include::_attributes.adoc[]
 
+In this module we will:
+
+* Review and understand the concept of an Analysis
+* Deploy a Blue-Green rollout with an Analysis
+* Perform a successful promotion of an image tested by an Analysis
+* Perform and observe a promotion that fails an Analysis
+
+[#analysis-overview]
+== Analysis Overview
+
 When performing upgrades of services there is a need to test the new version
 that is being deployed to ensure functionality is not being negatively impacted. The
 link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis[Analysis,window='_blank'] feature

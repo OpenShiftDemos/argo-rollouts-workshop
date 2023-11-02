@@ -1,6 +1,16 @@
 = Canary
 include::_attributes.adoc[]
 
+In this module we will:
+
+* Review and understand the Canary Strategy
+* Deploy the Canary Rollout to the production namespace
+* Promote a new image and observe the Canary behavior
+* Replace a manual pause step for testing with an Analysis
+
+[#canary-strategy]
+== Canary Strategy
+
 link:https://argo-rollouts.readthedocs.io/en/stable/features/canary/[Canary, window='_blank'] can be
 thought of as an advanced version of blue-green where instead of an abrupt cut-over
 of live traffic between a current and new revision traffic is instead gradually increased to the new

@@ -7,8 +7,8 @@ In this module we will:
 * Review how Rollouts was deployed with OpenShift GitOps
 * Deploy the application in the Development environment
 
-[#workshop-layout]
-== Workshop Layout
+[#workshop-namespaces]
+== Workshop Namespaces
 
 image::openshift-projects.png[]
 

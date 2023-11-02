@@ -1,6 +1,16 @@
 = Blue-Green Rollout
 include::_attributes.adoc[]
 
+In this module we will:
+
+* Review and understand the Blue-Green Strategy
+* Deploy the Blue-Green Rollout to the production namespace
+* Deploy a new image and observe the Rollout promotion process
+* Perform a Rollback of a promotion
+
+[#blue-green-strategy]
+== Blue-Green Strategy
+
 In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
 the two versions running in parallel for a period of time. This enables testing on the new version while users continue
 to access the current version of the application until a cut-over of traffic occurs.
