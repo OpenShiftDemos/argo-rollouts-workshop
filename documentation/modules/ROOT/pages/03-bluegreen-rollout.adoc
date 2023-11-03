@@ -460,13 +460,12 @@ oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 . For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
 to ask for confirmation so click it again to confirm.
 
-+
-image::argo-rollout-dashboard-promote-button.png[]
-
 Once the promotion has been completed, you should see that the Active service is now associated with the `green` image and is marked
 as `Stable`. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
 the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds[scaledowndelayseconds,window='_blank']
 parameter.
+
+image::argo-rollout-dashboard-promote-button.png[]
 
 If you check the Active route the application is now displaying green squares.
 
