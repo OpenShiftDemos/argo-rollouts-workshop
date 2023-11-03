@@ -590,7 +590,7 @@ the <code>user%USERNUM%-tools</code> namespace.</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Once the promotion is complete, run this command to see state of the rollout:</p>
+<p>Once the pipeline is complete, run this command to see state of the rollout:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -705,7 +705,8 @@ button or you can promote it using the following command:</p>
 </div>
 <div class="paragraph">
 <p>Observe the dashboard once it has been promoted, the dashboard will show the progression
-of the steps by highlighting each step as it is being executed.</p>
+of the steps by highlighting each step as it is being executed. Also note how pods are
+being drained from one service to the other as traffic weighting changes.</p>
 </div>
 <div class="paragraph">
 <p>Prior to moving on to the next section, perform a cleanup to remove the current rollout
@@ -734,8 +735,8 @@ and reset the Deployment in the dev environment back to blue.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p>In the last section there was a pause step that provided an opportunity to manually test the canary
-before progressing further. However we can accomplish the same goal my using an analysis. With
-respect the canary strategy, an analysis can be performed in the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#background-analysis" target="_blank" rel="noopener">background</a>
+before progressing further. However we can accomplish the same goal by using an analysis. With
+respect to the canary strategy, an analysis can be performed in the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#background-analysis" target="_blank" rel="noopener">background</a>
 or as an <a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#inline-analysis">inline</a> analysis.</p>
 </div>
 <div class="paragraph">
@@ -931,7 +932,7 @@ Strategy:        Canary
   Step:          7/7
   SetWeight:     100
   ActualWeight:  100
-Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
+Images:          quay.io/openshiftdemos/rollouts-demo:green (stable)
 Replicas:
   Desired:       8
   Current:       8
@@ -939,18 +940,22 @@ Replicas:
   Ready:         8
   Available:     8
 
-NAME                                       KIND        STATUS     AGE    INFO
-⟳ rollouts-demo                            Rollout     ✔ Healthy  4m56s
+NAME                                                        KIND         STATUS        AGE    INFO
+⟳ rollouts-demo                                             Rollout      ✔ Healthy     4m19s
+├──# revision:2
+│  ├──⧉ rollouts-demo-5999df6cf9                            ReplicaSet   ✔ Healthy     3m13s  stable
+│  │  ├──□ rollouts-demo-5999df6cf9-g7l75                   Pod          ✔ Running     3m13s  ready:1/1
+│  │  ├──□ rollouts-demo-5999df6cf9-zxkss                   Pod          ✔ Running     3m13s  ready:1/1
+│  │  ├──□ rollouts-demo-5999df6cf9-mj9m8                   Pod          ✔ Running     80s    ready:1/1
+│  │  ├──□ rollouts-demo-5999df6cf9-ph9jk                   Pod          ✔ Running     80s    ready:1/1
+│  │  ├──□ rollouts-demo-5999df6cf9-rnvgm                   Pod          ✔ Running     80s    ready:1/1
+│  │  ├──□ rollouts-demo-5999df6cf9-btzlf                   Pod          ✔ Running     67s    ready:1/1
+│  │  ├──□ rollouts-demo-5999df6cf9-gl8k4                   Pod          ✔ Running     67s    ready:1/1
+│  │  └──□ rollouts-demo-5999df6cf9-dlchv                   Pod          ✔ Running     54s    ready:1/1
+│  └──α rollouts-demo-5999df6cf9-2-1                        AnalysisRun  ✔ Successful  3m10s  ✔ 5
+│     └──⊞ fd0f7c64-c6e4-4447-bbef-5d2f4f62563b.run-load.1  Job          ✔ Successful  3m10s
 └──# revision:1
-   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  5s     stable
-      ├──□ rollouts-demo-66d84bcd76-c4d6j  Pod         ✔ Running  5s     ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-f9qvw  Pod         ✔ Running  5s     ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-gp9xp  Pod         ✔ Running  5s     ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-gpqwj  Pod         ✔ Running  5s     ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-k6dwl  Pod         ✔ Running  5s     ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-mlj5q  Pod         ✔ Running  5s     ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-wp4tj  Pod         ✔ Running  5s     ready:1/1
-      └──□ rollouts-demo-66d84bcd76-z8kr2  Pod         ✔ Running  5s     ready:1/1</code></pre>
+   └──⧉ rollouts-demo-66d84bcd76                            ReplicaSet   • ScaledDown  4m19s</code></pre>
 </div>
 </div>
 <div class="paragraph">
