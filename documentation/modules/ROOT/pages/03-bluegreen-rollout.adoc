@@ -508,7 +508,7 @@ which will be covered in the next module.
 [#perform-rollback]
 == Perform Rollback
 
-We have deployed our application with the color yellow but disaster, our users really dislike yellow for some reason and insist
+We have deployed our application with the color yellow but disaster! Our users really dislike yellow for some reason and insist
 that we switch back to the green color while we work to determine an acceptable shade of yellow for users.
 
 To accomplish this we will perform a rollback to the green version. This can be done either in the dashboard or in the CLI but
