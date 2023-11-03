@@ -840,7 +840,7 @@ NAME                                       KIND        STATUS     AGE  INFO
 </div>
 <div class="paragraph">
 <p>Notice that the status is <code>Paused</code> and that we now have two ReplicaSets, one for the preview service
-and one for the active (i.e. stable service).</p>
+and one for the active (i.e. stable) service.</p>
 </div>
 <div class="paragraph">
 <p>Now navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
@@ -871,11 +871,6 @@ service whereas the Active service, which is considered Stable, is associated wi
 <li>
 <p>For the UI, click the <code>Promote</code> button in the Dashboard, it will change to an orange <code>Sure?</code> button
 to ask for confirmation so click it again to confirm.</p>
-<div class="imageblock">
-<div class="content">
-<img src="_images/argo-rollout-dashboard-promote-button.png" alt="argo rollout dashboard promote button">
-</div>
-</div>
 </li>
 </ol>
 </div>
@@ -884,6 +879,11 @@ to ask for confirmation so click it again to confirm.</p>
 as <code>Stable</code>. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
 the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds" target="_blank" rel="noopener">scaledowndelayseconds</a>
 parameter.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollout-dashboard-promote-button.png" alt="argo rollout dashboard promote button">
+</div>
 </div>
 <div class="paragraph">
 <p>If you check the Active route the application is now displaying green squares.</p>
