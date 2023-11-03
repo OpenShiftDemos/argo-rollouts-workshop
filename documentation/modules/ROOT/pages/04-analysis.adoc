@@ -164,7 +164,7 @@ Note that auto-promotion is enabled.
 
 With the updated blue-green rollout deployed, let's run through a promotion to a new image where
 the analysis succeeds and observe the behavior. In the OpenShift console, go to the Pipelines
-and do a promotion to a green image. As a reminder this is located here in the console:
+and do a promotion to a `green` image. As a reminder this is located here in the console:
 
 image::console-pipelines-overview.png[]
 
@@ -252,7 +252,7 @@ checks plus the job executing successfully for a total of five.
 === Analysis Fails
 
 Now that we have experienced a successful promotion, let's examine the behavior when the
-application fails. To start, open the preview version of the application in a separate
+application has errors and the analysis fails. To start, open the preview version of the application in a separate
 browser tab, remember we can retrieve the route for the preview service by using this command:
 
 [.console-input]
