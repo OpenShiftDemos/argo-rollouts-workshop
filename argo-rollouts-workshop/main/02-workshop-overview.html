@@ -309,15 +309,16 @@ in order to tidy the yaml by removing additional fields, labels and annotations 
 apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: user%USERNUM%:argoproj.io/RolloutManager:user%USERNUM%-prod/argo-rollout
   name: argo-rollout
   namespace: user%USERNUM%-prod
-spec: {}
 ---</code></pre>
 </div>
 </div>
 <div class="paragraph">
 <p>As shown here this is a simple declaration which in turn results in the Operator creating
-a simple deployment with the Argo Rollout controller monitoring the <code>user%USERNUM%-prod</code> for
+a deployment with the Argo Rollout controller monitoring the <code>user%USERNUM%-prod</code> for
 <code>Rollout</code> resources.</p>
 </div>
 <div class="admonitionblock note">
