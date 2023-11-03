@@ -262,7 +262,7 @@ oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}
 ----
 
 Slide the error bar as shown below all the way to the right. Notice how all of the flashing
-squares have red boxes around them indicating they are returning error messages.
+squares have red outlines around them indicating they are returning error messages.
 
 image::rollouts-demo-errors.png[]
 
