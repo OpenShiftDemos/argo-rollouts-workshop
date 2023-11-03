@@ -334,7 +334,7 @@ image::console-pipelines-promote.png[]
 
 As shown in the image, the pipeline consists of two tasks, `deploy-dev` will update and deploy the selected image in the
 Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` will do the same for the Rollout in the
-``user%USERNUM%-prod` namespace.
+`user%USERNUM%-prod` namespace.
 
 [NOTE]
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
