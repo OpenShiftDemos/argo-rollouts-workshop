@@ -514,7 +514,7 @@ the analysis to fail and the promotion to be aborted.</p>
 <div class="paragraph">
 <p>With the updated blue-green rollout deployed, let&#8217;s run through a promotion to a new image where
 the analysis succeeds and observe the behavior. In the OpenShift console, go to the Pipelines
-and do a promotion to a green image. As a reminder this is located here in the console:</p>
+and do a promotion to a <code>green</code> image. As a reminder this is located here in the console:</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -635,7 +635,7 @@ checks plus the job executing successfully for a total of five.</p>
 <h3 id="_analysis_fails"><a class="anchor" href="#_analysis_fails"></a>Analysis Fails</h3>
 <div class="paragraph">
 <p>Now that we have experienced a successful promotion, let&#8217;s examine the behavior when the
-application fails. To start, open the preview version of the application in a separate
+application has errors and the analysis fails. To start, open the preview version of the application in a separate
 browser tab, remember we can retrieve the route for the preview service by using this command:</p>
 </div>
 <div class="listingblock console-input">
