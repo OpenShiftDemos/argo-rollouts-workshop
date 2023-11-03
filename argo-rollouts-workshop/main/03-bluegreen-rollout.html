@@ -871,6 +871,11 @@ service whereas the Active service, which is considered Stable, is associated wi
 <li>
 <p>For the UI, click the <code>Promote</code> button in the Dashboard, it will change to an orange <code>Sure?</code> button
 to ask for confirmation so click it again to confirm.</p>
+<div class="imageblock">
+<div class="content">
+<img src="_images/argo-rollout-dashboard-promote-button.png" alt="argo rollout dashboard promote button">
+</div>
+</div>
 </li>
 </ol>
 </div>
@@ -879,11 +884,6 @@ to ask for confirmation so click it again to confirm.</p>
 as <code>Stable</code>. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
 the <a href="https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds" target="_blank" rel="noopener">scaledowndelayseconds</a>
 parameter.</p>
-</div>
-<div class="imageblock">
-<div class="content">
-<img src="_images/argo-rollout-dashboard-promote-button.png" alt="argo rollout dashboard promote button">
-</div>
 </div>
 <div class="paragraph">
 <p>If you check the Active route the application is now displaying green squares.</p>
@@ -923,14 +923,14 @@ the following command to patch the rollout to set <code>autoPromotionEnabled</co
 <div class="paragraph">
 <p>Click on the pipeline, select the <code>Actions</code> menu and select <code>Start</code>. When the dialog appears enter the color <code>yellow</code> this time.</p>
 </div>
+<div class="paragraph">
+<p>Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
+note that there is a new revision using the Yellow image associated with the Active service.</p>
+</div>
 <div class="imageblock">
 <div class="content">
 <img src="_images/argo-rollouts-dashboard-yellow.png" alt="argo rollouts dashboard yellow">
 </div>
-</div>
-<div class="paragraph">
-<p>Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
-note that there is a new revision using the Yellow image associated with the Active service.</p>
 </div>
 <div class="paragraph">
 <p>While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
