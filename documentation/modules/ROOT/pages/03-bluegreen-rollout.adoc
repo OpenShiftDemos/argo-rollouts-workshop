@@ -460,12 +460,13 @@ oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 . For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
 to ask for confirmation so click it again to confirm.
 
++
+image::argo-rollout-dashboard-promote-button.png[]
+
 Once the promotion has been completed, you should see that the Active service is now associated with the `green` image and is marked
 as `Stable`. The pods in the older revision will automatically be scaled down to 0 after 30 seconds. This is determined by
 the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#scaledowndelayseconds[scaledowndelayseconds,window='_blank']
 parameter.
-
-image::argo-rollout-dashboard-promote-button.png[]
 
 If you check the Active route the application is now displaying green squares.
 
@@ -495,10 +496,10 @@ image::console-pipelines-overview.png[]
 
 Click on the pipeline, select the `Actions` menu and select `Start`. When the dialog appears enter the color `yellow` this time.
 
-image::argo-rollouts-dashboard-yellow.png[]
-
 Press the start button and wait for the pipeline to complete as per last time. Now go back to the Argo Rollouts Dashboard and
 note that there is a new revision using the Yellow image associated with the Active service.
+
+image::argo-rollouts-dashboard-yellow.png[]
 
 While not requiring manual intervention is great, it would be wonderful if there was a way to perform automated testing to ensure
 the validity of the new revision before Rollouts makes it available to users. Fortunately Rollouts can do this with the Analysis feature
