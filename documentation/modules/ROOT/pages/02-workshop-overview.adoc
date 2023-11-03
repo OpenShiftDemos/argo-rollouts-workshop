@@ -53,13 +53,14 @@ This will return an object as follows:
 apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: user%USERNUM%:argoproj.io/RolloutManager:user%USERNUM%-prod/argo-rollout
   name: argo-rollout
   namespace: user%USERNUM%-prod
-spec: {}
 ---
 
 As shown here this is a simple declaration which in turn results in the Operator creating
-a simple deployment with the Argo Rollout controller monitoring the `user%USERNUM%-prod` for
+a deployment with the Argo Rollout controller monitoring the `user%USERNUM%-prod` for
 `Rollout` resources.
 
 [NOTE]
