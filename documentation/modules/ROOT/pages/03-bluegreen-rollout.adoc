@@ -205,10 +205,10 @@ Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field i
 === Argo Rollouts CLI
 
 Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as an
-link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] extension. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
-for installing the extension are available however this has already been done for you in this workshop.
+link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] plugin. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
+for installing the plugin are available however this has already been done for you in this workshop.
 
-The extension is well link:https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/[documented,window='_blank']
+The plugin is well link:https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/[documented,window='_blank']
 and provides a number of commands and these can be used with our currently deployed rollout.
 
 To view a list of rollouts we can use the `list` command as follows:
