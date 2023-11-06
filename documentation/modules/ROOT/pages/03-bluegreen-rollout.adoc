@@ -204,7 +204,7 @@ Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field i
 [#argo-rollouts-cli]
 === Argo Rollouts CLI
 
-Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as an
+Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as a
 link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] plugin. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
 for installing the plugin are available however this has already been done for you in this workshop.
 
