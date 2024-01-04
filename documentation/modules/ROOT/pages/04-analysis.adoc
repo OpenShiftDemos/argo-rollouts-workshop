@@ -72,11 +72,6 @@ In the metrics provider section we can see we have two providers defined, one th
 metrics from Thanos, an aggregator for Prometheus data, and a job that runs link:https://github.com/JoeDog/siege[Apache Siege,window='_blank']
 to drive some load on the application.
 
-[NOTE]
-We are using the web metric provider here since the Argo Rollouts v1.2 that we are using does not
-support authentication with the Prometheus provider. This capability has been recently added in Rollouts as
-of v1.6.0.
-
 The `count` and `interval` fields in the `success-rate` metric powered by the web provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The `failureLimit` determines how many failures are permitted for the rollout to be considered
 a success, here we set a failure limit of 0.
@@ -85,16 +80,13 @@ Finally, remember we are running this Analysis in the pre-promotion phase of the
 be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
 to proceed with the promotion.
 
-In the arguments we are taking two key arguments, `query` and `route-url`, which will be passed from the
-Rollout. Notice that the `query` argument is being used at the end of the URL of the web provider as a
-query parameter, this is the Prometheus query that we want to execute against the OpenShift monitoring stack.
+In the arguments we are taking three arguments, `route-name`, `route-url` and `namespace`, which will be passed from the
+Rollout. These are used to parameterize the AnalysisTemplate to improve reusability. These arguments are then referenced in
+the AnalysisTemplate using a syntax of `{{args.<argument-name>}}`.
 
-[subs="quotes"]
-----
-provider:
-  web:
-    url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ *args.query* }}
-----
+The `route-name` and `namespace` arguments are used in the prometheus metrics provider in the query field to specify
+the route to fetch the status of the HTTP return codes. This query returns the increased rate of HTTP error codes (5xx)
+over a 1 minute interval.
 
 The `route-url` parameter is being used in the second provider, the job, where we will be creating load against. This
 parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
@@ -114,10 +106,6 @@ include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]
 Notice that in `.spec.strategy.blueGreen` we have now defined the `prePromotionAnalysis` field. In this field
 we define the analysis template we want to use as well as the arguments that the rollout needs to provide the
 template.
-
-[NOTE]
-The query parameter is URL encoded since we are using the Web provider rather then the Prometheus
-provider hence the need to encode it appropriately.
 
 Next to deploy this new version of the blue-green rollout, execute the following command:
 
