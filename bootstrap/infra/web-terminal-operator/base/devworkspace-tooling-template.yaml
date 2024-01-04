@@ -20,7 +20,7 @@ spec:
           value: ${SUB_DOMAIN}
       cpuLimit: 400m
       cpuRequest: 100m
-      image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.10
+      image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.11
       memoryLimit: 256Mi
       memoryRequest: 128Mi
       mountSources: false

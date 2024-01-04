@@ -4,7 +4,8 @@ metadata:
   name: smoke-tests
 spec:
   args:
-  - name: query
+  - name: namespace
+  - name: route-name
   - name: route-url
   - name: api-token
     valueFrom:
@@ -15,18 +16,18 @@ spec:
   - name: success-rate
     interval: 30s
     count: 4
-    # Prometheus queries return results in the form of a vector so it is
-    # common to access the index 0 of the returned array to obtain the value
-    successCondition: result[0].value[1] == '0'
+    successCondition: result[0] == 0
     failureLimit: 0
     provider:
-      web:
-        url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ args.query }}
+      prometheus:
+        address: https://thanos-querier.openshift-monitoring.svc.cluster.local:9091
+        timeout: 40
         insecure: true
         headers:
           - key: Authorization
             value: "Bearer {{args.api-token}}"
-        jsonPath: "{$.data.result}"
+        query: |
+          irate(haproxy_backend_http_responses_total{exported_namespace='{{ args.namespace }}', route=~"{{ args.route-name }}", code="5xx"}[1m]) > 5 or on() vector(0)
   - name: run-load
     provider:
       job:
