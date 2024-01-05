@@ -292,7 +292,8 @@ metadata:
   name: smoke-tests
 spec:
   args:
-  - name: query
+  - name: namespace
+  - name: route-name
   - name: route-url
   - name: api-token
     valueFrom:
@@ -303,18 +304,18 @@ spec:
   - name: success-rate
     interval: 30s
     count: 4
-    # Prometheus queries return results in the form of a vector so it is
-    # common to access the index 0 of the returned array to obtain the value
-    successCondition: result[0].value[1] == '0'
+    successCondition: result[0] == 0
     failureLimit: 0
     provider:
-      web:
-        url: <a href="https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{" class="bare">https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{</a> args.query }}
+      prometheus:
+        address: <a href="https://thanos-querier.openshift-monitoring.svc.cluster.local:9091" class="bare">https://thanos-querier.openshift-monitoring.svc.cluster.local:9091</a>
+        timeout: 40
         insecure: true
         headers:
           - key: Authorization
             value: "Bearer {{args.api-token}}"
-        jsonPath: "{$.data.result}"
+        query: |
+          irate(haproxy_backend_http_responses_total{exported_namespace='{{args.namespace}}', route=~"{{args.route-name}}", code="5xx"}[1m]) &gt; 5 or on() vector(0)
   - name: run-load
     provider:
       job:
@@ -350,20 +351,6 @@ that need to be executed.</p>
 metrics from Thanos, an aggregator for Prometheus data, and a job that runs <a href="https://github.com/JoeDog/siege" target="_blank" rel="noopener">Apache Siege</a>
 to drive some load on the application.</p>
 </div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-We are using the web metric provider here since the Argo Rollouts v1.2 that we are using does not
-support authentication with the Prometheus provider. This capability has been recently added in Rollouts as
-of v1.6.0.
-</td>
-</tr>
-</table>
-</div>
 <div class="paragraph">
 <p>The <code>count</code> and <code>interval</code> fields in the <code>success-rate</code> metric powered by the web provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The <code>failureLimit</code> determines how many failures are permitted for the rollout to be considered
@@ -375,16 +362,14 @@ be receiving load from users, therefore generating load with Apache Siege will g
 to proceed with the promotion.</p>
 </div>
 <div class="paragraph">
-<p>In the arguments we are taking two key arguments, <code>query</code> and <code>route-url</code>, which will be passed from the
-Rollout. Notice that the <code>query</code> argument is being used at the end of the URL of the web provider as a
-query parameter, this is the Prometheus query that we want to execute against the OpenShift monitoring stack.</p>
+<p>In the arguments we are taking three arguments, <code>route-name</code>, <code>route-url</code> and <code>namespace</code>, which will be passed from the
+Rollout. These are used to parameterize the AnalysisTemplate to improve reusability. These arguments are then referenced in
+the AnalysisTemplate using a syntax of <code>{{args.&lt;argument-name&gt;}}</code>.</p>
 </div>
-<div class="listingblock">
-<div class="content">
-<pre>provider:
-  web:
-    url: https://thanos-querier.openshift-monitoring:9091/api/v1/query?query={{ <strong>args.query</strong> }}</pre>
-</div>
+<div class="paragraph">
+<p>The <code>route-name</code> and <code>namespace</code> arguments are used in the prometheus metrics provider in the query field to specify
+the route to fetch the status of the HTTP return codes. This query returns the increased rate of HTTP error codes (5xx)
+over a 1 minute interval.</p>
 </div>
 <div class="paragraph">
 <p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load against. This
@@ -418,10 +403,12 @@ spec:
       autoPromotionEnabled: true
       prePromotionAnalysis:
         args:
-        - name: query
-          # Note encoded so it can be used as a query parameter, unencode:
-          # irate(haproxy_backend_http_responses_total{exported_namespace='rollouts-demo-prod',route=~'preview',code='5xx'}[1m])&gt;7 or on() vector(0)
-          value: irate(haproxy_backend_http_responses_total%7Bexported_namespace='user%USER%-prod',route=~'preview',code='5xx'%7D%5B1m%5D)%3E7%20or%20on()%20vector(0)
+        - name: namespace
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: route-name
+          value: preview
         - name: route-url
           value: preview-user%USER%-prod.%SUB_DOMAIN%
         templates:
@@ -443,19 +430,6 @@ spec:
 <p>Notice that in <code>.spec.strategy.blueGreen</code> we have now defined the <code>prePromotionAnalysis</code> field. In this field
 we define the analysis template we want to use as well as the arguments that the rollout needs to provide the
 template.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The query parameter is URL encoded since we are using the Web provider rather then the Prometheus
-provider hence the need to encode it appropriately.
-</td>
-</tr>
-</table>
 </div>
 <div class="paragraph">
 <p>Next to deploy this new version of the blue-green rollout, execute the following command:</p>
