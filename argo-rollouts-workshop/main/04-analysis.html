@@ -347,12 +347,12 @@ that need to be executed.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>In the metrics provider section we can see we have two providers defined, one that uses the web metric provider to pull
+<p>In the metrics provider section we can see we have two providers defined, one that uses the prometheus metric provider to pull
 metrics from Thanos, an aggregator for Prometheus data, and a job that runs <a href="https://github.com/JoeDog/siege" target="_blank" rel="noopener">Apache Siege</a>
 to drive some load on the application.</p>
 </div>
 <div class="paragraph">
-<p>The <code>count</code> and <code>interval</code> fields in the <code>success-rate</code> metric powered by the web provider indicate that the metric will be checked four times
+<p>The <code>count</code> and <code>interval</code> fields in the <code>success-rate</code> metric powered by the prometheus provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The <code>failureLimit</code> determines how many failures are permitted for the rollout to be considered
 a success, here we set a failure limit of 0.</p>
 </div>
@@ -363,16 +363,15 @@ to proceed with the promotion.</p>
 </div>
 <div class="paragraph">
 <p>In the arguments we are taking three arguments, <code>route-name</code>, <code>route-url</code> and <code>namespace</code>, which will be passed from the
-Rollout. These are used to parameterize the AnalysisTemplate to improve reusability. These arguments are then referenced in
-the AnalysisTemplate using a syntax of <code>{{args.&lt;argument-name&gt;}}</code>.</p>
+Rollout.</p>
 </div>
 <div class="paragraph">
 <p>The <code>route-name</code> and <code>namespace</code> arguments are used in the prometheus metrics provider in the query field to specify
-the route to fetch the status of the HTTP return codes. This query returns the increased rate of HTTP error codes (5xx)
+the specific route to fetch the status of the HTTP return codes. This query returns the increased rate of HTTP error codes (5xx)
 over a 1 minute interval.</p>
 </div>
 <div class="paragraph">
-<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load against. This
+<p>The <code>route-url</code> parameter is being used in the second provider, the job, where we will be creating load against the route. This
 parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
 siege will be hitting when it generates load.</p>
 </div>
