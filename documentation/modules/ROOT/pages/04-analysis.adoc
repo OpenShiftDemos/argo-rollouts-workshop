@@ -68,11 +68,11 @@ enable the template to be reused across many different rollouts.
 * `.spec.metrics`. These are the metric providers that will be used to collect data for the analysis as well as any jobs
 that need to be executed.
 
-In the metrics provider section we can see we have two providers defined, one that uses the web metric provider to pull
+In the metrics provider section we can see we have two providers defined, one that uses the prometheus metric provider to pull
 metrics from Thanos, an aggregator for Prometheus data, and a job that runs link:https://github.com/JoeDog/siege[Apache Siege,window='_blank']
 to drive some load on the application.
 
-The `count` and `interval` fields in the `success-rate` metric powered by the web provider indicate that the metric will be checked four times
+The `count` and `interval` fields in the `success-rate` metric powered by the prometheus provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The `failureLimit` determines how many failures are permitted for the rollout to be considered
 a success, here we set a failure limit of 0.
 
@@ -81,14 +81,13 @@ be receiving load from users, therefore generating load with Apache Siege will g
 to proceed with the promotion.
 
 In the arguments we are taking three arguments, `route-name`, `route-url` and `namespace`, which will be passed from the
-Rollout. These are used to parameterize the AnalysisTemplate to improve reusability. These arguments are then referenced in
-the AnalysisTemplate using a syntax of `{{args.<argument-name>}}`.
+Rollout.
 
 The `route-name` and `namespace` arguments are used in the prometheus metrics provider in the query field to specify
-the route to fetch the status of the HTTP return codes. This query returns the increased rate of HTTP error codes (5xx)
+the specific route to fetch the status of the HTTP return codes. This query returns the increased rate of HTTP error codes (5xx)
 over a 1 minute interval.
 
-The `route-url` parameter is being used in the second provider, the job, where we will be creating load against. This
+The `route-url` parameter is being used in the second provider, the job, where we will be creating load against the route. This
 parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
 siege will be hitting when it generates load.
 
