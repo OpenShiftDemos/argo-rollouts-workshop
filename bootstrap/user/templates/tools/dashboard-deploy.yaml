@@ -39,7 +39,7 @@ spec:
         - user{{ .Values.user }}-prod
         command:
         - kubectl
-        image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.11
+        image: quay.io/openshiftdemos/rollouts-terminal-tooling:1.10
         imagePullPolicy: Always
         name: dashboard
         ports:
