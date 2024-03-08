@@ -19,11 +19,10 @@ The diagram below illustrates this process over time.
 
 image::overview-blue-green.png[]
 
-In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to it's declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to its declarative nature, the process still tends to be cumbersome to manage. Bespoke automation would still need to be created to manage the separate stacks, and for
 testing and traffic management between versions.
 
-This is where Argo Rollouts comes in, it greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module
-we will deploy a simple blue-green Rollout and explore it's basic capabilities.
+This is where Argo Rollouts comes in. It greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module we will deploy a simple blue-green Rollout and explore its basic capabilities.
 
 [#deploy-blue-green-rollout]
 == Deploy Blue-Green Rollout
@@ -59,10 +58,10 @@ Kubernetes link:https://kubernetes.io/docs/concepts/workloads/pods/#pod-template
 under `.spec.strategy` we have specified the `blueGreen` strategy. The Kubernetes Deployment object supports `rollout`
 and `replace` strategies whereas Argo Rollouts supports `blueGreen` and `canary` strategies.
 
-Under the `blueGreen` strategy we have identified the `active` and `preview` Kubernetes services for the rollout which will be covered
+Under the `blueGreen` strategy we have identified the `active` and `preview` Kubernetes services for the rollout. This will be covered
 in more detail when services are discussed next.
 
-As well as services the field `autoPromotionEnabled` is set to `false` which means the rollout will require manual intervention to promote. Manual promotion
+The field `autoPromotionEnabled` is set to `false`. This means the rollout will require manual intervention to promote. Manual promotion
 is enabled so the behavior of the rollout can be observed in-depth in subsequent sections of this module.
 
 The Argo Rollouts documentation provides a complete list
@@ -109,7 +108,7 @@ oc get pods -l app=rollouts-demo -n user%USERNUM%-prod
 ----
 
 [NOTE]
-We are getting pods using the label `app=rollouts-demo` to specifically select pods from the rollout, remember
+We are getting pods using the label `app=rollouts-demo` to specifically select pods from the rollout. Remember
 the RolloutManager pod is also deployed in the `user%USERNUM%-prod` namespace. Using the label enables us
 to exclude that pod.
 
@@ -184,11 +183,11 @@ spec:
 ----
 
 Notice that the selector now has an additional key, `rollouts-pod-template-hash`, with a hashed value. This is how the rollout manages traffic
-between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will see the same
+between the active and preview versions. Since we have not deployed a new image, the preview service will have the same
 selector used there as well.
 
 Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a link:https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/[ReplicaSet,window='_blank'].
-This ReplicaSet will have a `rollouts-pod-template-hash` label in it's PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
+This ReplicaSet will have a `rollouts-pod-template-hash` label in its PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
 the selector in the service is pointing to the appropriate revision.
 
 To view this, output the manifest for the currently deployed ReplicaSet:
@@ -306,7 +305,7 @@ The Argo Rollouts Dashboard is intended to be run on the developer's local machi
 authentication or multi-tenancy. For convenience and simplicity it has been deployed on cluster for each user
 but this is not recommended as a general practice.
 
-In the dashboard each rollout will show in it's own tile on the overview screen. The tile will provide some
+In the dashboard each rollout will show in its own tile on the overview screen. The tile will provide some
 basic information about the rollout as shown here:
 
 image::argo-rollout-dashboard-details.png[]
@@ -339,7 +338,7 @@ Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` w
 [NOTE]
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines, an implementation of the link:https://tekton.dev[Tekton,window='_blank'] project, however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 
 To start the pipeline, click the `Actions` dropdown and select the `Start` option:
@@ -371,7 +370,7 @@ we deployed.
 image::rollouts-demo-app-green.png[]
 
 Now let's see what the application looks like in production where we are using Rollouts. First, let's check the preview service by
-retrieving it's URL and viewing it in the browser:
+retrieving its URL and viewing it in the browser:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
