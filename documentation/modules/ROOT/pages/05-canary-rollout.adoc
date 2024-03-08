@@ -12,8 +12,8 @@ In this module we will:
 == Canary Strategy
 
 link:https://argo-rollouts.readthedocs.io/en/stable/features/canary/[Canary, window='_blank'] can be
-thought of as an advanced version of blue-green where instead of an abrupt cut-over
-of live traffic between a current and new revision traffic is instead gradually increased to the new
+thought of as an advanced version of blue-green. Instead of an abrupt cut-over
+of live traffic between a current and new revision, traffic is instead gradually increased to the new
 version in increments, or steps, while simultaneously decreasing the current revision. Like the
 proverbial link:https://en.wiktionary.org/wiki/canary_in_a_coal_mine[canary in the coal mine,window="_blank"],
 the intent is to allow users to access the new version over time and if unexpected problems occur revert back to the
@@ -64,8 +64,8 @@ see the following:
 include::ROOT:example$canary/base/rollout.yaml[]
 ----
 
-In the rollout we have changed our strategy from blue-green to canary. In the canary strategy, like the blue-green strategy, we specify
-the services to use however here they are stable and canary services. Unlike blue-green we explicitly define the promotion process by
+In the rollout manifest we have changed our strategy from blue-green to canary. In the canary strategy, like the blue-green strategy, we specify
+the services to use however here they are `stable` and `canary` services. Unlike blue-green we explicitly define the promotion process by
 specifying a series of discrete steps. At each step we can set the traffic weight between the services, pause or perform an
 inline analysis.
 
@@ -303,7 +303,7 @@ button or you can promote it using the following command:
 oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
 ----
 
-Observe the dashboard once it has been promoted, the dashboard will show the progression
+Observe the dashboard once it has been promoted. The dashboard will show the progression
 of the steps by highlighting each step as it is being executed. Also note how pods are
 being drained from one service to the other as traffic weighting changes.
 
@@ -334,12 +334,12 @@ before progressing further. However we can accomplish the same goal by using an 
 respect to the canary strategy, an analysis can be performed in the link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#background-analysis[background,window='_blank']
 or as an link:https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#inline-analysis[inline] analysis.
 
-A background analysis happens asynchronously and does not block the progression of steps, however
+A Background Analysis happens asynchronously and does not block the progression of steps, however
 if the analysis fails it will abort the rollout similar to what we saw in the previous module with
-the blue-green strategy. In the case of an inline analysis, the analysis is performed as a discrete step
+the blue-green strategy. In the case of an Inline Analysis, the analysis is performed as a discrete step
 and will block the progression of the rollout until it completes.
 
-The files for this example are in the `./canary-analysis/base` folder, to view the list of files
+In the following example we will implement an Inline Analysis. The files for this example are in the `./canary-analysis/base` folder, to view the list of files
 perform an `ls` as follows:
 
 [.console-input]
@@ -348,7 +348,7 @@ perform an `ls` as follows:
 ls ./canary-analysis/base
 ----
 
-Note that the files are identical to the previous example other then the `rollout.yaml` and the
+Note that the files are identical to the previous example other than the `rollout.yaml` and the
 `analysistemplate.yaml` file. The AnalysisTemplate being used here is identical to the one
 we used in the blue-green example so we will not cover it again here.
 
