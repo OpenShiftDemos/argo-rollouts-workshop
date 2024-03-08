@@ -234,8 +234,8 @@
 <div class="sectionbody">
 <div class="paragraph">
 <p><a href="https://argo-rollouts.readthedocs.io/en/stable/features/canary/" target="_blank" rel="noopener">Canary</a> can be
-thought of as an advanced version of blue-green where instead of an abrupt cut-over
-of live traffic between a current and new revision traffic is instead gradually increased to the new
+thought of as an advanced version of blue-green. Instead of an abrupt cut-over
+of live traffic between a current and new revision, traffic is instead gradually increased to the new
 version in increments, or steps, while simultaneously decreasing the current revision. Like the
 proverbial <a href="https://en.wiktionary.org/wiki/canary_in_a_coal_mine" target="_blank" rel="noopener">canary in the coal mine</a>,
 the intent is to allow users to access the new version over time and if unexpected problems occur revert back to the
@@ -337,8 +337,8 @@ spec:
 </div>
 </div>
 <div class="paragraph">
-<p>In the rollout we have changed our strategy from blue-green to canary. In the canary strategy, like the blue-green strategy, we specify
-the services to use however here they are stable and canary services. Unlike blue-green we explicitly define the promotion process by
+<p>In the rollout manifest we have changed our strategy from blue-green to canary. In the canary strategy, like the blue-green strategy, we specify
+the services to use however here they are <code>stable</code> and <code>canary</code> services. Unlike blue-green we explicitly define the promotion process by
 specifying a series of discrete steps. At each step we can set the traffic weight between the services, pause or perform an
 inline analysis.</p>
 </div>
@@ -704,7 +704,7 @@ button or you can promote it using the following command:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Observe the dashboard once it has been promoted, the dashboard will show the progression
+<p>Observe the dashboard once it has been promoted. The dashboard will show the progression
 of the steps by highlighting each step as it is being executed. Also note how pods are
 being drained from one service to the other as traffic weighting changes.</p>
 </div>
@@ -740,13 +740,13 @@ respect to the canary strategy, an analysis can be performed in the <a href="htt
 or as an <a href="https://argo-rollouts.readthedocs.io/en/stable/features/analysis/#inline-analysis">inline</a> analysis.</p>
 </div>
 <div class="paragraph">
-<p>A background analysis happens asynchronously and does not block the progression of steps, however
+<p>A Background Analysis happens asynchronously and does not block the progression of steps, however
 if the analysis fails it will abort the rollout similar to what we saw in the previous module with
-the blue-green strategy. In the case of an inline analysis, the analysis is performed as a discrete step
+the blue-green strategy. In the case of an Inline Analysis, the analysis is performed as a discrete step
 and will block the progression of the rollout until it completes.</p>
 </div>
 <div class="paragraph">
-<p>The files for this example are in the <code>./canary-analysis/base</code> folder, to view the list of files
+<p>In the following example we will implement an Inline Analysis. The files for this example are in the <code>./canary-analysis/base</code> folder, to view the list of files
 perform an <code>ls</code> as follows:</p>
 </div>
 <div class="listingblock console-input">
@@ -755,7 +755,7 @@ perform an <code>ls</code> as follows:</p>
 </div>
 </div>
 <div class="paragraph">
-<p>Note that the files are identical to the previous example other then the <code>rollout.yaml</code> and the
+<p>Note that the files are identical to the previous example other than the <code>rollout.yaml</code> and the
 <code>analysistemplate.yaml</code> file. The AnalysisTemplate being used here is identical to the one
 we used in the blue-green example so we will not cover it again here.</p>
 </div>

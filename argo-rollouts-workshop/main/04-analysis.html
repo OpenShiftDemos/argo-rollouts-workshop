@@ -240,7 +240,7 @@ enables Rollouts to collect data and metrics from a variety of providers to vali
 new version of the application.</p>
 </div>
 <div class="paragraph">
-<p>In addition to collecting data, an Analysis can include a Job to drive more advanced use cases. For example
+<p>In addition to collecting data, an Analysis can include a Job to drive more advanced use cases. For example,
 a Job could be used to run load against an application in order to generate the metrics needed to
 validate the revision.</p>
 </div>
@@ -248,7 +248,7 @@ validate the revision.</p>
 <p>To deploy an Analysis, first an AnalysisTemplate is created that defines the analysis that is required
 and then is associated with one or more rollouts. The way an analysis is associated with a rollout is dependent on
 the rollout strategy used. In this module we will look at it from the perspective of the Blue-Green
-strategy we have deployed previously however in the next module we delve into it for the Canary strategy as well.</p>
+strategy we have deployed previously. In the next module we will delve into using an Analysis with the Canary strategy as well.</p>
 </div>
 <div class="paragraph">
 <p>In the blue-green strategy, an Analysis can be added as either pre-promotion or post-promotion. Pre-promotion
@@ -347,14 +347,13 @@ that need to be executed.</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>In the metrics provider section we can see we have two providers defined, one that uses the prometheus metric provider to pull
-metrics from Thanos, an aggregator for Prometheus data, and a job that runs <a href="https://github.com/JoeDog/siege" target="_blank" rel="noopener">Apache Siege</a>
+<p>In the metrics provider section we can see that we have two providers defined. The first one, named <code>success-rate</code>, uses the prometheus metric provider to pull metrics from Thanos, an aggregator for Prometheus data. The second one, <code>run-load</code> is a job that runs <a href="https://github.com/JoeDog/siege" target="_blank" rel="noopener">Apache Siege</a>
 to drive some load on the application.</p>
 </div>
 <div class="paragraph">
 <p>The <code>count</code> and <code>interval</code> fields in the <code>success-rate</code> metric powered by the prometheus provider indicate that the metric will be checked four times
 with a thirty second interval between each check. The <code>failureLimit</code> determines how many failures are permitted for the rollout to be considered
-a success, here we set a failure limit of 0.</p>
+a success. Here we set a failure limit of 0.</p>
 </div>
 <div class="paragraph">
 <p>Finally, remember we are running this Analysis in the pre-promotion phase of the blue-green strategy so the application will not
@@ -377,7 +376,7 @@ siege will be hitting when it generates load.</p>
 </div>
 <div class="paragraph">
 <p>Finally a third parameter, <code>api-token</code>, is provided by a secret. This secret provides the token needed
-to access the OpenShift monitoring stack, it was created by the GitOps process which provisioned this workshop.</p>
+to access the OpenShift monitoring stack. It was created by the GitOps process which provisioned this workshop.</p>
 </div>
 <div class="paragraph">
 <p>Next let&#8217;s look at the rollout and see how the AnalysisTemplate is wired into the rollout.</p>
@@ -431,7 +430,7 @@ we define the analysis template we want to use as well as the arguments that the
 template.</p>
 </div>
 <div class="paragraph">
-<p>Next to deploy this new version of the blue-green rollout, execute the following command:</p>
+<p>To deploy this new version of the blue-green rollout, execute the following command:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -456,7 +455,7 @@ closed the browser tab with the dashboard remember the URL can be retrieved as f
 </div>
 </div>
 <div class="paragraph">
-<p>Next confirm that the application is displaying blue squares by opening the active route URL in your browser:</p>
+<p>Confirm that the application is displaying blue squares by opening the active route URL in your browser:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
@@ -507,9 +506,9 @@ is shown in grey (highlighted in the image with a red outline):</p>
 <div class="paragraph">
 <p>When a promotion of a rollout with an analysis is executed the controller will
 generate an analysis run for each template execution. Since we only have one template
-being used in pre-promotion we will only see one analysis run being created however
-it is possible for a promotion to have multiple analysis runs dependent on the
-rollout configuration, i.e. in blue-green defining both pre and post promotion analysis.</p>
+being used in pre-promotion we will only see one analysis run being created.
+It is however possible for a promotion to have multiple analysis runs, dependent on the
+rollout configuration. i.e. in blue-green defining both pre and post promotion analysis.</p>
 </div>
 <div class="paragraph">
 <p>Clicking on the analysis button will expand the view to show the in-progress analysis
@@ -634,9 +633,9 @@ squares have red outlines around them indicating they are returning error messag
 <td class="content">
 This section should not be overly timing sensitive since we are
 cheating a bit by pre-generating errors. However when we promote the new image the error
-setting will be reset back to 0 for the preview service. After the promotion pipeline completes,
+setting will be reset back to 0 for the preview service. <strong>After the promotion pipeline completes,
 immediately switch back to the tab with the preview service and push the error bar
-back to 100%.
+back to 100%</strong>.
 </td>
 </tr>
 </table>
@@ -671,7 +670,7 @@ button:</p>
 </td>
 <td class="content">
 If the timing did not work out for you, you can try again by promoting with a different color.
-You can see the list of available colors .<a href="https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags" target="_blank" rel="noopener">here</a>
+You can see the list of available colors <a href="https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags" target="_blank" rel="noopener">here</a>
 where each color is simply a tag in our quay.io registry.
 </td>
 </tr>

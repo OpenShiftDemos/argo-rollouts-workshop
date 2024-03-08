@@ -273,7 +273,7 @@ RolloutManager has already been provisioned for you.</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Argo Rollouts can be deployed as ether a namespace or cluster scope, the OpenShift GitOps operator
+Argo Rollouts can be deployed as either a namespace or cluster scope, the OpenShift GitOps operator
 currently only supports namespace scope.
 </td>
 </tr>
@@ -294,7 +294,8 @@ currently only supports namespace scope.
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We are using a kubectl plugin called <a href="https://github.com/itaysk/kubectl-neat" target="_blank" rel="noopener">kubectl-neat</a>
+The <code>oc</code> CLI tool is a superset of <code>kubectl</code> with some additional Openshift specific features. We will use <code>oc</code> in this tutorial but if you prefer you can use <code>kubectl</code> as well.
+In the previous command we are using a kubectl plugin called <a href="https://github.com/itaysk/kubectl-neat" target="_blank" rel="noopener">kubectl-neat</a>
 in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
 </td>
 </tr>
@@ -558,7 +559,7 @@ rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s</code></pre>
 </div>
 <div class="paragraph">
 <p>Copy the URL into a browser and confirm that the application is running, you should see a grid of
-blue squares appearing and disappearing periodically as the application makes requests to it&#8217;s back-end
+blue squares appearing and disappearing periodically as the application makes requests to its back-end
 from the browser.</p>
 </div>
 <div class="imageblock">

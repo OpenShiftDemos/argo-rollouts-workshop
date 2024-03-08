@@ -246,12 +246,11 @@ to access the current version of the application until a cut-over of traffic occ
 </div>
 </div>
 <div class="paragraph">
-<p>In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to it&#8217;s declarative nature the process still tends to be cumbersome to manage since bespoke automation needs to be created to manage the separate stacks,
+<p>In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to its declarative nature, the process still tends to be cumbersome to manage. Bespoke automation would still need to be created to manage the separate stacks, and for
 testing and traffic management between versions.</p>
 </div>
 <div class="paragraph">
-<p>This is where Argo Rollouts comes in, it greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module
-we will deploy a simple blue-green Rollout and explore it&#8217;s basic capabilities.</p>
+<p>This is where Argo Rollouts comes in. It greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module we will deploy a simple blue-green Rollout and explore its basic capabilities.</p>
 </div>
 </div>
 </div>
@@ -317,11 +316,11 @@ under <code>.spec.strategy</code> we have specified the <code>blueGreen</code> s
 and <code>replace</code> strategies whereas Argo Rollouts supports <code>blueGreen</code> and <code>canary</code> strategies.</p>
 </div>
 <div class="paragraph">
-<p>Under the <code>blueGreen</code> strategy we have identified the <code>active</code> and <code>preview</code> Kubernetes services for the rollout which will be covered
+<p>Under the <code>blueGreen</code> strategy we have identified the <code>active</code> and <code>preview</code> Kubernetes services for the rollout. This will be covered
 in more detail when services are discussed next.</p>
 </div>
 <div class="paragraph">
-<p>As well as services the field <code>autoPromotionEnabled</code> is set to <code>false</code> which means the rollout will require manual intervention to promote. Manual promotion
+<p>The field <code>autoPromotionEnabled</code> is set to <code>false</code>. This means the rollout will require manual intervention to promote. Manual promotion
 is enabled so the behavior of the rollout can be observed in-depth in subsequent sections of this module.</p>
 </div>
 <div class="paragraph">
@@ -432,7 +431,7 @@ that the pods are up and running:</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-We are getting pods using the label <code>app=rollouts-demo</code> to specifically select pods from the rollout, remember
+We are getting pods using the label <code>app=rollouts-demo</code> to specifically select pods from the rollout. Remember
 the RolloutManager pod is also deployed in the <code>user%USERNUM%-prod</code> namespace. Using the label enables us
 to exclude that pod.
 </td>
@@ -515,12 +514,12 @@ spec:
 </div>
 <div class="paragraph">
 <p>Notice that the selector now has an additional key, <code>rollouts-pod-template-hash</code>, with a hashed value. This is how the rollout manages traffic
-between the active and preview versions. Since we have not deployed a new image, if you check the preview service you will see the same
+between the active and preview versions. Since we have not deployed a new image, the preview service will have the same
 selector used there as well.</p>
 </div>
 <div class="paragraph">
 <p>Similar to Kubernetes deployments, each revision, i.e. version, of the Rollout is backed by a <a href="https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/" target="_blank" rel="noopener">ReplicaSet</a>.
-This ReplicaSet will have a <code>rollouts-pod-template-hash</code> label in it&#8217;s PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
+This ReplicaSet will have a <code>rollouts-pod-template-hash</code> label in its PodTemplate with a value unique to the revision. Argo Rollouts will automatically ensure that
 the selector in the service is pointing to the appropriate revision.</p>
 </div>
 <div class="paragraph">
@@ -657,7 +656,7 @@ but this is not recommended as a general practice.
 </table>
 </div>
 <div class="paragraph">
-<p>In the dashboard each rollout will show in it&#8217;s own tile on the overview screen. The tile will provide some
+<p>In the dashboard each rollout will show in its own tile on the overview screen. The tile will provide some
 basic information about the rollout as shown here:</p>
 </div>
 <div class="imageblock">
@@ -716,7 +715,7 @@ Kubernetes Deployment in the <code>user%USERNUM%-dev</code> namespace while <cod
 <td class="content">
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines, an implementation of the <a href="https://tekton.dev" target="_blank" rel="noopener">Tekton</a> project, however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 </td>
 </tr>
@@ -768,7 +767,7 @@ we deployed.</p>
 </div>
 <div class="paragraph">
 <p>Now let&#8217;s see what the application looks like in production where we are using Rollouts. First, let&#8217;s check the preview service by
-retrieving it&#8217;s URL and viewing it in the browser:</p>
+retrieving its URL and viewing it in the browser:</p>
 </div>
 <div class="listingblock console-input">
 <div class="content">
