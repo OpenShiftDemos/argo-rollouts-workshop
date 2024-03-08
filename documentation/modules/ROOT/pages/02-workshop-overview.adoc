@@ -31,7 +31,7 @@ custom resource in the namespace where we want to run the Rollout. In the case o
 RolloutManager has already been provisioned for you.
 
 [NOTE]
-Argo Rollouts can be deployed as ether a namespace or cluster scope, the OpenShift GitOps operator
+Argo Rollouts can be deployed as either a namespace or cluster scope, the OpenShift GitOps operator
 currently only supports namespace scope.
 
 To review the rollout manager, execute the following command:
@@ -43,7 +43,8 @@ oc get rolloutmanager argo-rollout -o yaml -n user%USERNUM%-prod | oc neat
 ----
 
 [NOTE]
-We are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
+The `oc` CLI tool is a superset of `kubectl` with some additional Openshift specific features. We will use `oc` in this tutorial but if you prefer you can use `kubectl` as well.
+In the previous command we are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
 in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
 
 This will return an object as follows:
@@ -201,7 +202,7 @@ oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.
 ----
 
 Copy the URL into a browser and confirm that the application is running, you should see a grid of
-blue squares appearing and disappearing periodically as the application makes requests to it's back-end
+blue squares appearing and disappearing periodically as the application makes requests to its back-end
 from the browser.
 
 image::rollouts-demo-app-blue.png[]
