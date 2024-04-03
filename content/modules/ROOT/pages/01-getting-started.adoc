@@ -9,8 +9,7 @@ information:
 
 [cols="1,1"]
 |===
-|OpenShift Console
-|{console_url}
+2+|.link:{console_url}[OpenShift Console,window='_blank']
 
 |Username
 |{user}
