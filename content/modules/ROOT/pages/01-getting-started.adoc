@@ -43,6 +43,32 @@ command to login as {user}.
 {login_command}
 ----
 
+When you login you will see a prompt about using an insecure connection as the Kubernetes API
+in this workshop is using a default certificate, type `y` to accept and the login will continue.
+Once completed you should see the following in the terminal:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+[lab-user: ~]$ {login_command}
+The server uses a certificate signed by an unknown authority.
+You can bypass the certificate check, but any data you send to the server could be intercepted by others.
+Use insecure connections? (y/n): y
+
+WARNING: Using insecure TLS client config. Setting this option is not supported!
+
+Login successful.
+
+You have access to the following projects and can switch between them with 'oc project <projectname>':
+
+  * {user}-dev
+    {user}-prod
+    {user}-tools
+
+Using project "{user}-dev".
+Welcome! See 'oc help' to get started.
+---
+
 [TIP]
 ====
 In order to copy and paste content into the terminal, you can use
