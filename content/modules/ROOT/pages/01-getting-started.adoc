@@ -9,12 +9,13 @@ information:
 
 [cols="1,1"]
 |===
-2+^|link:{console_url}[OpenShift Console,window='_blank']
+|*OpenShift Console*
+|link:{console_url}[{console_url},window='_blank']
 
-|Username
+|*Username*
 |{user}
 
-|Password
+|*Password*
 |{password}
 |===
 
