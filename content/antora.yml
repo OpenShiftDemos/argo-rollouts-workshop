@@ -5,3 +5,13 @@ nav:
   - modules/ROOT/nav.adoc
 
 start_page: ROOT:index.adoc
+
+asciidoc:
+  attributes:
+    page-links:
+    - url: {console_url}
+      text: OpenShift Console
+    - url: https://redhat.com
+      text: Red Hat
+    - url: https://www.redhat.com/en/summit
+      text: Summit
