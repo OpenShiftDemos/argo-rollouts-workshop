@@ -67,7 +67,7 @@ You have access to the following projects and can switch between them with 'oc p
 
 Using project "{user}-dev".
 Welcome! See 'oc help' to get started.
----
+----
 
 [TIP]
 ====
