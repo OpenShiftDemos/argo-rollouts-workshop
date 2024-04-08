@@ -50,7 +50,6 @@ in order to tidy the yaml by removing additional fields, labels and annotations 
 This will return an object as follows:
 
 [source,yaml,subs="attributes+,+macros"]
----
 apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
@@ -58,7 +57,6 @@ metadata:
     argocd.argoproj.io/tracking-id: {user}:argoproj.io/RolloutManager:{user}-prod/argo-rollout
   name: argo-rollout
   namespace: {user}-prod
----
 
 As shown here this is a simple declaration which in turn results in the Operator creating
 a deployment with the Argo Rollout controller monitoring the `{user}-prod` for
