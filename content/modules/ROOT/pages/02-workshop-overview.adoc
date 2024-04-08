@@ -14,11 +14,11 @@ image::openshift-projects.png[]
 
 In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:
 
-* _user{user}-dev_. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
+* _{user}-dev_. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
 we can compare and contrast it to Rollouts.
-* _user{user}-prod_. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
+* _{user}-prod_. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
 you will deploy rollouts using different strategies and analysis.
-* _user{user}-tools_. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
+* _{user}-tools_. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
 environments. Additionally the upstream Rollouts Dashboard user interface is deployed in this namespace.
 
 [#review-rollout-manager]
@@ -39,7 +39,7 @@ To review the rollout manager, execute the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get rolloutmanager argo-rollout -o yaml -n user%USERNUM%-prod | oc neat
+oc get rolloutmanager argo-rollout -o yaml -n {user}-prod | oc neat
 ----
 
 [NOTE]
@@ -55,13 +55,13 @@ apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
   annotations:
-    argocd.argoproj.io/tracking-id: user%USERNUM%:argoproj.io/RolloutManager:user%USERNUM%-prod/argo-rollout
+    argocd.argoproj.io/tracking-id: {user}:argoproj.io/RolloutManager:{user}-prod/argo-rollout
   name: argo-rollout
-  namespace: user%USERNUM%-prod
+  namespace: {user}-prod
 ---
 
 As shown here this is a simple declaration which in turn results in the Operator creating
-a deployment with the Argo Rollout controller monitoring the `user%USERNUM%-prod` for
+a deployment with the Argo Rollout controller monitoring the `{user}-prod` for
 `Rollout` resources.
 
 [NOTE]
@@ -169,7 +169,7 @@ to process a kustomization. Run the following command in the terminal to deploy 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -k ./deploy/base -n user%USERNUM%-dev
+oc apply -k ./deploy/base -n {user}-dev
 ----
 
 Once you have run the command we can confirm that the deployment has run successfully. Use the following command to ensure
@@ -178,7 +178,7 @@ that the pods are up and running:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get pods -n user%USERNUM%-dev
+oc get pods -n {user}-dev
 ----
 
 The console should return something along the lines of
@@ -193,12 +193,12 @@ rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s
 
 There are two pods since the Deployment specified two replicas.
 
-Next view the Route URL for this application. It's in the `user%USERNUM%-dev1` Project.
+Next view the Route URL for this application. It's in the `{user}-dev1` Project.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 Copy the URL into a browser and confirm that the application is running, you should see a grid of

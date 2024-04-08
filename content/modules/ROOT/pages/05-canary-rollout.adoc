@@ -37,7 +37,7 @@ in OpenShift GitOps. For this module we will rely on Rollouts best effort approa
 [#deploy-canary-rollout]
 == Deploy Canary Rollout
 
-Now we will deploy the canary rollout in the `user%USERNUM%-prod` namespace following the same process that we did for the
+Now we will deploy the canary rollout in the `{user}-prod` namespace following the same process that we did for the
 blue-green in the previous modules. Prior to starting, confirm you are still at the correct path.
 
 [.console-input]
@@ -116,7 +116,7 @@ To deploy the canary rollout, use the following command to process the kustomiza
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -k ./canary/base -n user%USERNUM%-prod
+oc apply -k ./canary/base -n {user}-prod
 ----
 
 Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
@@ -125,7 +125,7 @@ that the rollout is up and running and in a Healthy state:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n {user}-prod
 ----
 
 The console should return something similar to:
@@ -134,7 +134,7 @@ The console should return something similar to:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user%USERNUM%-prod
+Namespace:       {user}-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          8/8
@@ -171,7 +171,7 @@ command below and copy to a browser tab:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 The application is running with blue squares for the current version of the application:
@@ -185,7 +185,7 @@ through the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::argo-rollouts-dashboard-canary.png[]
@@ -195,7 +195,7 @@ image::argo-rollouts-dashboard-canary.png[]
 
 In this section we will promote a new image and observe the behavior of the canary rollout using
 the same pipeline that we used previously. As a reminder, the pipeline can be accessed in
-the `user%USERNUM%-tools` namespace.
+the `{user}-tools` namespace.
 
 image::console-pipelines-overview.png[]
 
@@ -208,7 +208,7 @@ Once the pipeline is complete, run this command to see state of the rollout:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n {user}-prod
 ----
 
 You should see output similar to the following:
@@ -217,7 +217,7 @@ You should see output similar to the following:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user%USERNUM%-prod
+Namespace:       {user}-prod
 Status:          ॥ Paused
 Message:         CanaryPauseStep
 Strategy:        Canary
@@ -266,7 +266,7 @@ the blue version of the application:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::rollouts-demo-app-blue.png[]
@@ -277,7 +277,7 @@ of the application.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod canary -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod canary -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::rollouts-demo-app-green.png[]
@@ -289,7 +289,7 @@ blue squares:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod all -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod all -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::rollouts-demo-app-canary-blue-green.png[]
@@ -300,7 +300,7 @@ button or you can promote it using the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts promote rollouts-demo -n {user}-prod
 ----
 
 Observe the dashboard once it has been promoted. The dashboard will show the progression
@@ -315,7 +315,7 @@ Update the deployment:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -k ./deploy/base -n user%USERNUM%-dev
+oc apply -k ./deploy/base -n {user}-dev
 ----
 
 Delete the current rollout:
@@ -323,7 +323,7 @@ Delete the current rollout:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc delete -k ./canary/base -n user%USERNUM%-prod
+oc delete -k ./canary/base -n {user}-prod
 ----
 
 [#inline-analysis]
@@ -368,7 +368,7 @@ To deploy the canary with the inline analysis execute the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n user%USERNUM%-prod -f -
+kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n {user}-prod -f -
 ----
 
 Once the command has been executed, verify that the rollout was deployed:
@@ -376,7 +376,7 @@ Once the command has been executed, verify that the rollout was deployed:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n {user}-prod
 ----
 
 You should see output as follows:
@@ -385,7 +385,7 @@ You should see output as follows:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user%USERNUM%-prod
+Namespace:       {user}-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          7/7
@@ -420,7 +420,7 @@ image::argo-rollouts-dashboard-canary-analysis.png[]
 Note that since we no longer have a manual pause step the promotion will complete automatically as long as the
 analysis step executes successfully.
 
-Let's do our promotion to the `green` image, go to the `user%USERNUM%-tools` namespace and start the pipeline
+Let's do our promotion to the `green` image, go to the `{user}-tools` namespace and start the pipeline
 again. Once the pipeline has completed, observe the behavior of the canary deployment during the process in
 the Argo Rollouts Dashboard.
 
@@ -444,7 +444,7 @@ In the command line, you can view the rollout using the command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n {user}-prod
 ----
 
 Information about the rollout will appear as follows:
@@ -453,7 +453,7 @@ Information about the rollout will appear as follows:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user%USERNUM%-prod
+Namespace:       {user}-prod
 Status:          ✔ Healthy
 Strategy:        Canary
   Step:          7/7

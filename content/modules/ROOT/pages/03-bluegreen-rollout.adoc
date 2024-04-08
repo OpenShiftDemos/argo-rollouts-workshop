@@ -27,7 +27,7 @@ This is where Argo Rollouts comes in. It greatly reduces the complexity by provi
 [#deploy-blue-green-rollout]
 == Deploy Blue-Green Rollout
 
-Here we will deploy the blue-green rollout in the `user%USERNUM%-prod` namespace following the same process that we did for the Deployment in the previous module. Prior to starting,
+Here we will deploy the blue-green rollout in the `{user}-prod` namespace following the same process that we did for the Deployment in the previous module. Prior to starting,
 confirm you are still at the correct path.
 
 [.console-input]
@@ -95,7 +95,7 @@ To deploy the blue-green rollout, use the following command to process the kusto
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -k ./bluegreen/base -n user%USERNUM%-prod
+oc apply -k ./bluegreen/base -n {user}-prod
 ----
 
 Once you have run the command we can confirm that the rollout has deployed successfully. Use the following command to ensure
@@ -104,12 +104,12 @@ that the pods are up and running:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get pods -l app=rollouts-demo -n user%USERNUM%-prod
+oc get pods -l app=rollouts-demo -n {user}-prod
 ----
 
 [NOTE]
 We are getting pods using the label `app=rollouts-demo` to specifically select pods from the rollout. Remember
-the RolloutManager pod is also deployed in the `user%USERNUM%-prod` namespace. Using the label enables us
+the RolloutManager pod is also deployed in the `{user}-prod` namespace. Using the label enables us
 to exclude that pod.
 
 The console should return something along the lines of:
@@ -124,20 +124,20 @@ rollouts-demo-66d84bcd76-q49wt   1/1     Running   0          64s
 
 There are two pods since the Rollout application specified two replicas.
 
-Next retrieve the Routes for this application. It's in the `user%USERNUM%-prod` Project.
+Next retrieve the Routes for this application. It's in the `{user}-prod` Project.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get routes -n user%USERNUM%-prod
+oc get routes -n {user}-prod
 ----
 
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
 ----
 NAME      HOST/PORT                                                             PATH   SERVICES   PORT   TERMINATION     WILDCARD
-active    active-user%USERNUM%-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
-preview   preview-user%USERNUM%-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None
+active    active-{user}-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com           active     http   edge/Redirect   None
+preview   preview-{user}-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None
 ----
 
 Copy the value of the `HOST/PORT` of each route into an individual browser tab to confirm that both display the application with blue squares.
@@ -149,7 +149,7 @@ Next let's examine the active and preview services that were deployed, run the f
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get svc active -o yaml -n user%USERNUM%-prod | oc neat
+oc get svc active -o yaml -n {user}-prod | oc neat
 ----
 
 The console should display a service definition similar to the following:
@@ -165,7 +165,7 @@ metadata:
   labels:
     app: rollouts-demo
   name: active
-  namespace: user%USERNUM%-prod
+  namespace: {user}-prod
 spec:
   clusterIP: 172.30.104.238
   clusterIPs:
@@ -195,7 +195,7 @@ To view this, output the manifest for the currently deployed ReplicaSet:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get rs -l app=rollouts-demo -n user%USERNUM%-prod -o yaml | oc neat
+oc get rs -l app=rollouts-demo -n {user}-prod -o yaml | oc neat
 ----
 
 Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field in the ReplicaSet.
@@ -215,7 +215,7 @@ To view a list of rollouts we can use the `list` command as follows:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts list rollout -n user%USERNUM%-prod
+oc argo rollouts list rollout -n {user}-prod
 ----
 
 This will display output as follows:
@@ -232,7 +232,7 @@ To view detailed information about rollout that was listed, use the `get` comman
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n {user}-prod
 ----
 
 This command should output something similar to the following:
@@ -241,7 +241,7 @@ This command should output something similar to the following:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user%USERNUM%-prod
+Namespace:       {user}-prod
 Status:          ✔ Healthy
 Strategy:        BlueGreen
 Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable, active)
@@ -269,7 +269,7 @@ To view the status of the rollout by itself you can use the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts status rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts status rollouts-demo -n {user}-prod
 ----
 
 This should return a simple `Healthy` in the output.
@@ -286,14 +286,14 @@ the `--help` switch and we will look at some of them during the course of this w
 [#argo-rollouts-dashboard]
 === Argo Rollouts Dashboard
 
-The Argo Rollouts dashboard has been deployed for you already in the `user%USERNUM%-tools` namespace
+The Argo Rollouts dashboard has been deployed for you already in the `{user}-tools` namespace
 on the cluster for this workshop. To access the dashboard, run the following command to get the
 URL for the dashboard for your specific user:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 Copy the returned URL into a browser tab to access the dashboard.
@@ -322,7 +322,7 @@ In this section we will promote a new image and observe the behavior of the appl
 process. To promote the image we will use a simple pipeline to update the image reference to use a different
 color.
 
-To access this pipeline, in the OpenShift Console navigate to the `user%USERNUM%-tools` namespace and select
+To access this pipeline, in the OpenShift Console navigate to the `{user}-tools` namespace and select
 the `Pipelines` view in the Developer perspective as per this screenshot.
 
 image::console-pipelines-overview.png[]
@@ -332,8 +332,8 @@ Clicking on the pipeline name, `rollouts-pipeline`, will bring you to the follow
 image::console-pipelines-promote.png[]
 
 As shown in the image, the pipeline consists of two tasks, `deploy-dev` will update and deploy the selected image in the
-Kubernetes Deployment in the `user%USERNUM%-dev` namespace while `deploy-prod` will do the same for the Rollout in the
-`user%USERNUM%-prod` namespace.
+Kubernetes Deployment in the `{user}-dev` namespace while `deploy-prod` will do the same for the Rollout in the
+`{user}-prod` namespace.
 
 [NOTE]
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
@@ -361,7 +361,7 @@ application in Development can be retrieved with the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 Paste this url into a browser tab and confirm that the application is showing Green squares reflective of the green image that
@@ -375,7 +375,7 @@ retrieving its URL and viewing it in the browser:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::rollouts-demo-app-green.png[]
@@ -385,7 +385,7 @@ Again the application will display green squares, now let's check the active ser
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::rollouts-demo-app-blue.png[]
@@ -400,7 +400,7 @@ CLI. Execute the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts get rollout rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts get rollout rollouts-demo -n {user}-prod
 ----
 
 This should return the following output:
@@ -409,7 +409,7 @@ This should return the following output:
 [source,bash,subs="attributes+,+macros"]
 ----
 Name:            rollouts-demo
-Namespace:       user%USERNUM%-prod
+Namespace:       {user}-prod
 Status:          ॥ Paused
 Message:         BlueGreenPause
 Strategy:        BlueGreen
@@ -453,7 +453,7 @@ To perform the promotion, you can either use the dashboard or the CLI to do it:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts promote rollouts-demo -n user%USERNUM%-prod
+oc argo rollouts promote rollouts-demo -n {user}-prod
 ----
 
 . For the UI, click the `Promote` button in the Dashboard, it will change to an orange `Sure?` button
@@ -472,7 +472,7 @@ If you check the Active route the application is now displaying green squares.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get route -n user%USERNUM%-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+oc get route -n {user}-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
 image::rollouts-demo-app-green.png[]
@@ -486,10 +486,10 @@ the following command to patch the rollout to set `autoPromotionEnabled` to `tru
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc patch rollout rollouts-demo --type='json' -p='[{"op": "replace", "path": "/spec/strategy/blueGreen/autoPromotionEnabled", "value":true}]' -n user%USERNUM%-prod
+oc patch rollout rollouts-demo --type='json' -p='[{"op": "replace", "path": "/spec/strategy/blueGreen/autoPromotionEnabled", "value":true}]' -n {user}-prod
 ----
 
-Now deploy a new image color `yellow` this time, in the OpenShift console navigate to the Pipeline again in the `user%USERNUM%-tools` namespace.
+Now deploy a new image color `yellow` this time, in the OpenShift console navigate to the Pipeline again in the `{user}-tools` namespace.
 
 image::console-pipelines-overview.png[]
 
@@ -521,7 +521,7 @@ To rollback the revision the `undo` command can be used, execute the following c
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc argo rollouts undo rollouts-demo --to-revision=2  -n user%USERNUM%-prod
+oc argo rollouts undo rollouts-demo --to-revision=2  -n {user}-prod
 ----
 
 [NOTE]
@@ -541,13 +541,13 @@ Prior to moving on to the next module we need to perform some clean-up activitie
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc apply -k ./deploy/base -n user%USERNUM%-dev
+oc apply -k ./deploy/base -n {user}-dev
 ----
 
-Next we will delete the Rollout in the `user%USERNUM%-prod` so we can start with a fresh version.
+Next we will delete the Rollout in the `{user}-prod` so we can start with a fresh version.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc delete -k ./bluegreen/base -n user%USERNUM%-prod
+oc delete -k ./bluegreen/base -n {user}-prod
 ----
