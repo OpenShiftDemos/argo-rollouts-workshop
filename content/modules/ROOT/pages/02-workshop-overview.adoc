@@ -49,7 +49,7 @@ in order to tidy the yaml by removing additional fields, labels and annotations 
 
 This will return an object as follows:
 
-[source,yaml]
+[source,yaml,subs="attributes+,+macros"]
 ---
 apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
