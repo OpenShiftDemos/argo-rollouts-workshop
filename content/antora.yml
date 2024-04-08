@@ -10,7 +10,7 @@ asciidoc:
   attributes:
     page-links:
     - url: {console_url}
-      text: OpenShift Console
+      text: "OpenShift Console"
     - url: https://redhat.com
       text: Red Hat
     - url: https://www.redhat.com/en/summit
