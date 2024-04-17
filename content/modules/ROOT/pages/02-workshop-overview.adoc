@@ -199,8 +199,11 @@ Next view the Route URL for this application. It's in the `{user}-dev1` Project.
 oc get route -n {user}-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
 ----
 
-Copy the URL into a browser and confirm that the application is running, you should see a grid of
-blue squares appearing and disappearing periodically as the application makes requests to its back-end
+You can confirm the application is running by clicking the following link or by copying the URL from the previous command:
+
+.link:https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}[https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain, window="_blank"]
+
+You should see a grid of blue squares appearing and disappearing periodically as the application makes requests to its back-end
 from the browser.
 
 image::rollouts-demo-app-blue.png[]
