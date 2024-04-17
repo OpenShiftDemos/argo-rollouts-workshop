@@ -145,10 +145,10 @@ Open the active and preview versions of the Rollout in separate browser tabs by 
 [cols="1,1"]
 |===
 |Active
-|.link:https://active-{user}-prod.{openshift_cluster_ingress_domain}[https://active-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
+|link:https://active-{user}-prod.{openshift_cluster_ingress_domain}[https://active-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 |Preview
-|.link:https://preview-{user}-prod.{openshift_cluster_ingress_domain}[https://preview-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
+|link:https://preview-{user}-prod.{openshift_cluster_ingress_domain}[https://preview-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 |===
 
@@ -299,16 +299,11 @@ the `--help` switch and we will look at some of them during the course of this w
 === Argo Rollouts Dashboard
 
 The Argo Rollouts dashboard has been deployed for you already in the `{user}-tools` namespace
-on the cluster for this workshop. To access the dashboard, run the following command to get the
-URL for the dashboard for your specific user:
+on the cluster for this workshop. To access the dashboard, click on the following URL:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+.link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}, window="_blank"]
 
-Copy the returned URL into a browser tab to access the dashboard.
+The Dashboard should display as follows:
 
 image::argo-rollout-dashboard.png[]
 
