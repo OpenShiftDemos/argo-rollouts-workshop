@@ -140,7 +140,19 @@ active    active-{user}-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com   
 preview   preview-{user}-prod.apps.cluster-nh5nw.nh5nw.sandbox2534.opentlc.com          preview    http   edge/Redirect   None
 ----
 
-Copy the value of the `HOST/PORT` of each route into an individual browser tab to confirm that both display the application with blue squares.
+Open the active and preview versions of the Rollout in separate browser tabs by clicking on the following links:
+
+[cols="1,1"]
+|===
+|Active
+|.link:https://active-{user}-prod.{openshift_cluster_ingress_domain}[https://active-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
+
+|Preview
+|.link:https://preview-{user}-prod.{openshift_cluster_ingress_domain}[https://preview-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
+
+|===
+
+Confirm that both the active and preview revisions display the application with blue squares.
 
 image::rollouts-demo-app-blue.png[]
 
