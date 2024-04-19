@@ -118,13 +118,7 @@ The dashboard for our blue-green rollout will appear identically as follows:
 
 image::argo-rollout-dashboard-bg-analysis-initial.png[]
 
-Confirm that the application is displaying blue squares by opening the active route URL in your browser:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+Confirm that the application is displaying blue squares by opening the link:https://active-{user}-prod.{openshift_cluster_ingress_domain}/[active route, window="_blank"] in your browser:
 
 image::rollouts-demo-app-blue.png[]
 
