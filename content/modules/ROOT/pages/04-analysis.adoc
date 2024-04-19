@@ -317,5 +317,5 @@ Next we will delete the Rollout in the `{user}-prod` so we can start fresh as we
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc delete -n {user}-prod -f -
+kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/{openshift_cluster_ingress_domain}/" | sed "s/%USER%/{user}/" | oc delete -n {user}-prod -f -
 ----
