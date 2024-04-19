@@ -301,7 +301,7 @@ the `--help` switch and we will look at some of them during the course of this w
 The Argo Rollouts dashboard has been deployed for you already in the `{user}-tools` namespace
 on the cluster for this workshop. To access the dashboard, click on the following URL:
 
-.link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}, window="_blank"]
+https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}, window="_blank"]
 
 The Dashboard should display as follows:
 
@@ -362,38 +362,27 @@ green check marks which signifies successful completion.
 
 image::console-pipeline-completed.png[]
 
-Let's validate that the change occurred in our development environment. As per the last module, the URL for the
-application in Development can be retrieved with the following command:
+Let's validate that the change occurred in our development environment, if you closed the tab you can view the
+development environment application at the following link:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}[https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}, window="_blank"]
 
-Paste this url into a browser tab and confirm that the application is showing Green squares reflective of the green image that
-we deployed.
+You should see the following page:
 
 image::rollouts-demo-app-green.png[]
 
 Now let's see what the application looks like in production where we are using Rollouts. First, let's check the preview service by
-retrieving its URL and viewing it in the browser:
+using the following URL:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://preview-{user}-prod.{openshift_cluster_ingress_domain}[https://preview-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
+
+Again the application will display green squares:
 
 image::rollouts-demo-app-green.png[]
 
-Again the application will display green squares, now let's check the active service:
+Now let's check the active service with the following link:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://active-{user}-prod.{openshift_cluster_ingress_domain}[https://active-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 image::rollouts-demo-app-blue.png[]
 
