@@ -165,28 +165,16 @@ NAME                                       KIND        STATUS     AGE  INFO
 The command shows additional information about the canary rollout including the
 number of steps and the weight between services.
 
-Confirm the application is accessible, retrieve the stable route URL using the
-command below and copy to a browser tab:
+Confirm the application is accessible by checking the stable route:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://stable-{user}-prod.{openshift_cluster_ingress_domain}[https://stable-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 The application is running with blue squares for the current version of the application:
 
 image::rollouts-demo-app-blue.png[]
 
-If you go to the Argo Rollouts Dashboard you can see that the dashboard displays
-the steps that are defined in the rollout. Again, the dashboard URL can be retrieved
-through the following command:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-tools dashboard -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+If you go to the link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[Argo Rollouts Dashboard, window="_blank"] you can see that the dashboard displays
+the steps that are defined in the rollout.
 
 image::argo-rollouts-dashboard-canary.png[]
 
