@@ -86,8 +86,11 @@ deploy various versions of the application as you progress through the workshop:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-git clone https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
+git clone -b Summit2024 --single-branch https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
 ----
+
+[NOTE]
+We are cloning the Summit2024 branch to support some specific requirements of the Summit environment.
 
 All of the code used in this workshop will be located in the folder:
 
