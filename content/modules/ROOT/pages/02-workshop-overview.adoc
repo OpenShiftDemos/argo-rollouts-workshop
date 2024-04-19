@@ -201,8 +201,8 @@ oc get route -n {user}-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"
 
 You can confirm the application is running by clicking the following link or by copying the URL from the previous command:
 
-.link:https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}[https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}, window="_blank"]
-{blank}
+https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}[https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}, window="_blank"]
+
 You should see a grid of blue squares appearing and disappearing periodically as the application makes requests to its back-end
 from the browser.
 
