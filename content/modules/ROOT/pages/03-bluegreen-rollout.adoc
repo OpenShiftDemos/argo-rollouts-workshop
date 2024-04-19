@@ -465,11 +465,7 @@ parameter.
 
 If you check the Active route the application is now displaying green squares.
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod active -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://active-{user}-prod.{openshift_cluster_ingress_domain}[https://active-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 image::rollouts-demo-app-green.png[]
 
