@@ -224,14 +224,7 @@ checks plus the job executing successfully for a total of five.
 === Analysis Fails
 
 Now that we have experienced a successful promotion, let's examine the behavior when the
-application has errors and the analysis fails. To start, open the preview version of the application in a separate
-browser tab, remember we can retrieve the route for the preview service by using this command:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod preview -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+application has errors and the analysis fails. To start, open the link:https://preview-{user}-prod.{openshift_cluster_ingress_domain}/[preview version, window="_blank"] of the application.
 
 Slide the error bar as shown below all the way to the right. Notice how all of the flashing
 squares have red outlines around them indicating they are returning error messages.
