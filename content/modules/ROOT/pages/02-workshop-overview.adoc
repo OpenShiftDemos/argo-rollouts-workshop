@@ -94,14 +94,14 @@ We are cloning the Summit2024 branch to support some specific requirements of th
 
 All of the code used in this workshop will be located in the folder:
 
-`~/argo-rollouts-workshop/documentation/modules/ROOT/examples`
+`~/argo-rollouts-workshop/content/modules/ROOT/examples`
 
 Once you have cloned the repo, enter this directory in the terminal:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
+cd ~/argo-rollouts-workshop/content/modules/ROOT/examples/
 ----
 
 [IMPORTANT]
@@ -131,19 +131,19 @@ ls ./deploy/base
 You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
 and `route.yaml` represent the Deployment, Service and OpenShift Route respectively for the application.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/deploy.yaml[./deploy/base/deploy.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/deploy.yaml[./deploy/base/deploy.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/deploy.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/service.yaml[./deploy/base/service.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/service.yaml[./deploy/base/service.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/service.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/route.yaml[./deploy/base/route.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/route.yaml[./deploy/base/route.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/route.yaml[]
@@ -158,7 +158,7 @@ There is a fourth file called `kustomization.yaml`, this file is used by the htt
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
 in GitOps and we use kustomize here to simplify our deployments.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/deploy/base/kustomization.yaml[./deploy/base/kustomization.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/kustomization.yaml[./deploy/base/kustomization.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/kustomization.yaml[]

@@ -41,7 +41,7 @@ confirm you are still at the correct path.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
+cd ~/argo-rollouts-workshop/content/modules/ROOT/examples/
 ----
 
 Next, let's explore the manifests that we will be deploying in the `./bluegreen-analysis/base` folder:
@@ -55,7 +55,7 @@ ls ./bluegreen-analysis/base
 Here you will see the same files that we used previously, however there is a new file `analysistemplate.yaml`. Examining
 the file we see it appears as follows:
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen-analysis/base/analysistemplate.yaml[./bluegreen-analysis/base/analysistemplate.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen-analysis/base/analysistemplate.yaml[./bluegreen-analysis/base/analysistemplate.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen-analysis/base/analysistemplate.yaml[]
@@ -95,7 +95,7 @@ to access the OpenShift monitoring stack. It was created by the GitOps process w
 
 Next let's look at the rollout and see how the AnalysisTemplate is wired into the rollout.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen-analysis/base/rollout.yaml[./bluegreen-analysis/base/rollout.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen-analysis/base/rollout.yaml[./bluegreen-analysis/base/rollout.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]

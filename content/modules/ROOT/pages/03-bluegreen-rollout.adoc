@@ -33,7 +33,7 @@ confirm you are still at the correct path.
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-cd ~/argo-rollouts-workshop/documentation/modules/ROOT/examples/
+cd ~/argo-rollouts-workshop/content/modules/ROOT/examples/
 ----
 
 Next, let's explore the manifests that we will be deploying in the `./bluegreen/base` folder:
@@ -47,7 +47,7 @@ ls ./bluegreen/base
 Notice that this time we have files for `rollout.yaml`, `services.yaml` and `routes.yaml` which represent our Rollout, Services and Routes. We also have
 `kustomization.yaml` as per the last module.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/rollout.yaml[./bluegreen/base/rollout.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen/base/rollout.yaml[./bluegreen/base/rollout.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen/base/rollout.yaml[]
@@ -68,7 +68,7 @@ The Argo Rollouts documentation provides a complete list
 of all of the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features[configurable features, window='_blank'] for the blueGreen strategy
 and some of these additional features will be explored as we progress through the workshop.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/services.yaml[./bluegreen/base/services.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen/base/services.yaml[./bluegreen/base/services.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen/base/services.yaml[]
@@ -82,7 +82,7 @@ Argo Rollouts automatically manages the traffic between the services by managing
 will add a unique identifier label to pods and then update the selector in the service to bind the right pods to the right service. As
 we deploy the rollout this will be reviewed in more detail.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/documentation/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
+.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen/base/routes.yaml[]
