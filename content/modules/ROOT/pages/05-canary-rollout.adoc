@@ -243,7 +243,7 @@ to the pause step with no duration. Second that we have two ReplicaSets, one wit
 and the other with 7 pods corresponding to the preview and stable services respectively.
 Recall in our first step that we set a weight of 20% to the canary service.
 
-Next visit the Argo Rollouts Dashboard and note that the the rollout is paused on the `pause`
+Next visit the link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[Argo Rollouts Dashboard, window="_blank"] and note that the the rollout is paused on the `pause`
 step:
 
 image::argo-rollouts-dashboard-canary-pause.png[]
@@ -251,22 +251,14 @@ image::argo-rollouts-dashboard-canary-pause.png[]
 Now let's see the behavior of the routes, first if you check the stable you will see
 the blue version of the application:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod stable -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://stable-{user}-prod.{openshift_cluster_ingress_domain}[https://stable-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 image::rollouts-demo-app-blue.png[]
 
 Next if we check the canary version of the application we should see the green version
 of the application.
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod canary -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://canary-{user}-prod.{openshift_cluster_ingress_domain}[https://canary-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 image::rollouts-demo-app-green.png[]
 
@@ -274,11 +266,7 @@ Finally if we check the version of the application being delivered by the `all` 
 which includes all pods there will be approximately 20% green squares versus 80%
 blue squares:
 
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get route -n {user}-prod all -o jsonpath='{"https://"}{.spec.host}{"\n"}'
-----
+https://all-{user}-prod.{openshift_cluster_ingress_domain}[https://all-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 image::rollouts-demo-app-canary-blue-green.png[]
 
@@ -401,7 +389,7 @@ NAME                                       KIND        STATUS     AGE    INFO
       └──□ rollouts-demo-66d84bcd76-z8kr2  Pod         ✔ Running  5s     ready:1/1
 ----
 
-Next, examining the Argo Rollouts Dashboard we can see the inline Analysis being shown with the other steps:
+Next, examining the link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[Argo Rollouts Dashboard, window="_blank"] we can see the inline Analysis being shown with the other steps:
 
 image::argo-rollouts-dashboard-canary-analysis.png[]
 
@@ -410,7 +398,7 @@ analysis step executes successfully.
 
 Let's do our promotion to the `green` image, go to the `{user}-tools` namespace and start the pipeline
 again. Once the pipeline has completed, observe the behavior of the canary deployment during the process in
-the Argo Rollouts Dashboard.
+the link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[Argo Rollouts Dashboard, window="_blank"].
 
 [NOTE]
 If you want to try this multiple times to look at different things feel free to use the pipeline
