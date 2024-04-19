@@ -433,7 +433,7 @@ NAME                                       KIND        STATUS     AGE  INFO
 Notice that the status is `Paused` and that we now have two ReplicaSets, one for the preview service
 and one for the active (i.e. stable) service.
 
-Now navigate to the Argo Rollouts Dashboard and view the details of the application. Notice that the application
+Now navigate to the link:Argo Rollouts Dashboard[https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}, window="_blank"] and view the details of the application. Notice that the application
 displays the same two revisions that were presented in the CLI:
 
 image::argo-rollout-dashboard-promote.png[]
