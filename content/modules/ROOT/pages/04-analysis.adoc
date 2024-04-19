@@ -110,7 +110,7 @@ To deploy this new version of the blue-green rollout, execute the following comm
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n {user}-prod -f -
+kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/{openshift_cluster_ingress_domain}/" | sed "s/%USER%/{user}/" | oc apply -n {user}-prod -f -
 ----
 
 Check that the rollout has deployed successfully in the Argo Rollouts dashboard, if you have

@@ -22,7 +22,7 @@ spec:
         - name: route-name
           value: preview
         - name: route-url
-          value: preview-user%USER%-prod.%SUB_DOMAIN%
+          value: preview-%USER%-prod.%SUB_DOMAIN%
         templates:
         - templateName: smoke-tests
   template:
