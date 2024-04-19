@@ -8,6 +8,7 @@ start_page: ROOT:index.adoc
 
 asciidoc:
   attributes:
+    page-pagination: true
     page-links:
     - url: https://redhat.com
       text: Red Hat
