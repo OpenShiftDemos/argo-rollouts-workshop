@@ -8,6 +8,11 @@ start_page: ROOT:index.adoc
 
 asciidoc:
   attributes:
+    console_url: URL_PLACEHOLDER
+    login_command: LOGIN_COMMAND_PLACEHOLDER
+    openshift_cluster_ingress_domain: OPENSHIFT_CLUSTER_INGRESS_DOMAIN_PLACEHOLDER
+    password: PASSWORD_PLACEHOLDER
+    user: USER_PLACEHOLDER
     page-pagination: true
     page-links:
     - url: https://redhat.com
