@@ -1,5 +1,4 @@
 = Welcome to the Argo Rollouts Workshop
-:page-layout: home
 :!sectids:
 
 https://argoproj.github.io/rollouts/[Argo Rollouts,window='_blank'] provides a
