@@ -1,9 +1,9 @@
-www/
 target/
 !.mvn/wrapper/maven-wrapper.jar
 audit.log
 .cache/
 *.log
+www/
 
 docs/
 gh-pages/
