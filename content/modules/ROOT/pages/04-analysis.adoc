@@ -4,7 +4,7 @@ include::_attributes.adoc[]
 In this module we will:
 
 * Review and understand the concept of an Analysis
-* Deploy a Blue-Green rollout with an Analysis
+* Deploy a BlueGreen Rollout with an Analysis
 * Perform a successful promotion of an image tested by an Analysis
 * Perform and observe a promotion that fails an Analysis
 
@@ -55,7 +55,12 @@ ls ./bluegreen-analysis/base
 Here you will see the same files that we used previously, however there is a new file `analysistemplate.yaml`. Examining
 the file we see it appears as follows:
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen-analysis/base/analysistemplate.yaml[./bluegreen-analysis/base/analysistemplate.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./bluegreen-analysis/base/analysistemplate.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen-analysis/base/analysistemplate.yaml[]
@@ -95,7 +100,12 @@ to access the OpenShift monitoring stack. It was created by the GitOps process w
 
 Next let's look at the rollout and see how the AnalysisTemplate is wired into the rollout.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen-analysis/base/rollout.yaml[./bluegreen-analysis/base/rollout.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./bluegreen-analysis/base/rollout.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen-analysis/base/rollout.yaml[]
@@ -319,3 +329,7 @@ Next we will delete the Rollout in the `{user}-prod` so we can start fresh as we
 ----
 kustomize build ./bluegreen-analysis/base | sed "s/%SUB_DOMAIN%/{openshift_cluster_ingress_domain}/" | sed "s/%USER%/{user}/" | oc delete -n {user}-prod -f -
 ----
+
+== More Information
+
+link:https://argoproj.github.io/argo-rollouts/features/analysis/[Analysis^]

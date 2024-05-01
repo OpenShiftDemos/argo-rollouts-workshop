@@ -58,7 +58,12 @@ Similar to previous modules, note we have files for `rollout.yaml`, `services.ya
 our Kubernetes resources for Rollout, Services and Routes respectively. Examining the Rollout first you will
 see the following:
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/canary/base/rollout.yaml[./canary/base/rollout.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./canary/base/rollout.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$canary/base/rollout.yaml[]
@@ -83,7 +88,12 @@ to have much longer pauses for more complex applications.
 
 Next let's look at the Kubernetes services that are defined:
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/canary/base/services.yaml[./canary/base/services.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./canary/base/services.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$canary/base/services.yaml[]
@@ -100,7 +110,13 @@ The `all` service will enable us to see this by including all pods.
 
 With the services out of the way, let's examine the routes:
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/canary/base/routes.yaml[./canary/base/routes.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./canary/base/routes.yaml
+----
+
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$canary/base/routes.yaml[]
@@ -330,7 +346,12 @@ we used in the blue-green example so we will not cover it again here.
 
 The one change in the rollout is that it now has an inline analysis step as per below:
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/canary-analysis/base/rollout.yaml[./canary-analysis/base/rollout.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./canary-analysis/base/rollout.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$canary-analysis/base/rollout.yaml[]
@@ -463,3 +484,8 @@ NAME                                                        KIND         STATUS 
 
 In this module the canary strategy for Argo Rollouts has been reviewed along
 with how to use an inline analysis step to perform testing of the canary deployment.
+
+
+== More Information
+
+link:https://argoproj.github.io/argo-rollouts/features/canary/[Canary Deployment Strategy^]

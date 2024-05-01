@@ -14,25 +14,21 @@ image::openshift-projects.png[]
 
 In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:
 
-* _{user}-dev_. This represents the development environment where we will deploy the application as a vanilla Kubernetes Deployment so
-we can compare and contrast it to Rollouts.
-* _{user}-prod_. This is our production environment, here we will deploy a Rollout for the application. During the course of the workshop
-you will deploy rollouts using different strategies and analysis.
-* _{user}-tools_. This is where the CI/CD tooling is located, it contains a pipeline to promote image changes across the development and production
-environments. Additionally the upstream Rollouts Dashboard user interface is deployed in this namespace.
+* *_{user}-dev_*: This represents the development environment for deploying the application as a Kubernetes Deployment so we can compare and contrast it to Rollouts.
+* *_{user}-prod_*: This is our production environment, where we deploy a rollout for the application. During the workshop, you will deploy Rollouts using different strategies and analysis.
+* *_{user}-tools_*: This is where the CI/CD tooling is located. It contains a pipeline to promote image changes across the development and production environments. The upstream *Rollouts Dashboard* user interface is also deployed in this namespace.
 
 [#review-rollout-manager]
 == Review RolloutManager Deployment
 
-The OpenShift GitOps Operator simplifies the deployment and management of Argo Rollouts in an OpenShift cluster.
+The *OpenShift GitOps Operator* simplifies the deployment and management of the Argo Rollouts in an OpenShift cluster.
 
 To deploy Argo Rollouts using the operator we need to define and create a RolloutManager
 custom resource in the namespace where we want to run the Rollout. In the case of our workshop a
 RolloutManager has already been provisioned for you.
 
 [NOTE]
-Argo Rollouts can be deployed as either a namespace or cluster scope, the OpenShift GitOps operator
-currently only supports namespace scope.
+Argo Rollouts can be deployed as either a namespace or cluster scope. The OpenShift GitOps operator currently only supports namespace scope.
 
 To review the rollout manager, execute the following command:
 
@@ -43,7 +39,7 @@ oc get rolloutmanager argo-rollout -o yaml -n {user}-prod | oc neat
 ----
 
 [NOTE]
-The `oc` CLI tool is a superset of `kubectl` with some additional Openshift specific features. We will use `oc` in this tutorial but if you prefer you can use `kubectl` as well.
+The `oc` CLI tool is a superset of `kubectl` with some additional OpenShift specific features. We will use `oc` in this tutorial but if you prefer you can use `kubectl` as well.
 In the previous command we are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
 in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
 
@@ -111,8 +107,7 @@ times out, any local filesystem changes made will be lost. This means you would
 need to clone the repository again. The web terminal is intended for
 troubleshooting and simple interaction, and not as a long-lived remote execution
 environment. For that, something like
-https://developers.redhat.com/products/openshift-dev-spaces/overview[OpenShift
-DevSpaces] is a better choice.
+https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift Dev Spaces] is a better choice.
 ====
 
 === Deploy Development
@@ -131,19 +126,33 @@ ls ./deploy/base
 You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
 and `route.yaml` represent the Deployment, Service and OpenShift Route respectively for the application.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/deploy.yaml[./deploy/base/deploy.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/deploy.yaml
+----
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/deploy.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/service.yaml[./deploy/base/service.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/service.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/service.yaml[]
 ----
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/route.yaml[./deploy/base/route.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/route.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/route.yaml[]
@@ -158,7 +167,12 @@ There is a fourth file called `kustomization.yaml`, this file is used by the htt
 the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
 in GitOps and we use kustomize here to simplify our deployments.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/deploy/base/kustomization.yaml[./deploy/base/kustomization.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/kustomization.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$deploy/base/kustomization.yaml[]
@@ -182,7 +196,7 @@ that the pods are up and running:
 oc get pods -n {user}-dev
 ----
 
-The console should return something along the lines of
+The console should return something along the lines of:
 
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
@@ -206,10 +220,10 @@ You can confirm the application is running by clicking the following link or by 
 
 https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}[https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}, window="_blank"]
 
-You should see a grid of blue squares appearing and disappearing periodically as the application makes requests to its back-end
+You should see a grid of *blue* squares appearing and disappearing periodically as the application makes requests to its back-end
 from the browser.
 
 image::rollouts-demo-app-blue.png[]
 
-In the next module we will deploy a Blue-Green Rollouts version of this application and compare and contrast it to
+In the next module we will deploy a *BlueGreen Rollouts* version of this application and compare and contrast it to
 the traditional Kubernetes Deployment version of the application we just deployed.

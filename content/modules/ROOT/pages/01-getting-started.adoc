@@ -13,10 +13,19 @@ information:
 |link:{console_url}[{console_url},window='_blank']
 
 |*Username*
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
 |{user}
+----
 
 |*Password*
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
 |{password}
+----
 |===
 
 Clicking the link above for the OpenShift Console will take you to the OpenShift
@@ -30,9 +39,9 @@ switcher in the upper-left:
 image::openshift-perspective-switcher.png[]
 
 [#open-web-terminal]
-== Web Terminal
+== Workshop Web Terminal
 
-On the right side of the screen is a web terminal which includes many of the
+On the right side of your screen is a web terminal which includes many of the
 necessary command-line tools you need to interact with. By default the terminal
 is logged in with a service account with limited permissions, execute the following
 command to login as {user}.
@@ -45,7 +54,8 @@ command to login as {user}.
 
 When you login you will see a prompt about using an insecure connection as the Kubernetes API
 in this workshop is using a default certificate, type `y` to accept and the login will continue.
-Once completed you should see the following in the terminal:
+
+*Once completed you should see the following in the terminal:*
 
 [.console-output]
 [source,bash,subs="attributes+,+macros"]
