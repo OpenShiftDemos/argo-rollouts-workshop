@@ -61,7 +61,7 @@ under `.spec.strategy` we have specified the `blueGreen` strategy. The Kubernete
 and `replace` strategies whereas Argo Rollouts supports `blueGreen` and `canary` strategies.
 
 Under the `blueGreen` strategy we have identified the `active` and `preview` Kubernetes services for the rollout. This will be covered
-in more detail when services are discussed next. The rollout uses the active and preview to migrate replica sets from the preview to the active state.
+in more detail when services are discussed next. The rollout uses the active and preview to migrate ReplicaSets from the preview to the active state.
 
 
 

@@ -107,7 +107,7 @@ times out, any local filesystem changes made will be lost. This means you would
 need to clone the repository again. The web terminal is intended for
 troubleshooting and simple interaction, and not as a long-lived remote execution
 environment. For that, something like
-https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift Dev Spaces] is a better choice.
+https://developers.redhat.com/products/openshift-dev-spaces/overview[Red Hat OpenShift Dev Spaces^] is a better choice.
 ====
 
 === Deploy Development
