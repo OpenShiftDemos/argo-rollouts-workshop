@@ -7,26 +7,28 @@ include::_attributes.adoc[]
 The first thing to do is log in to your OpenShift cluster with the following
 information:
 
-[cols="1,1"]
-|===
-|*OpenShift Console*
-|link:{console_url}[{console_url},window='_blank']
 
-|*Username*
+*OpenShift Console*
+link:{console_url}[{console_url},window='_blank']
+
+*Username*
+
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-|{user}
+{user}
 ----
 
-|*Password*
+
+*Password*
+
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-|{password}
+{password}
 ----
-|===
+
 
 Clicking the link above for the OpenShift Console will take you to the OpenShift
 login screen where you can login using the provided username and password.
