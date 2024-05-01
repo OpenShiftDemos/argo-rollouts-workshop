@@ -12,7 +12,7 @@ In this module we will:
 
 image::openshift-projects.png[]
 
-In this workshop each user will have access to three OpenShift Projects as follows:
+In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:
 
 * *_{user}-dev_*: This represents the development environment for deploying the application as a Kubernetes Deployment so we can compare and contrast it to Rollouts.
 * *_{user}-prod_*: This is our production environment, where we deploy a rollout for the application. During the workshop, you will deploy Rollouts using different strategies and analysis.
