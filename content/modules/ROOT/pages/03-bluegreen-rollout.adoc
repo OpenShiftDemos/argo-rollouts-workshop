@@ -1,34 +1,31 @@
-= Blue-Green Rollout
+= BlueGreen Rollout
 include::_attributes.adoc[]
 
 In this module we will:
 
-* Review and understand the Blue-Green Strategy
-* Deploy the Blue-Green Rollout to the production namespace
+* Review and understand the BlueGreen Strategy
+* Deploy the BlueGreen Rollout to the production namespace
 * Deploy a new image and observe the Rollout promotion process
 * Perform a Rollback of a promotion
+* Enable Auto-Promotion
 
 [#blue-green-strategy]
-== Blue-Green Strategy
+== BlueGreen Strategy
 
-In a blue-green deployment we deploy a new version of the application in a separate stack from the current version with
-the two versions running in parallel for a period of time. This enables testing on the new version while users continue
-to access the current version of the application until a cut-over of traffic occurs.
+In a *blue-green deployment*, we deploy a new version of the application in a separate stack from the current version, with the two versions running in parallel for some time. This enables testing on the new version while users continue to access the current version of the application until a traffic cutover occurs.
 
 The diagram below illustrates this process over time.
 
 image::overview-blue-green.png[]
 
-In traditional infrastructure this approach can be very challenging. While Kubernetes is simpler due to its declarative nature, the process still tends to be cumbersome to manage. Bespoke automation would still need to be created to manage the separate stacks, and for
-testing and traffic management between versions.
+In traditional infrastructure, this approach can be very challenging. While Kubernetes is simpler due to its declarative nature, the process still tends to be cumbersome to manage. Bespoke automation would still need to be created to manage the separate stacks and test and manage traffic between versions.
 
-This is where Argo Rollouts comes in. It greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module we will deploy a simple blue-green Rollout and explore its basic capabilities.
+This is where *Argo Rollouts* comes in. It greatly reduces the complexity by providing these capabilities with a simple, declarative approach. In this module, we will deploy a simple *BlueGreen Rollout* and explore its basic capabilities.
 
 [#deploy-blue-green-rollout]
 == Deploy Blue-Green Rollout
 
-Here we will deploy the blue-green rollout in the `{user}-prod` namespace following the same process that we did for the Deployment in the previous module. Prior to starting,
-confirm you are still at the correct path.
+Here we will deploy the *blue-green rollout* in the *`{user}-prod`* namespace following the same process that we did for the Deployment in the previous module. Prior to starting, confirm you are still at the correct path.
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -47,7 +44,12 @@ ls ./bluegreen/base
 Notice that this time we have files for `rollout.yaml`, `services.yaml` and `routes.yaml` which represent our Rollout, Services and Routes. We also have
 `kustomization.yaml` as per the last module.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen/base/rollout.yaml[./bluegreen/base/rollout.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./bluegreen/base/rollout.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen/base/rollout.yaml[]
@@ -59,7 +61,9 @@ under `.spec.strategy` we have specified the `blueGreen` strategy. The Kubernete
 and `replace` strategies whereas Argo Rollouts supports `blueGreen` and `canary` strategies.
 
 Under the `blueGreen` strategy we have identified the `active` and `preview` Kubernetes services for the rollout. This will be covered
-in more detail when services are discussed next.
+in more detail when services are discussed next. The rollout uses the active and preview to migrate replica sets from the preview to the active state.
+
+
 
 The field `autoPromotionEnabled` is set to `false`. This means the rollout will require manual intervention to promote. Manual promotion
 is enabled so the behavior of the rollout can be observed in-depth in subsequent sections of this module.
@@ -68,7 +72,12 @@ The Argo Rollouts documentation provides a complete list
 of all of the link:https://argo-rollouts.readthedocs.io/en/stable/features/bluegreen/#configurable-features[configurable features, window='_blank'] for the blueGreen strategy
 and some of these additional features will be explored as we progress through the workshop.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen/base/services.yaml[./bluegreen/base/services.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./bluegreen/base/services.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen/base/services.yaml[]
@@ -82,7 +91,12 @@ Argo Rollouts automatically manages the traffic between the services by managing
 will add a unique identifier label to pods and then update the selector in the service to bind the right pods to the right service. As
 we deploy the rollout this will be reviewed in more detail.
 
-.link:https://github.com/OpenShiftDemos/argo-rollouts-workshop/blob/main/content/modules/ROOT/examples/bluegreen/base/routes.yaml[./bluegreen/base/routes.yaml,window='_blank']
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./bluegreen/base/routes.yaml
+----
+
 [source,yaml,subs="+macros,attributes+"]
 ----
 include::ROOT:example$bluegreen/base/routes.yaml[]
@@ -156,7 +170,12 @@ Confirm that both the active and preview revisions display the application with 
 
 image::rollouts-demo-app-blue.png[]
 
+The following diagram shows the hash information associated with each object and their relationships between the ReplicaSet (RS), the corresponding pods, and the preview Service.
+
+image::rollouts-demo-service-preview-diagram.png[60%]
+
 Next let's examine the active and preview services that were deployed, run the following command to see the active service.
+
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -213,16 +232,16 @@ oc get rs -l app=rollouts-demo -n {user}-prod -o yaml | oc neat
 Note the `rollouts-pod-template-hash` in `spec.template.metadata.labels` field in the ReplicaSet.
 
 [#argo-rollouts-cli]
-=== Argo Rollouts CLI
+=== Argo Rollouts Plugin for the Command Line
 
-Argo Rollouts provides a Command Line Interface (CLI) to support working with rollouts as a
+Argo Rollouts provides a Command Line Interface (CLI) to support working with Rollouts as a
 link:https://kubernetes.io/docs/reference/kubectl/[kubectl,window='_blank'] plugin. link:https://argo-rollouts.readthedocs.io/en/stable/installation/#kubectl-plugin-installation[Instructions, window='blank']
 for installing the plugin are available however this has already been done for you in this workshop.
 
 The plugin is well link:https://argo-rollouts.readthedocs.io/en/stable/features/kubectl-plugin/[documented,window='_blank']
 and provides a number of commands and these can be used with our currently deployed rollout.
 
-To view a list of rollouts we can use the `list` command as follows:
+To view a list of Rollouts we can use the `list` command as follows:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -329,8 +348,7 @@ In this section we will promote a new image and observe the behavior of the appl
 process. To promote the image we will use a simple pipeline to update the image reference to use a different
 color.
 
-To access this pipeline, in the OpenShift Console navigate to the `{user}-tools` namespace and select
-the `Pipelines` view in the Developer perspective as per this screenshot.
+To access this pipeline, in the link:{console_url}/dev-pipelines/ns/{user}-tools[OpenShift Console^], ensure you are in the `{user}-tools` namespace and  `Pipelines` view in the Developer perspective as per this screenshot.
 
 image::console-pipelines-overview.png[]
 
@@ -543,3 +561,9 @@ Next we will delete the Rollout in the `{user}-prod` so we can start with a fres
 ----
 oc delete -k ./bluegreen/base -n {user}-prod
 ----
+
+
+== More Information
+
+link:https://argoproj.github.io/argo-rollouts/features/bluegreen/[BlueGreen Deployment Strategy^]
+
