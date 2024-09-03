@@ -18,7 +18,6 @@ This workshop is available in the Red Hat Demo Platform (RHDP) for Red Hat emplo
 Note that the installation is using ansible so you must have ansible installed on your system along with the requirements to use the ansible
 k8s module.
 
-
 #### Developing Workshop
 
 ##### Using Containers (Recommended)
