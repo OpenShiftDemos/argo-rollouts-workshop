@@ -23,6 +23,11 @@ spec:
     canary:
       canaryService: canary
       stableService: stable
+      trafficRouting:
+        plugins:
+          argoproj-labs/openshift:
+            routes:
+              - canary
       steps:
       - setWeight: 20
       - analysis:
