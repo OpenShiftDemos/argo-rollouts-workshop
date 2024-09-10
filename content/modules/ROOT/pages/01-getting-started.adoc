@@ -2,7 +2,7 @@
 include::_attributes.adoc[]
 
 [#cluster-login]
-== OpenShift cluster login
+== OpenShift Cluster Login
 
 The first thing to do is log in to your OpenShift cluster with the following
 information:
