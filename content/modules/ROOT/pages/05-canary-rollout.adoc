@@ -86,6 +86,14 @@ specified in seconds(s), minutes(m) or hours(h) increments.
 For the purposes of this workshop the pause sequences are deliberately short, it is common
 to have much longer pauses for more complex applications.
 
+Finally note the `trafficRouting` stanza in the canary strategy. This tells Argo Rollouts to use the OpenShift
+traffic manager plugin to automatically manage the service weighting between stable and canary services as the steps are
+executed. Without this plugin Rollouts would provide best effort for traffic shaping by managing the scaling of
+pod replicas between stable and canary.
+
+[NOTE]
+The OpenShift traffic manager plugin is included in the OpenShift GitOps distribution of Argo Rollouts and does not need to be installed manually.
+
 Next let's look at the Kubernetes services that are defined:
 
 [.console-input]
@@ -99,16 +107,7 @@ cat ./canary/base/services.yaml
 include::ROOT:example$canary/base/services.yaml[]
 ----
 
-As expected, services have been defined `stable` and `canary` as referenced in the Rollout, however there is a new service called
-`all`. This `all` service is not managed by the rollout and includes all pods, this service is used
-to observe the behavior of rollouts as traffic weight shifts between stable and canary services.
-
-[Important]
-As mentioned previously, Argo Rollouts does not currently have support for traffic shaping for
-OpenShift Routes. As a result we will be relying on the best effort approach of scaling pods.
-The `all` service will enable us to see this by including all pods.
-
-With the services out of the way, let's examine the routes:
+As expected, services have been defined `stable` and `canary` as referenced in the Rollout. With the services out of the way, let's examine the routes:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -122,10 +121,15 @@ cat ./canary/base/routes.yaml
 include::ROOT:example$canary/base/routes.yaml[]
 ----
 
-Here a route has been defined to match each service that were shown previously. Note for the `all` route,
-OpenShift Route annotations are being used to disable sticky sessions and use round-robin
-load balancing. This enables us to properly observe the split of traffic as Rollouts manage the pod
-replicas between stable and canary services without interference from OpenShift's load balancer.
+Here a route has been defined to match each service that were shown previously. The `stable` route
+defines two services, `stable` and `canary`, with a default weighting of 100 and 0 respectively. As
+the steps of the canary progress, the OpenShift traffic manager plugin will dynamically modify this
+weighting to match the value of the current step.
+
+Finally note for the `stable` route, OpenShift Route annotations are being used to disable sticky
+sessions and use round-robin load balancing. This enables us to properly observe the split of traffic
+as Rollouts manage the pod replicas between stable and canary services without interference from OpenShift's
+load balancer.
 
 To deploy the canary rollout, use the following command to process the kustomization:
 
