@@ -29,11 +29,6 @@ of link:https://argo-rollouts.readthedocs.io/en/stable/features/traffic-manageme
 the absence of a traffic management solution, Rollouts will manage traffic weight on a best effort basis by adjusting
 the number of pod replicas associated with each service.
 
-[NOTE]
-Argo Rollouts does not currently have support for traffic shaping for OpenShift Routes. This
-work is in progress and will be available in the future as Rollouts moves to GA status
-in OpenShift GitOps. For this module we will rely on Rollouts best effort approach.
-
 [#deploy-canary-rollout]
 == Deploy Canary Rollout
 
