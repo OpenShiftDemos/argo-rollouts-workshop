@@ -442,7 +442,7 @@ Next, examining the link:https://dashboard-{user}-tools.{openshift_cluster_ingre
 
 image::argo-rollouts-dashboard-canary-analysis.png[]
 
-Note that since we no longer have a manual pause step the promotion will complete automatically as long as the
+Now that since we no longer have a manual pause step the promotion will complete automatically as long as the
 analysis step executes successfully.
 
 Let's do our promotion to the `green` image, go to the `{user}-tools` namespace and start the pipeline
