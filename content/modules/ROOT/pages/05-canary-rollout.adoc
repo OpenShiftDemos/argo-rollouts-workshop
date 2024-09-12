@@ -263,14 +263,14 @@ step:
 
 image::argo-rollouts-dashboard-canary-pause.png[]
 
-Now let's see the behavior of the routes, first if you check the stable you will see
+Now let's see the behavior of the routes, first if you check `stable` you will see
 approximately 20% green squares versus 80% blue squares reflecting the 20% weighting of canary in the first step:
 
 https://stable-{user}-prod.{openshift_cluster_ingress_domain}[https://stable-{user}-prod.{openshift_cluster_ingress_domain}, window="_blank"]
 
 image::rollouts-demo-app-canary-blue-green.png[]
 
-If we check the stable route you will see the 80/20 weighting between services:
+If we view the stable route you will see the 80/20 weighting between `stable` and `canary` services has been set by the OpenShift traffic manager:
 
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
@@ -393,7 +393,7 @@ To deploy the canary with the inline analysis execute the following command:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/$SUB_DOMAIN/" | sed "s/%USER%/%USERNUM%/" | oc apply -n {user}-prod -f -
+kustomize build ./canary-analysis/base | sed "s/%SUB_DOMAIN%/{openshift_cluster_ingress_domain}/" | sed "s/%USER%/{user}/" | oc apply -n {user}-prod -f -
 ----
 
 Once the command has been executed, verify that the rollout was deployed:

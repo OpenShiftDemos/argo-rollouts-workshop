@@ -41,7 +41,7 @@ spec:
             - name: route-name
               value: canary
             - name: route-url
-              value: canary-user%USER%-prod.%SUB_DOMAIN%
+              value: canary-%USER%-prod.%SUB_DOMAIN%
       - pause: {duration: 10s}
       - setWeight: 60
       - pause: {duration: 10s}
