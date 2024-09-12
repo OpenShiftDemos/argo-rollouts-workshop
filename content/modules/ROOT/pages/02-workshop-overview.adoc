@@ -25,42 +25,35 @@ The *OpenShift GitOps Operator* simplifies the deployment and management of the 
 
 To deploy Argo Rollouts using the operator we need to define and create a RolloutManager
 custom resource in the namespace where we want to run the Rollout. In the case of our workshop a
-RolloutManager has already been provisioned for you.
+RolloutManager has already been provisioned for the cluster in the `openshift-gitops` namespace.
+
+The `openshift-gitops` namespace is not accessible with your credential however the
+RolloutManager has been provisioned as per the yaml below:
+
+
+
 
 [NOTE]
-Argo Rollouts can be deployed as either a namespace or cluster scope. The OpenShift GitOps operator currently only supports namespace scope.
-
-To review the rollout manager, execute the following command:
-
-[.console-input]
-[source,bash,subs="attributes+,+macros"]
-----
-oc get rolloutmanager argo-rollout -o yaml -n {user}-prod | oc neat
-----
-
-[NOTE]
-The `oc` CLI tool is a superset of `kubectl` with some additional OpenShift specific features. We will use `oc` in this tutorial but if you prefer you can use `kubectl` as well.
-In the previous command we are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
-in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
-
-This will return an object as follows:
+Argo Rollouts can be deployed as either a namespace or cluster scope. It has been provisioned here as cluster scoped.
 
 [source,yaml,subs="attributes+,+macros"]
 apiVersion: argoproj.io/v1alpha1
 kind: RolloutManager
 metadata:
-  annotations:
-    argocd.argoproj.io/tracking-id: {user}:argoproj.io/RolloutManager:{user}-prod/argo-rollout
-  name: argo-rollout
-  namespace: {user}-prod
+  name: cluster
+  namespace: openshift-gitopss
 
 As shown here this is a simple declaration which in turn results in the Operator creating
-a deployment with the Argo Rollout controller monitoring the `{user}-prod` for
+a deployment with the Argo Rollout controller monitoring all namespaces on the cluster for
 `Rollout` resources.
 
-[NOTE]
 You can use the command '`oc explain RolloutManager.spec`' to see the supported configuration
 options.
+
+[NOTE]
+The `oc` CLI tool is a superset of `kubectl` with some additional OpenShift specific features. We will use `oc` in this tutorial but if you prefer you can use `kubectl` as well.
+In some `oc` commands in the workshop we are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
+in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
 
 [#deploy-application]
 == Deploy Application
