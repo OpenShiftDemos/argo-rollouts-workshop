@@ -27,7 +27,7 @@ spec:
         plugins:
           argoproj-labs/openshift:
             routes:
-              - canary
+              - stable
       steps:
       - setWeight: 20
       - pause: {}
