@@ -28,7 +28,7 @@ spec:
           selfHeal: false
       source:
         repoURL: https://github.com/OpenShiftDemos/argo-rollouts-workshop
-        targetRevision: main
+        targetRevision: "{% raw %}{{ gitops_revision }}{% endraw %}"
         path: bootstrap/user
         helm:
           values: |
