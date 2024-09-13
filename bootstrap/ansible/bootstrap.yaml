@@ -3,7 +3,7 @@
 
   vars:
     users: 10
-    gitops_revision: showroom
+    gitops_revision: development
     gitops_deployments:
       - cluster
       - kam
