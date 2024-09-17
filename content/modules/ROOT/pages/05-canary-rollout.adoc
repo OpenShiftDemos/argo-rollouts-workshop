@@ -226,36 +226,37 @@ Message:         CanaryPauseStep
 Strategy:        Canary
   Step:          1/8
   SetWeight:     20
-  ActualWeight:  22
+  ActualWeight:  20
 Images:          quay.io/openshiftdemos/rollouts-demo:blue (stable)
                  quay.io/openshiftdemos/rollouts-demo:green (canary)
 Replicas:
   Desired:       8
-  Current:       9
+  Current:       10
   Updated:       2
-  Ready:         9
-  Available:     9
+  Ready:         10
+  Available:     10
 
-NAME                                       KIND        STATUS     AGE    INFO
-⟳ rollouts-demo                            Rollout     ॥ Paused   19m
+NAME                                       KIND        STATUS     AGE   INFO
+⟳ rollouts-demo                            Rollout     ॥ Paused   2m7s
 ├──# revision:2
-│  └──⧉ rollouts-demo-5999df6cf9           ReplicaSet  ✔ Healthy  9m56s  canary
-│     ├──□ rollouts-demo-5999df6cf9-5fwsx  Pod         ✔ Running  9m56s  ready:1/1
-│     └──□ rollouts-demo-5999df6cf9-sl9pw  Pod         ✔ Running  9m56s  ready:1/1
+│  └──⧉ rollouts-demo-5999df6cf9           ReplicaSet  ✔ Healthy  58s   canary
+│     ├──□ rollouts-demo-5999df6cf9-mqpc4  Pod         ✔ Running  58s   ready:1/1
+│     └──□ rollouts-demo-5999df6cf9-nxwt4  Pod         ✔ Running  58s   ready:1/1
 └──# revision:1
-   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  19m    stable
-      ├──□ rollouts-demo-66d84bcd76-79c26  Pod         ✔ Running  19m    ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-c8mm7  Pod         ✔ Running  19m    ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-mt5wc  Pod         ✔ Running  19m    ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-npjvk  Pod         ✔ Running  19m    ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-pn77f  Pod         ✔ Running  19m    ready:1/1
-      ├──□ rollouts-demo-66d84bcd76-r8rmv  Pod         ✔ Running  19m    ready:1/1
-      └──□ rollouts-demo-66d84bcd76-vcv6z  Pod         ✔ Running  19m    ready:1/1
+   └──⧉ rollouts-demo-66d84bcd76           ReplicaSet  ✔ Healthy  2m7s  stable
+      ├──□ rollouts-demo-66d84bcd76-5dpb5  Pod         ✔ Running  2m7s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-9rbtg  Pod         ✔ Running  2m7s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-cj6ql  Pod         ✔ Running  2m7s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-dkdpd  Pod         ✔ Running  2m7s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-fkbpb  Pod         ✔ Running  2m7s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-j8pfg  Pod         ✔ Running  2m7s  ready:1/1
+      ├──□ rollouts-demo-66d84bcd76-wgw5h  Pod         ✔ Running  2m7s  ready:1/1
+      └──□ rollouts-demo-66d84bcd76-wvqw9  Pod         ✔ Running  2m7s  ready:1/1
 ----
 
 There are a few things of note here. First the status of the Rollout is `Paused` due
 to the pause step with no duration. Second that we have two ReplicaSets, one with 2 pods
-and the other with 7 pods corresponding to the preview and stable services respectively.
+and the other with 8 pods corresponding to the preview and stable services respectively.
 Recall in our first step that we set a weight of 20% to the canary service.
 
 Next visit the link:https://dashboard-{user}-tools.{openshift_cluster_ingress_domain}[Argo Rollouts Dashboard, window="_blank"] and note that the the rollout is paused on the `pause`
@@ -325,7 +326,7 @@ oc argo rollouts promote rollouts-demo -n {user}-prod
 
 Observe the dashboard once it has been promoted. The dashboard will show the progression
 of the steps by highlighting each step as it is being executed. Also note how pods are
-being drained from one service to the other as traffic weighting changes.
+being added to the new revision as traffic weighting changes.
 
 Prior to moving on to the next section, perform a cleanup to remove the current rollout
 and reset the Deployment in the dev environment back to blue.
