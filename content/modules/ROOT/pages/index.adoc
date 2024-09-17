@@ -11,5 +11,5 @@ including enabling the usage of analysis to drive the progressive delivery. Thes
 specified in an AnalysisTemplate, enables the testing of the Rollout by defining the nature of the
 testing, the frequency and occurrence and what constitutes a pass/fail.
 
-Support for Argo Rollouts is provided by the *OpenShift GitOps* operator as a Tech
-Preview feature as of OpenShift GitOps 1.10.
+Support for Argo Rollouts is provided by the *OpenShift GitOps* operator and is GA
+as of OpenShift GitOps 1.13.
