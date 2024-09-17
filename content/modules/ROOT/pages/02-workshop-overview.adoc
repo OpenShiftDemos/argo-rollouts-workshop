@@ -74,7 +74,7 @@ deploy various versions of the application as you progress through the workshop:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-git clone -b showroom --single-branch https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
+git clone -b development --single-branch https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
 ----
 
 [NOTE]
