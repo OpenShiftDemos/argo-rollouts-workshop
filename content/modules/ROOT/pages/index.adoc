@@ -1,0 +1,15 @@
+= Welcome to the Argo Rollouts Workshop
+:!sectids:
+
+https://argoproj.github.io/rollouts/[Argo Rollouts,window='_blank'] provides a
+drop-in replacement for Kubernetes deployments with support for advanced deployment
+strategies. Specifically whereas Kubernetes deployments support simple rollout and
+recreate strategies, Argo Rollouts supports Blue-Green and Canary strategies.
+
+To support these advanced deployment strategies, *Argo Rollouts* provides additional features
+including enabling the usage of analysis to drive the progressive delivery. These analyses,
+specified in an AnalysisTemplate, enables the testing of the Rollout by defining the nature of the
+testing, the frequency and occurrence and what constitutes a pass/fail.
+
+Support for Argo Rollouts is provided by the *OpenShift GitOps* operator and is GA
+as of OpenShift GitOps 1.13.

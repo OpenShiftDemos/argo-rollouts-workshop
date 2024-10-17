@@ -1,0 +1,23 @@
+name: argo-rollouts-workshop
+title: Argo Rollouts Workshop
+version: main
+nav:
+  - modules/ROOT/nav.adoc
+
+start_page: ROOT:index.adoc
+
+asciidoc:
+  attributes:
+    page-pagination: true
+    page-links:
+    - url: https://redhat.com
+      text: Red Hat
+    - url: https://docs.openshift.com/gitops
+      text: OpenShift GitOps
+    - url: https://argoproj.github.io/rollouts
+      text: Argo Rollouts
+    console_url: URL_PLACEHOLDER
+    login_command: LOGIN_COMMAND_PLACEHOLDER
+    openshift_cluster_ingress_domain: OPENSHIFT_CLUSTER_INGRESS_DOMAIN_PLACEHOLDER
+    password: PASSWORD_PLACEHOLDER
+    user: USER_PLACEHOLDER

@@ -3,6 +3,7 @@
 
   vars:
     users: 10
+    gitops_revision: development
     gitops_deployments:
       - cluster
       - kam
@@ -94,10 +95,10 @@
     - name: Deploy infra applications
       kubernetes.core.k8s:
         state: present
-        src: "{{ item }}"
+        definition: "{{ lookup('template', item) }}"
       with_items:
-        - files/applications/pipelines-operator.yaml
-        - files/applications/web-terminal-operator.yaml
+        - pipelines-operator.yaml.j2
+        - rollouts-manager.yaml.j2
 
     # Todo: Check health of apps
     - name: Wait 30 seconds for deployment

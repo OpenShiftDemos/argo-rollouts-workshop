@@ -1,0 +1,211 @@
+= Workshop Overview
+include::_attributes.adoc[]
+
+In this module we will:
+
+* Review the namespaces being used
+* Review how Rollouts was deployed with OpenShift GitOps
+* Deploy the application in the Development environment
+
+[#workshop-namespaces]
+== Workshop Namespaces
+
+image::openshift-projects.png[]
+
+In this workshop each user will have access to three OpenShift Projects, i.e. namespaces, as follows:
+
+* *_{user}-dev_*: This represents the development environment for deploying the application as a Kubernetes Deployment so we can compare and contrast it to Rollouts.
+* *_{user}-prod_*: This is our production environment, where we deploy a rollout for the application. During the workshop, you will deploy Rollouts using different strategies and analysis.
+* *_{user}-tools_*: This is where the CI/CD tooling is located. It contains a pipeline to promote image changes across the development and production environments. The upstream *Rollouts Dashboard* user interface is also deployed in this namespace.
+
+[#review-rollout-manager]
+== Review RolloutManager Deployment
+
+The *OpenShift GitOps Operator* simplifies the deployment and management of the Argo Rollouts in an OpenShift cluster.
+
+To deploy Argo Rollouts using the operator we need to define and create a RolloutManager
+custom resource in the namespace where we want to run the Rollout. In the case of our workshop a
+RolloutManager has already been provisioned for the cluster in the `openshift-gitops` namespace.
+
+The `openshift-gitops` namespace is not accessible with your credential however the
+RolloutManager has been provisioned as per the yaml below:
+
+[source,yaml,subs="attributes+,+macros"]
+apiVersion: argoproj.io/v1alpha1
+kind: RolloutManager
+metadata:
+  name: cluster
+  namespace: openshift-gitopss
+
+[NOTE]
+Argo Rollouts can be deployed as either a namespace or cluster scope. It has been provisioned here as cluster
+scoped which is the default, namespace scope can be selected by setting `.spec.namespaceScoped: true`. NOTE
+that only one cluster scoped instance of RolloutManager can exist on a cluster.
+
+As shown above this is a simple declaration which in turn results in the Operator creating
+a deployment with the Argo Rollout controller monitoring all namespaces on the cluster for
+`Rollout` resources.
+
+You can use the command '`oc explain RolloutManager.spec`' to see the supported configuration
+options.
+
+[NOTE]
+The `oc` CLI tool is a superset of `kubectl` with some additional OpenShift specific features. We will use `oc` in this tutorial but if you prefer you can use `kubectl` as well.
+In some `oc` commands in the workshop we are using a kubectl plugin called link:https://github.com/itaysk/kubectl-neat[kubectl-neat,window='_blank']
+in order to tidy the yaml by removing additional fields, labels and annotations added automatically by Kubernetes.
+
+[#deploy-application]
+== Deploy Application
+
+In order to proceed with this workshop we will need to deploy the application into the development
+and production namespaces. The application that we will be deploying is the https://github.com/argoproj/rollouts-demo[Argo Rollouts Demo^]
+application that displays colored squares.
+
+image::rollouts-demo-app.png[]
+
+Each time we need to deploy the application we will select a version of the application with a different color,
+this will enable use to visually see how the application is progressing.
+
+=== Clone the Repository
+
+You need to clone the repository into your web terminal because you will need to
+deploy various versions of the application as you progress through the workshop:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+git clone -b production --single-branch https://github.com/OpenShiftDemos/argo-rollouts-workshop ~/argo-rollouts-workshop
+----
+
+[NOTE]
+We are cloning the `showroom` branch to support some specific requirements of the Show Room environment.
+
+All of the code used in this workshop will be located in the folder:
+
+`~/argo-rollouts-workshop/content/modules/ROOT/examples`
+
+Once you have cloned the repo, enter this directory in the terminal:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cd ~/argo-rollouts-workshop/content/modules/ROOT/examples/
+----
+
+=== Deploy Development
+
+In the development environment we will be deploying the application as a basic
+Kubernetes Deployment so that we can compare and contrast the behavior with Argo Rollouts.
+
+To view the manifests that we will be using, examine the code in `./deploy/base`:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+ls ./deploy/base
+----
+
+You should see that there are four files in this directory. The `deploy.yaml`, `service.yaml`
+and `route.yaml` represent the Deployment, Service and OpenShift Route respectively for the application.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/deploy.yaml
+----
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$deploy/base/deploy.yaml[]
+----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/service.yaml
+----
+
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$deploy/base/service.yaml[]
+----
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/route.yaml
+----
+
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$deploy/base/route.yaml[]
+----
+
+[NOTE]
+Routes are the way ingress is managed in OpenShift. Routes pre-date Kubernetes Ingress and
+while OpenShift supports both Routes and Ingress, Routes retain some additional capabilities and
+features not yet available in Ingress hence their continued usage.
+
+There is a fourth file called `kustomization.yaml`, this file is used by the https://kustomize.io[Kustomize,window='_blank'] tool and enables
+the management of Kubernetes manifests. Kustomize and Helm are the two most popular yaml management tools
+in GitOps and we use kustomize here to simplify our deployments.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+cat ./deploy/base/kustomization.yaml
+----
+
+[source,yaml,subs="+macros,attributes+"]
+----
+include::ROOT:example$deploy/base/kustomization.yaml[]
+----
+
+To deploy the application in Development, we will use the `apply` command with `-k` switch that is available in `kubectl` and `oc`
+to process a kustomization. Run the following command in the terminal to deploy the application:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc apply -k ./deploy/base -n {user}-dev
+----
+
+Once you have run the command we can confirm that the deployment has run successfully. Use the following command to ensure
+that the pods are up and running:
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get pods -n {user}-dev
+----
+
+The console should return something along the lines of:
+
+[.console-output]
+[source,bash,subs="attributes+,+macros"]
+----
+NAME                             READY   STATUS    RESTARTS   AGE
+rollouts-demo-785c8b55cb-m5mzg   1/1     Running   0          6m51s
+rollouts-demo-785c8b55cb-trvsd   1/1     Running   0          6m51s
+----
+
+There are two pods since the Deployment specified two replicas.
+
+Next view the Route URL for this application. It's in the `{user}-dev1` Project.
+
+[.console-input]
+[source,bash,subs="attributes+,+macros"]
+----
+oc get route -n {user}-dev rollouts-demo -o jsonpath='{"https://"}{.spec.host}{"\n"}'
+----
+
+You can confirm the application is running by clicking the following link or by copying the URL from the previous command:
+
+https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}[https://rollouts-demo-{user}-dev.{openshift_cluster_ingress_domain}, window="_blank"]
+
+You should see a grid of *blue* squares appearing and disappearing periodically as the application makes requests to its back-end
+from the browser.
+
+image::rollouts-demo-app-blue.png[]
+
+In the next module we will deploy a *BlueGreen Rollouts* version of this application and compare and contrast it to
+the traditional Kubernetes Deployment version of the application we just deployed.
