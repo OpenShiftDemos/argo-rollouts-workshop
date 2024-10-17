@@ -39,8 +39,9 @@ metadata:
 
 [NOTE]
 Argo Rollouts can be deployed as either a namespace or cluster scope. It has been provisioned here as cluster
-scoped which is the default, namespace scope can be selected by setting `.spec.namespaceScoped: true`. NOTE
-that only one cluster scoped instance of RolloutManager can exist on a cluster.
+scoped which is the default, namespace scope can be selected by setting `.spec.namespaceScoped: true`. Keep in mind
+that only one cluster scoped instance of RolloutManager can exist on a cluster. Also cluster scoped
+and namespace scoped instances are not permitted on the same cluster.
 
 As shown above this is a simple declaration which in turn results in the Operator creating
 a deployment with the Argo Rollout controller monitoring all namespaces on the cluster for
