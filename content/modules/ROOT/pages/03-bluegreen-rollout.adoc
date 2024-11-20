@@ -118,13 +118,8 @@ that the pods are up and running:
 [.console-input]
 [source,bash,subs="attributes+,+macros"]
 ----
-oc get pods -l app=rollouts-demo -n {user}-prod
+oc get pods -n {user}-prod
 ----
-
-[NOTE]
-We are getting pods using the label `app=rollouts-demo` to specifically select pods from the rollout. Remember
-the RolloutManager pod is also deployed in the `{user}-prod` namespace. Using the label enables us
-to exclude that pod.
 
 The console should return something along the lines of:
 
