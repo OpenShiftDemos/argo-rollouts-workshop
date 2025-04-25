@@ -13,6 +13,12 @@ spec:
       value: "true"
     - name: communityClusterTasks
       value: "true"
+    - name: resolverStepActions	
+      value: 'true'	
+    - name: communityResolverTasks	
+      value: 'true'	
+    - name: resolverTasks	
+      value: 'true'
   chain:
     artifacts.taskrun.format: in-toto
     artifacts.taskrun.storage: tekton
@@ -38,7 +44,6 @@ spec:
     enable-git-resolver: true
     enable-hub-resolver: true
     enable-provenance-in-status: false
-    enable-tekton-oci-bundles: false
     metrics.pipelinerun.duration-type: histogram
     metrics.pipelinerun.level: pipeline
     metrics.taskrun.duration-type: histogram
