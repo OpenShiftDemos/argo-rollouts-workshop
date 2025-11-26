@@ -347,7 +347,8 @@ In this section we will promote a new image and observe the behavior of the appl
 process. To promote the image we will use a simple pipeline to update the image reference to use a different
 color.
 
-To access this pipeline, in the link:{console_url}/dev-pipelines/ns/{user}-tools[OpenShift Console^], ensure you are in the `{user}-tools` namespace and  `Pipelines` view in the Developer perspective as per this screenshot.
+To access this pipeline, in the link:{console_url}/dev-pipelines/ns/{user}-tools[OpenShift Console^], ensure you are in the `{user}-tools` namespace
+and  `Pipelines` view as per this screenshot.
 
 image::console-pipelines-overview.png[]
 
@@ -362,7 +363,8 @@ Kubernetes Deployment in the `{user}-dev` namespace while `deploy-prod` will do 
 [NOTE]
 This pipeline is not meant to be a comprehensive example of how to manage image promotion, rather we
 are using it provide a simple way in the workshop to drive image changes. This pipeline uses OpenShift
-Pipelines, an implementation of the link:https://tekton.dev[Tekton,window='_blank'] project, however any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
+Pipelines, an implementation of the link:https://tekton.dev[Tekton,window='_blank'] project, however
+any Continuous Integration(CI) tool can be used with Argo Rollouts including Argo Workflows,
 GitHub Actions, GitLab, etc.
 
 To start the pipeline, click the `Actions` dropdown and select the `Start` option:

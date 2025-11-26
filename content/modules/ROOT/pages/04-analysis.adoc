@@ -152,7 +152,7 @@ image::console-pipelines-overview.png[]
 
 Wait for the pipelines to complete and then go to the Argo Rollouts dashboard where
 you may see the following if the Analysis is still running where the Analysis button
-is shown in grey (highlighted in the image with a red outline):
+is shown with a blue bubble indicating the analysis is in progress.
 
 image::argo-rollouts-analysis-in-progress-overview.png[]
 
@@ -162,26 +162,27 @@ being used in pre-promotion we will only see one analysis run being created.
 It is however possible for a promotion to have multiple analysis runs, dependent on the
 rollout configuration. i.e. in blue-green defining both pre and post promotion analysis.
 
-Clicking on the analysis button will expand the view to show the in-progress analysis
-that is running:
+Clicking on the analysis button will show a popup with details of the analysis, clicking
+on _Summary_ will show the in-progress analysis that is running:
 
 image::argo-rollouts-analysis-in-progress-details.png[]
 
-Note there are two green boxes with graph icons that are being shown in separate
-rows. Each row represents a provider and if you recall we had two providers, the job running
-Siege and the metric provider. Hovering the mouse over the buttons will display
-additional information:
+Hovering the mouse over the analysis button will display
+overall status information:
 
 image::argo-rollouts-analysis-in-progress-hover.png[]
 
-Once the analysis is complete the Analysis button will go green to show that it successfully
+Once the analysis is complete the Analysis bubble will go green to show that it successfully
 completed:
 
 image::argo-rollouts-analysis-completed.png[]
 
-Notice that one row has four graph icons, this represents the four measurements that were taken
-during the execution of the AnalysisRun. Hovering the mouse over any of these graph icons will
-show you the measurement result.
+If you click on the Analysis button again, the popup will show green bubbles for all
+of the analysis steps indicating it was successful. If you click on the Summary note that
+four measurements were taken during the course of this Analysis.
+
+image::argo-rollouts-analysis-in-progress-details-completed.png
+
 
 [NOTE]
 You may need to refresh the browser to see new metrics being added to the AnalysisRun depending
