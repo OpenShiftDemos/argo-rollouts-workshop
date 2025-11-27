@@ -455,9 +455,10 @@ If you want to try this multiple times to look at different things feel free to 
 to deploy different colors. Remember the available colors are available .link:https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags[here, window='_blank'].
 
 In the dashboard, if you catch it before it completes, you can see the analysis step executing. Similar to
-what we saw in the previous module, the analysis button will be grey while it is executing, green when it
-has completed successfully or red if it failed. Here is what the dashboard looks like while the
-analysis is executing:
+what we saw in the previous module, the analysis button will have a blue button while it is executing
+which then goes green when it has completed successfully or red if it failed.
+
+Here is what the dashboard looks like while the analysis is executing:
 
 image::argo-rollouts-dashboard-analysis-executing.png[]
 
