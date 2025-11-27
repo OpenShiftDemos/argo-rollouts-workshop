@@ -167,22 +167,21 @@ on _Summary_ will show the in-progress analysis that is running:
 
 image::argo-rollouts-analysis-in-progress-details.png[]
 
-Hovering the mouse over the analysis button will display
-overall status information:
-
-image::argo-rollouts-analysis-in-progress-hover.png[]
-
 Once the analysis is complete the Analysis bubble will go green to show that it successfully
 completed:
 
 image::argo-rollouts-analysis-completed.png[]
 
+Hovering the mouse over the analysis button will display
+overall status information:
+
+image::argo-rollouts-analysis-in-progress-hover.png[]
+
 If you click on the Analysis button again, the popup will show green bubbles for all
 of the analysis steps indicating it was successful. If you click on the Summary note that
 four measurements were taken during the course of this Analysis.
 
-image::argo-rollouts-analysis-in-progress-details-completed.png
-
+image::argo-rollouts-analysis-in-progress-details-completed.png[]
 
 [NOTE]
 You may need to refresh the browser to see new metrics being added to the AnalysisRun depending
