@@ -265,6 +265,8 @@ image::argo-rollouts-analysis-failed-details.png[]
 If you hover the mouse over the dot you can see the results of the
 prometheus metric used indicating the number of errors that have occurred.
 
+image::argo-rollouts-analysis-failed-details-hover.png[]
+
 [NOTE]
 If the timing did not work out for you, you can try again by promoting with a different color.
 You can see the list of available colors link:https://quay.io/repository/openshiftdemos/rollouts-demo?tab=tags[here, window='_blank']
