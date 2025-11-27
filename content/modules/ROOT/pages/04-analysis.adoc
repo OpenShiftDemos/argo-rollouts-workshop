@@ -183,10 +183,6 @@ four measurements were taken during the course of this Analysis.
 
 image::argo-rollouts-analysis-in-progress-details-completed.png[]
 
-[NOTE]
-You may need to refresh the browser to see new metrics being added to the AnalysisRun depending
-on connectivity during the workshop.
-
 You can also use the Argo Rollouts CLI to examine the status of the Rollout by executing the `get`
 command that we used earlier:
 
@@ -259,7 +255,15 @@ to the preview service and set the error rate to 100%.
 If you did everything correctly, you should see that the Analysis failed as indicated by the red
 button:
 
+image::argo-rollouts-analysis-failed.png[]
+
+Clicking on the Analysis button will show the results of the test, note the red dot under
+the success-rate.
+
 image::argo-rollouts-analysis-failed-details.png[]
+
+If you hover the mouse over the dot you can see the results of the
+prometheus metric used indicating the number of errors that have occurred.
 
 [NOTE]
 If the timing did not work out for you, you can try again by promoting with a different color.
