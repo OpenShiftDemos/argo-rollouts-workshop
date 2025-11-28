@@ -79,7 +79,7 @@ git clone -b {gitops_revision} --single-branch https://github.com/OpenShiftDemos
 ----
 
 [NOTE]
-We are cloning the `showroom` branch to support some specific requirements of the Show Room environment.
+We are cloning the `{gitops_revision}` tag as this workshop is versioned.
 
 All of the code used in this workshop will be located in the folder:
 
