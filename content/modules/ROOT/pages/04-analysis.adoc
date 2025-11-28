@@ -84,7 +84,7 @@ Finally, remember we are running this Analysis in the pre-promotion phase of the
 be receiving load from users, therefore generating load with Apache Siege will generate the metrics we need to determine whether
 to proceed with the promotion.
 
-In the arguments we are taking three arguments, `route-name`, `route-url` and `namespace`, which will be passed from the
+In the `args` we are taking four arguments, `route-name`, `route-url`, `namespace` and `api-token`, which will be passed from the
 Rollout.
 
 The `route-name` and `namespace` arguments are used in the prometheus metrics provider in the query field to specify
@@ -95,7 +95,7 @@ The `route-url` parameter is being used in the second provider, the job, where w
 parameter is used to specify the OpenShift route URL where we want to drive the load, i.e the URL that
 siege will be hitting when it generates load.
 
-Finally a third parameter, `api-token`, is provided by a secret. This secret provides the token needed
+Finally a fourth parameter, `api-token`, is provided by a secret. This secret provides the token needed
 to access the OpenShift monitoring stack. It was created by the GitOps process which provisioned this workshop.
 
 Next let's look at the rollout and see how the AnalysisTemplate is wired into the rollout.
